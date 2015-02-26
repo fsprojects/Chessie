@@ -13,7 +13,7 @@ let githubLink = "http://github.com/fsprojects/Chessie"
 // Specify more information about your project
 let info =
   [ "project-name", "Chessie"
-    "project-author", "Steffen Forkmann, Max Mallok, Tomasz Heimowski"
+    "project-author", "Steffen Forkmann, Max Malook, Tomasz Heimowski"
     "project-summary", "Railway-oriented programming for .NET"
     "project-github", githubLink
     "project-nuget", "http://nuget.org/packages/Chessie" ]

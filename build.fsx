@@ -39,7 +39,7 @@ let summary = "Railway-oriented programming for .NET"
 let description = "Railway-oriented programming for .NET"
 
 // List of author names (for NuGet package)
-let authors = [ "Steffen Forkmann, Max Mallok, Tomasz Heimowski" ]
+let authors = [ "Steffen Forkmann"; "Max Malook"; "Tomasz Heimowski" ]
 
 // Tags for your project (for NuGet package)
 let tags = "rop, fsharp, F#"
