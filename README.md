@@ -1,5 +1,7 @@
 [![Issue Stats](http://issuestats.com/github/fsprojects/Chessie/badge/issue)](http://issuestats.com/github/fsprojects/Chessie)
 [![Issue Stats](http://issuestats.com/github/fsprojects/Chessie/badge/pr)](http://issuestats.com/github/fsprojects/Chessie)
+[![Build status](https://ci.appveyor.com/api/projects/status/bnjmxqvu3yvp389j?svg=true)](https://ci.appveyor.com/project/SteffenForkmann/chessie)
+[![Build status](https://travis-ci.org/fsprojects/Chessie.svg?branch=master)](https://travis-ci.org/fsprojects/Chessie)
 
 # Chessie
 
