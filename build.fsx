@@ -173,7 +173,7 @@ Target "SourceLink" (fun _ ->
 Target "NuGet" (fun _ ->
     Paket.Pack(fun p -> 
         { p with
-            OutputPath = "bin"
+            OutputPath = "./temp"
             Version = release.NugetVersion
             ReleaseNotes = toLines release.Notes})
 )
