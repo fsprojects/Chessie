@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Rop - Chessie</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content=""/>
+    <meta name="author" content="Steffen Forkmann, Max Malook, Tomasz Heimowski"/>
+
+    <script src="https://code.jquery.com/jquery-1.8.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.8.23/jquery-ui.js"></script>
+    <script src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
+    <link href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css" rel="stylesheet"/>
+
+    <link type="text/css" rel="stylesheet" href="/Chessie/content/style.css" />
+    <script type="text/javascript" src="/Chessie/content/tips.js"></script>
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="container">
+      <div class="masthead">
+        <ul class="nav nav-pills pull-right">
+          <li><a href="http://fsharp.org">fsharp.org</a></li>
+          <li><a href="http://github.com/fsprojects/Chessie">github page</a></li>
+        </ul>
+        <h3 class="muted"><a href="/Chessie/index.html">Chessie</a></h3>
+      </div>
+      <hr />
+      <div class="row">
+        <div class="span9" id="main">
+          
+
+
+
+<h1>Rop</h1>
+<div class="xmldoc">
+</div>
+
+<!-- Render nested types and modules, if there are any -->
+  <h2>Nested types and modules</h2>
+  <div>
+      <table class="table table-bordered type-list">
+    <thead>
+      <tr><td>Type</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td class="type-name">
+            <a href="chessie-rop-ropbuilder.html">RopBuilder</a>
+          </td>
+          <td class="xmldoc"></td>
+        </tr>
+        <tr>
+          <td class="type-name">
+            <a href="chessie-rop-ropresult-2.html">RopResult<'TSuccess, 'TMessage></a>
+          </td>
+          <td class="xmldoc"></td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+  <h3>Functions and values</h3>
+  <table class="table table-bordered member-list">
+    <thead>
+      <tr><td>Function or value</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '1', 1)" onmouseover="showTip(event, '1', 1)">
+            ( &lt;!&gt; ) 
+          </code>
+          <div class="tip" id="1">
+            <strong>Signature:</strong> (&#39;?6163 -&gt; &#39;?6164) -&gt; RopResult&lt;&#39;?6163,&#39;?6165&gt; -&gt; RopResult&lt;&#39;?6164,&#39;?6165&gt;<br />
+                          <strong>Type parameters:</strong> '?6163, '?6164, '?6165          </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/Rop.fs#L84-84" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          <p>infix version of Rop.lift</p>
+
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '2', 2)" onmouseover="showTip(event, '2', 2)">
+            ( &lt;*&gt; ) 
+          </code>
+          <div class="tip" id="2">
+            <strong>Signature:</strong> RopResult&lt;(&#39;?6167 -&gt; &#39;?6168),&#39;?6169&gt; -&gt; RopResult&lt;&#39;?6167,&#39;?6169&gt; -&gt; RopResult&lt;&#39;?6168,&#39;?6169&gt;<br />
+                          <strong>Type parameters:</strong> '?6167, '?6168, '?6169          </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/Rop.fs#L87-87" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          <p>infix version of Rop.apply</p>
+
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '3', 3)" onmouseover="showTip(event, '3', 3)">
+            ( &gt;&gt;= ) result f
+          </code>
+          <div class="tip" id="3">
+            <strong>Signature:</strong> result:RopResult&lt;&#39;?6159,&#39;?6160&gt; -&gt; f:(&#39;?6159 -&gt; RopResult&lt;&#39;?6161,&#39;?6160&gt;) -&gt; RopResult&lt;&#39;?6161,&#39;?6160&gt;<br />
+                          <strong>Type parameters:</strong> '?6159, '?6160, '?6161          </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/Rop.fs#L81-81" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          <p>infix version of Rop.bind</p>
+
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '4', 4)" onmouseover="showTip(event, '4', 4)">
+            apply f result
+          </code>
+          <div class="tip" id="4">
+            <strong>Signature:</strong> f:RopResult&lt;(&#39;?6139 -&gt; &#39;?6140),&#39;?6141&gt; -&gt; result:RopResult&lt;&#39;?6139,&#39;?6141&gt; -&gt; RopResult&lt;&#39;?6140,&#39;?6141&gt;<br />
+                          <strong>Type parameters:</strong> '?6139, '?6140, '?6141          </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/Rop.fs#L39-39" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '5', 5)" onmouseover="showTip(event, '5', 5)">
+            bind f result
+          </code>
+          <div class="tip" id="5">
+            <strong>Signature:</strong> f:(&#39;?6135 -&gt; RopResult&lt;&#39;?6136,&#39;?6137&gt;) -&gt; result:RopResult&lt;&#39;?6135,&#39;?6137&gt; -&gt; RopResult&lt;&#39;?6136,&#39;?6137&gt;<br />
+                          <strong>Type parameters:</strong> '?6135, '?6136, '?6137          </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/Rop.fs#L32-32" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '6', 6)" onmouseover="showTip(event, '6', 6)">
+            collect xs
+          </code>
+          <div class="tip" id="6">
+            <strong>Signature:</strong> xs:seq&lt;RopResult&lt;&#39;?6153,&#39;?6154&gt;&gt; -&gt; RopResult&lt;&#39;?6153 list,&#39;?6154&gt;<br />
+                          <strong>Type parameters:</strong> '?6153, '?6154          </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/Rop.fs#L67-67" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '7', 7)" onmouseover="showTip(event, '7', 7)">
+            either fSuccess fFailure _arg1
+          </code>
+          <div class="tip" id="7">
+            <strong>Signature:</strong> fSuccess:(&#39;?6125 * &#39;?6126 list -&gt; &#39;?6127) -&gt; fFailure:(&#39;?6126 list -&gt; &#39;?6127) -&gt; _arg1:RopResult&lt;&#39;?6125,&#39;?6126&gt; -&gt; &#39;?6127<br />
+                          <strong>Type parameters:</strong> '?6125, '?6126, '?6127          </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/Rop.fs#L13-13" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '8', 8)" onmouseover="showTip(event, '8', 8)">
+            fail msg
+          </code>
+          <div class="tip" id="8">
+            <strong>Signature:</strong> msg:&#39;?6122 -&gt; RopResult&lt;&#39;?6123,&#39;?6122&gt;<br />
+                          <strong>Type parameters:</strong> '?6122, '?6123          </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/Rop.fs#L11-11" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '9', 9)" onmouseover="showTip(event, '9', 9)">
+            failIfNone message _arg1
+          </code>
+          <div class="tip" id="9">
+            <strong>Signature:</strong> message:&#39;?6156 -&gt; _arg1:&#39;?6157 option -&gt; RopResult&lt;&#39;?6157,&#39;?6156&gt;<br />
+                          <strong>Type parameters:</strong> '?6156, '?6157          </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/Rop.fs#L76-76" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '10', 10)" onmouseover="showTip(event, '10', 10)">
+            failureTee f result
+          </code>
+          <div class="tip" id="10">
+            <strong>Signature:</strong> f:(&#39;?6150 list -&gt; unit) -&gt; result:RopResult&lt;&#39;?6151,&#39;?6150&gt; -&gt; RopResult&lt;&#39;?6151,&#39;?6150&gt;<br />
+                          <strong>Type parameters:</strong> '?6150, '?6151          </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/Rop.fs#L60-60" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '11', 11)" onmouseover="showTip(event, '11', 11)">
+            lift f result
+          </code>
+          <div class="tip" id="11">
+            <strong>Signature:</strong> f:(&#39;?6143 -&gt; &#39;?6144) -&gt; result:RopResult&lt;&#39;?6143,&#39;?6145&gt; -&gt; RopResult&lt;&#39;?6144,&#39;?6145&gt;<br />
+                          <strong>Type parameters:</strong> '?6143, '?6144, '?6145          </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/Rop.fs#L49-49" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '12', 12)" onmouseover="showTip(event, '12', 12)">
+            mergeMessages msgs result
+          </code>
+          <div class="tip" id="12">
+            <strong>Signature:</strong> msgs:&#39;?6132 list -&gt; result:RopResult&lt;&#39;?6133,&#39;?6132&gt; -&gt; RopResult&lt;&#39;?6133,&#39;?6132&gt;<br />
+                          <strong>Type parameters:</strong> '?6132, '?6133          </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/Rop.fs#L25-25" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '13', 13)" onmouseover="showTip(event, '13', 13)">
+            returnOrFail result
+          </code>
+          <div class="tip" id="13">
+            <strong>Signature:</strong> result:RopResult&lt;&#39;?6129,&#39;?6130&gt; -&gt; &#39;?6129<br />
+                          <strong>Type parameters:</strong> '?6129, '?6130          </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/Rop.fs#L17-17" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '14', 14)" onmouseover="showTip(event, '14', 14)">
+            rop 
+          </code>
+          <div class="tip" id="14">
+            <strong>Signature:</strong> RopBuilder<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/Rop.fs#L95-95" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '15', 15)" onmouseover="showTip(event, '15', 15)">
+            succeed x
+          </code>
+          <div class="tip" id="15">
+            <strong>Signature:</strong> x:&#39;?6119 -&gt; RopResult&lt;&#39;?6119,&#39;?6120&gt;<br />
+                          <strong>Type parameters:</strong> '?6119, '?6120          </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/Rop.fs#L9-9" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '16', 16)" onmouseover="showTip(event, '16', 16)">
+            successTee f result
+          </code>
+          <div class="tip" id="16">
+            <strong>Signature:</strong> f:(&#39;?6147 * &#39;?6148 list -&gt; unit) -&gt; result:RopResult&lt;&#39;?6147,&#39;?6148&gt; -&gt; RopResult&lt;&#39;?6147,&#39;?6148&gt;<br />
+                          <strong>Type parameters:</strong> '?6147, '?6148          </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/Rop.fs#L53-53" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+        </div>
+        <div class="span3">
+          <img src="/Chessie/img/logo.png" alt="F# Project" style="width:150px;margin:10px" />  
+          <ul class="nav nav-list" id="menu" style="margin-top: 20px;">
+            <li class="nav-header">Chessie</li>
+            <li><a href="/Chessie/index.html">Home page</a></li>
+            <li class="divider"></li>
+            <li><a href="http://nuget.org/packages/Chessie">Get Library via NuGet</a></li>
+            <li><a href="http://github.com/fsprojects/Chessie">Source Code on GitHub</a></li>
+            <li><a href="/Chessie/license.html">License</a></li>
+            <li><a href="/Chessie/release-notes.html">Release Notes</a></li>
+            
+            <li class="nav-header">Getting started</li>
+            <li><a href="/Chessie/tutorial.html">Sample tutorial</a></li>
+
+            <li class="nav-header">Documentation</li>
+            <li><a href="/Chessie/reference/index.html">API Reference</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <a href="http://github.com/fsprojects/Chessie"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"/></a>
+  </body>
+  </html>
