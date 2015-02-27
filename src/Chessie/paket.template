@@ -1,12 +1,12 @@
 type project
 owners
-    Steffen Forkmann, Max Mallok, Tomasz Heimowski
+    Steffen Forkmann, Max Malook, Tomasz Heimowski
 authors 
-    Steffen Forkmann, Max Mallok, Tomasz Heimowski
+    Steffen Forkmann, Max Malook, Tomasz Heimowski
 projectUrl
     http://github.com/fsprojects/Chessie
 iconUrl
-    https://raw.githubusercontent.com/fsprojects/ProjectScaffold/master/docs/files/img/logo.png
+    https://raw.githubusercontent.com/fsprojects/Chessie/master/docs/files/img/logo.png
 licenseUrl
     http://github.com/fsprojects/Chessie/blob/master/LICENSE.txt
 requireLicenseAcceptance
@@ -19,5 +19,3 @@ summary
     Railway-oriented programming for .NET
 description
     Railway-oriented programming for .NET
-
-
