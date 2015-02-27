@@ -109,12 +109,12 @@ let inline failIfNone message result =
     | Some x -> succeed x
     | None -> fail message
 
-/// Builder type for railway-oriented computation expressions.
+/// Builder type for error handling computation expressions.
 type ErrorHandlingBuilder() =
     member __.Zero() = succeed ()
     member __.Bind(m, f) = bind f m
     member __.Return(x) = succeed x
     member __.ReturnFrom(x) = x
 
-/// Railway-oriented computation expressions.
-let rop = ErrorHandlingBuilder()
+/// Wraps computations in a error handling computation expression.
+let attempt = ErrorHandlingBuilder()

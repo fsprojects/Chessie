@@ -1,3 +1,6 @@
+#### 0.0.4 - 27.02.2015
+* First iteration on naming
+
 #### 0.0.2 - 27.02.2015
 * XML-docs added
 
