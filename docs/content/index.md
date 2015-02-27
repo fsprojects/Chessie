@@ -14,13 +14,6 @@ This project brings railway-oriented programming to .NET.
   <div class="span1"></div>
 </div>
 
-Railway-oriented Programming
-----------------------------
-
-* Scott Wlaschin: Railway Oriented Programming - A functional approach to error handling 
-    * [Slide deck](http://www.slideshare.net/ScottWlaschin/railway-oriented-programming)
-    * [Video](https://vimeo.com/97344498)
-
 Samples & documentation
 -----------------------
 
