@@ -11,19 +11,19 @@ type Request =
 let validateInput input = 
     if input.Name = "" then fail "Name must not be blank"
     elif input.EMail = "" then fail "Email must not be blank"
-    else succeed input // happy path
+    else pass input // happy path
 
 let validate1 input = 
     if input.Name = "" then fail "Name must not be blank"
-    else succeed input
+    else pass input
 
 let validate2 input = 
     if input.Name.Length > 50 then fail "Name must not be longer than 50 chars"
-    else succeed input
+    else pass input
 
 let validate3 input = 
     if input.EMail = "" then fail "Email must not be blank"
-    else succeed input
+    else pass input
 
 let combinedValidation = 
     // connect the two-tracks together
@@ -36,21 +36,21 @@ let ``should find empty name``() =
     { Name = ""
       EMail = "" }
     |> combinedValidation
-    |> shouldEqual (Failure [ "Name must not be blank" ])
+    |> shouldEqual (Fail [ "Name must not be blank" ])
 
 [<Test>]
 let ``should find empty mail``() = 
     { Name = "Scott"
       EMail = "" }
     |> combinedValidation
-    |> shouldEqual (Failure [ "Email must not be blank" ])
+    |> shouldEqual (Fail [ "Email must not be blank" ])
 
 [<Test>]
 let ``should find long name``() = 
     { Name = "ScottScottScottScottScottScottScottScottScottScottScottScottScottScottScottScottScottScottScott"
       EMail = "" }
     |> combinedValidation
-    |> shouldEqual (Failure [ "Name must not be longer than 50 chars" ])
+    |> shouldEqual (Fail [ "Name must not be longer than 50 chars" ])
 
 [<Test>]
 let ``should not complain on valid data``() = 
@@ -82,7 +82,7 @@ let ``should not canonicalize invalid data``() =
     { Name = ""
       EMail = "SCOTT@CHESSIE.com" }
     |> usecase
-    |> shouldEqual (Failure [ "Name must not be blank" ])
+    |> shouldEqual (Fail [ "Name must not be blank" ])
 
 // a dead-end function    
 let updateDatabase input =
@@ -90,8 +90,8 @@ let updateDatabase input =
 
 
 let log logF twoTrackInput = 
-    let success(x,msgs) = logF "DEBUG. Success so far."; Success(x,msgs)
-    let failure msgs = logF <| sprintf "ERROR. %A" msgs; Failure(msgs)
+    let success(x,msgs) = logF "DEBUG. Success so far."; Pass(x,msgs)
+    let failure msgs = logF <| sprintf "ERROR. %A" msgs; Fail(msgs)
     either success failure twoTrackInput 
 
 let usecase2 logF = 
