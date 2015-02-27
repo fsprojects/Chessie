@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8"/>
-    <title>Namespaces - Chessie</title>
+    <title>Result<'TSuccess, 'TMessage> - Chessie</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta name="description" content=""/>
     <meta name="author" content="Steffen Forkmann, Max Malook, Tomasz Heimowski"/>
@@ -33,27 +33,58 @@
         <div class="span9" id="main">
           
 
-<h1>Chessie</h1>
 
 
-  <h2>Chessie Namespace</h2>
-    <div>
-      <table class="table table-bordered module-list">
+<h1>Result<'TSuccess, 'TMessage></h1>
+<div class="xmldoc">
+<p>Represents the result of a computation.</p>
+</div>
+  <h3>Union Cases</h3>
+  <table class="table table-bordered member-list">
     <thead>
-      <tr><td>Module</td><td>Description</td></tr>
+      <tr><td>Union Case</td><td>Description</td></tr>
     </thead>
     <tbody>
-        <tr>
-          <td class="module-name">
-            <a href="chessie-errorhandling.html">ErrorHandling</a>
-          </td>
-          <td class="xmldoc"><p>Contains error propagation functions and a computation expression builder for Railway-oriented programming.</p>
-</td>
-        </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '22', 22)" onmouseover="showTip(event, '22', 22)">
+            Failure(&#39;TMessage list)
+          </code>
+          <div class="tip" id="22">
+            <strong>Signature:</strong> &#39;TMessage list<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L11-11" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          <p>Represents the result of a failed computation.</p>
+
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '23', 23)" onmouseover="showTip(event, '23', 23)">
+            Success(&#39;TSuccess,&#39;TMessage list)
+          </code>
+          <div class="tip" id="23">
+            <strong>Signature:</strong> &#39;TSuccess * &#39;TMessage list<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L9-9" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          <p>Represents the result of a successful computation.</p>
+
+        </td>
+      </tr>
     </tbody>
   </table>
-
-    </div>
 
         </div>
         <div class="span3">
