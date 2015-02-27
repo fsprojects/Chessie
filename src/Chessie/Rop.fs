@@ -4,7 +4,7 @@ open System
 
 /// Railway-oriented programming result - represents the result of a computation
 type RopResult<'TSuccess, 'TMessage> =    
-    /// Represents the result of a sucessful computation
+    /// Represents the result of a successful computation
     | Success of 'TSuccess * 'TMessage list
     /// Represents the result of a failed computation
     | Failure of 'TMessage list
@@ -15,30 +15,31 @@ let inline succeed x = Success(x,[])
 /// Wraps a message in a Failure
 let inline fail msg = Failure([msg])
 
-let either fSuccess fFailure = function
+/// Takes a RopResult and maps it with fSuccess if it is a Success otherwise it maps it with fFailure.
+let inline either fSuccess fFailure ropResult = 
+    match ropResult with
     | Success(x, msgs) -> fSuccess(x,msgs)
     | Failure(msgs) -> fFailure(msgs)
 
-let returnOrFail result = 
-    let raiseExn msgs = 
+/// If the given result is a Success the wrapped value will be returned. Otherwise the function throws an exception with Failure message of the result.
+let inline returnOrFail result = 
+    let inline raiseExn msgs = 
         msgs 
         |> Seq.map (sprintf "%O")
         |> String.concat (Environment.NewLine + "\t")
         |> failwith
     either fst raiseExn result
 
-let mergeMessages msgs result =
-    let fSuccess (x,msgs2) = 
-        Success (x, msgs @ msgs2) 
-    let fFailure errs = 
-        Failure (errs @ msgs) 
+/// Appends the given messages with the messages in the given result.
+let inline mergeMessages msgs result =
+    let inline fSuccess (x,msgs2) = Success (x, msgs @ msgs2) 
+    let inline fFailure errs = Failure (errs @ msgs) 
     either fSuccess fFailure result
 
-let bind f result =
-    let fSuccess (x, msgs) =
-        f x |> mergeMessages msgs
-    let fFailure (msgs) =
-        Failure msgs
+/// If the result is a Success it executes the given function on the value. Otherwise the exisiting failure is propagated.
+let inline bind f result =
+    let inline fSuccess (x, msgs) = f x |> mergeMessages msgs
+    let inline fFailure (msgs) = Failure msgs
     either fSuccess fFailure result      
 
 let apply f result =
