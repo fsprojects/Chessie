@@ -1,3 +1,4 @@
+/// Contains functions and a compuation expression build for Railway-oriented programming.
 module Chessie.Rop
 
 open System
