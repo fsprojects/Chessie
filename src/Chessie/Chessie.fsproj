@@ -43,7 +43,7 @@
     <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Rop.fs" />
+    <Compile Include="ErrorHandling.fs" />
     <None Include="paket.template" />
   </ItemGroup>
   <PropertyGroup>
