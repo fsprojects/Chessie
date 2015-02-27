@@ -16,9 +16,15 @@ let inline ok x = Ok(x,[])
 /// Wraps a message in a Failure
 let inline fail msg = Fail([msg])
 
+/// Returns true if the result was not successful.
+let inline failed result =
+    match result with
+    | Fail _ -> true 
+    | _ -> false
+
 /// Takes a Result and maps it with fSuccess if it is a Success otherwise it maps it with fFailure.
-let inline either fSuccess fFailure attemptResult = 
-    match attemptResult with
+let inline either fSuccess fFailure trialResult = 
+    match trialResult with
     | Ok(x, msgs) -> fSuccess(x,msgs)
     | Fail(msgs) -> fFailure(msgs)
 
