@@ -17,8 +17,8 @@ let inline succeed x = Success(x,[])
 let inline fail msg = Failure([msg])
 
 /// Takes a Result and maps it with fSuccess if it is a Success otherwise it maps it with fFailure.
-let inline either fSuccess fFailure ropResult = 
-    match ropResult with
+let inline either fSuccess fFailure attemptResult = 
+    match attemptResult with
     | Success(x, msgs) -> fSuccess(x,msgs)
     | Failure(msgs) -> fFailure(msgs)
 
@@ -117,4 +117,4 @@ type ErrorHandlingBuilder() =
     member __.ReturnFrom(x) = x
 
 /// Railway-oriented computation expressions.
-let rop = ErrorHandlingBuilder()
+let attempt = ErrorHandlingBuilder()
