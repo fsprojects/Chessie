@@ -49,18 +49,18 @@ let combinedValidation =
 { Name = ""; EMail = "" }
 |> combinedValidation
 // [fsi:val it : Chessie.ErrorHandling.Result<Request,string> =
-//  Failure ["Name must not be blank"]]
+//  Fail ["Name must not be blank"]]
     
 { Name = "Scott"; EMail = "" }
 |> combinedValidation
 // [fsi:val it : Chessie.ErrorHandling.Result<Request,string> =
-//  Failure ["Email must not be blank"]]
+//  Fail ["Email must not be blank"]]
 
 { Name = "ScottScottScottScottScottScottScottScottScottScottScottScottScottScottScottScottScottScottScott"
   EMail = "" }
 |> combinedValidation
 // [fsi:val it : Chessie.ErrorHandling.Result<Request,string> =
-//  Failure ["Name must not be longer than 50 chars" ]]
+//  Fail ["Name must not be longer than 50 chars" ]]
 
 { Name = "Scott"; EMail = "scott@chessie.com" }
 |> combinedValidation
@@ -81,7 +81,7 @@ let usecase =
 
 { Name = ""; EMail = "SCOTT@CHESSIE.com" }
 |> usecase
-// [fsi:val it : Result<Request,string> = Failure ["Name must not be blank"]]    
+// [fsi:val it : Result<Request,string> = Fail ["Name must not be blank"]]    
 
 // a dead-end function    
 let updateDatabase input =
