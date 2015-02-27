@@ -45,7 +45,6 @@ let ``should find empty mail``() =
     |> combinedValidation
     |> shouldEqual (Failure [ "Email must not be blank" ])
 
-
 [<Test>]
 let ``should find long name``() = 
     { Name = "ScottScottScottScottScottScottScottScottScottScottScottScottScottScottScottScottScottScottScott"
@@ -53,12 +52,34 @@ let ``should find long name``() =
     |> combinedValidation
     |> shouldEqual (Failure [ "Name must not be longer than 50 chars" ])
 
-
 [<Test>]
 let ``should not complain on valid data``() = 
     let v = 
         { Name = "Scott"
-          EMail = "scott@rchessie.com" }
+          EMail = "scott@chessie.com" }
     v
     |> combinedValidation
-    |> shouldEqual (Success(v,[]))
+    |> shouldEqual (Success(v, []))
+
+let canonicalizeEmail input = { input with EMail = input.EMail.Trim().ToLower() }
+
+let usecase = 
+    validate1
+    >> bind validate2
+    >> bind validate3
+    >> (lift canonicalizeEmail)
+
+[<Test>]
+let ``should canonicalize valid data``() = 
+    { Name = "Scott"
+      EMail = "SCOTT@CHESSIE.com" }
+    |> usecase
+    |> shouldEqual (Success({ Name = "Scott"
+                              EMail = "scott@chessie.com" }, []))
+
+[<Test>]
+let ``should not canonicalize invalid data``() = 
+    { Name = ""
+      EMail = "SCOTT@CHESSIE.com" }
+    |> usecase
+    |> shouldEqual (Failure [ "Name must not be blank" ])
