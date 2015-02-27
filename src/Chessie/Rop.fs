@@ -40,62 +40,68 @@ let inline mergeMessages msgs result =
 let inline bind f result =
     let inline fSuccess (x, msgs) = f x |> mergeMessages msgs
     let inline fFailure (msgs) = Failure msgs
-    either fSuccess fFailure result      
-
-let apply f result =
-    match f,result with
-    | Success (f,msgs1), Success (x,msgs2) -> 
-        (f x, msgs1@msgs2) |> Success 
-    | Failure errs, Success (_,msgs) 
-    | Success (_,msgs), Failure errs -> 
-        errs @ msgs |> Failure
-    | Failure errs1, Failure errs2 -> 
-        errs1 @ errs2 |> Failure 
-
-let lift f result =
-    let f' = f |> succeed
-    apply f' result
-
-let successTee f result = 
-    let fSuccess (x,msgs) = 
-        f (x,msgs)
-        Success (x,msgs) 
-    let fFailure errs = Failure errs 
     either fSuccess fFailure result
 
-let failureTee f result = 
-    let fSuccess (x,msgs) = Success (x,msgs) 
-    let fFailure errs = 
+/// If the result is a Success it executes the given function on the value. Otherwise the exisiting failure is propagated.
+/// Infix version of Rop.bind
+let inline (>>=) result f = bind f result
+
+/// If the wrapped function is a success and the given result is a success the function is applied on the value. Otherwise the exisiting error messages are propagated.
+let inline apply wrappedFunction result = 
+    match wrappedFunction, result with
+    | Success(f, msgs1), Success(x, msgs2) -> Success(f x, msgs1 @ msgs2)
+    | Failure errs, Success(_, msgs) -> Failure(errs @ msgs)
+    | Success(_, msgs), Failure errs -> Failure(errs @ msgs)
+    | Failure errs1, Failure errs2 -> Failure(errs1 @ errs2)
+
+/// If the wrapped function is a success and the given result is a success the function is applied on the value. Otherwise the exisiting error messages are propagated.
+/// Infix version of Rop.apply
+let inline (<*>) wrappedFunction result = apply wrappedFunction result
+
+/// Lifts a function into a RopResult and applies it on the given result.
+let inline lift f result = apply (succeed f) result
+
+/// Lifts a function into a RopResult and applies it on the given result.
+/// Infix version of Rop.lift
+let inline (<!>) f result = lift f result 
+
+/// If the result is a Success it executes the given function on the value and the messages. Otherwise the exisiting failure is propagated.
+let inline successTee f result = 
+    let inline fSuccess (x,msgs) = 
+        f (x,msgs)
+        Success (x,msgs) 
+    let inline fFailure errs = Failure errs 
+    either fSuccess fFailure result
+
+/// If the result is a Failure it executes the given function on the value and the messages. Otherwise the exisiting successful value is propagated.
+let inline failureTee f result = 
+    let inline fSuccess (x,msgs) = Success (x,msgs) 
+    let inline fFailure errs = 
         f errs
         Failure errs 
     either fSuccess fFailure result
 
-let collect xs =
+/// Collects a sequence of RopResults and accumulates their values. IF the sequence contains an error the error will be propagated.
+let inline collect xs = 
     Seq.fold (fun result next -> 
-                    match result, next with
-                    | Success(rs,m1), Success(r,m2) -> Success(r::rs,m1@m2)
-                    | Success(_,m1), Failure(m2) 
-                    | Failure(m1), Success(_,m2) -> Failure(m1@m2)
-                    | Failure(m1), Failure(m2) -> Failure(m1@m2)) (succeed []) xs
+        match result, next with
+        | Success(rs, m1), Success(r, m2) -> Success(r :: rs, m1 @ m2)
+        | Success(_, m1), Failure(m2) | Failure(m1), Success(_, m2) -> Failure(m1 @ m2)
+        | Failure(m1), Failure(m2) -> Failure(m1 @ m2)) (succeed []) xs
     |> lift List.rev
 
-let failIfNone message = function
+/// Converts an option into a RopResult.
+let inline failIfNone message result =
+    match result with
     | Some x -> succeed x
-    | None -> fail message 
+    | None -> fail message
 
-/// infix version of Rop.bind
-let (>>=) result f = bind f result
-
-/// infix version of Rop.lift
-let (<!>) = lift
-
-/// infix version of Rop.apply
-let (<*>) = apply
-
+/// Builder type for railway-oriented computation expressions.
 type RopBuilder() =
     member __.Zero() = succeed ()
     member __.Bind(m, f) = bind f m
     member __.Return(x) = succeed x
     member __.ReturnFrom(x) = x
 
+/// Railway-oriented computation expressions.
 let rop = RopBuilder()
