@@ -2,13 +2,18 @@ module Chessie.Rop
 
 open System
 
+/// Railway-oriented programming result - represents the result of a computation
 type RopResult<'TSuccess, 'TMessage> =    
+    /// Represents the result of a sucessful computation
     | Success of 'TSuccess * 'TMessage list
+    /// Represents the result of a failed computation
     | Failure of 'TMessage list
 
-let succeed x = Success(x,[])
+/// Wraps a value in a Success
+let inline succeed x = Success(x,[])
 
-let fail msg = Failure([msg])
+/// Wraps a message in a Failure
+let inline fail msg = Failure([msg])
 
 let either fSuccess fFailure = function
     | Success(x, msgs) -> fSuccess(x,msgs)
