@@ -118,5 +118,5 @@ type ErrorHandlingBuilder() =
     member __.Return(x) = ok x
     member __.ReturnFrom(x) = x
 
-/// Wraps computations in a error handling computation expression.
+/// Wraps computations in an error handling computation expression.
 let trial = ErrorHandlingBuilder()
