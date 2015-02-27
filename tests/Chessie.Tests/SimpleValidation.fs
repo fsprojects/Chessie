@@ -65,9 +65,7 @@ let ``should not complain on valid data``() =
 let canonicalizeEmail input = { input with EMail = input.EMail.Trim().ToLower() }
 
 let usecase = 
-    validate1
-    >> bind validate2
-    >> bind validate3
+    combinedValidation
     >> (lift canonicalizeEmail)
 
 [<Test>]
@@ -85,3 +83,43 @@ let ``should not canonicalize invalid data``() =
       EMail = "SCOTT@CHESSIE.com" }
     |> usecase
     |> shouldEqual (Failure [ "Name must not be blank" ])
+
+// a dead-end function    
+let updateDatabase input =
+   ()   // dummy dead-end function for now
+
+
+let log logF twoTrackInput = 
+    let success(x,msgs) = logF "DEBUG. Success so far."; Success(x,msgs)
+    let failure msgs = logF <| sprintf "ERROR. %A" msgs; Failure(msgs)
+    either success failure twoTrackInput 
+
+let usecase2 logF = 
+    usecase
+    >> (successTee updateDatabase)
+    >> (log logF)
+
+[<Test>]
+let ``should log valid data``() = 
+    let logF s =
+        if s <> "DEBUG. Success so far." then
+            failwithf "unexpected log: %s"  s
+
+    { Name = "Scott"
+      EMail = "SCOTT@CHESSIE.com" }
+    |> usecase2 logF
+    |> returnOrFail
+    |> shouldEqual { Name = "Scott"
+                     EMail = "scott@chessie.com" }
+
+
+[<Test>]
+let ``should log invalid data``() = 
+    let logF s =
+        if s <> """ERROR. ["Email must not be blank"]""" then
+            failwithf "unexpected log: %s"  s
+
+    { Name = "Scott"
+      EMail = "" }
+    |> usecase2 logF
+    |> ignore
