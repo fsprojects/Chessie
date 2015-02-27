@@ -1,10 +1,10 @@
 /// Contains functions and a compuation expression build for Railway-oriented programming.
-module Chessie.Rop
+module Chessie.Attempt
 
 open System
 
 /// Railway-oriented programming result - represents the result of a computation
-type RopResult<'TSuccess, 'TMessage> =    
+type AttemptResult<'TSuccess, 'TMessage> =    
     /// Represents the result of a successful computation
     | Success of 'TSuccess * 'TMessage list
     /// Represents the result of a failed computation
@@ -16,9 +16,9 @@ let inline succeed x = Success(x,[])
 /// Wraps a message in a Failure
 let inline fail msg = Failure([msg])
 
-/// Takes a RopResult and maps it with fSuccess if it is a Success otherwise it maps it with fFailure.
-let inline either fSuccess fFailure ropResult = 
-    match ropResult with
+/// Takes a AttemptResult and maps it with fSuccess if it is a Success otherwise it maps it with fFailure.
+let inline either fSuccess fFailure attemptResult = 
+    match attemptResult with
     | Success(x, msgs) -> fSuccess(x,msgs)
     | Failure(msgs) -> fFailure(msgs)
 
@@ -44,7 +44,7 @@ let inline bind f result =
     either fSuccess fFailure result
 
 /// If the result is a Success it executes the given function on the value. Otherwise the exisiting failure is propagated.
-/// Infix version of Rop.bind
+/// Infix version of Attempt.bind
 let inline (>>=) result f = bind f result
 
 /// If the wrapped function is a success and the given result is a success the function is applied on the value. Otherwise the exisiting error messages are propagated.
@@ -56,14 +56,14 @@ let inline apply wrappedFunction result =
     | Failure errs1, Failure errs2 -> Failure(errs1 @ errs2)
 
 /// If the wrapped function is a success and the given result is a success the function is applied on the value. Otherwise the exisiting error messages are propagated.
-/// Infix version of Rop.apply
+/// Infix version of Attempt.apply
 let inline (<*>) wrappedFunction result = apply wrappedFunction result
 
-/// Lifts a function into a RopResult and applies it on the given result.
+/// Lifts a function into a AttemptResult and applies it on the given result.
 let inline lift f result = apply (succeed f) result
 
-/// Lifts a function into a RopResult and applies it on the given result.
-/// Infix version of Rop.lift
+/// Lifts a function into a AttemptResult and applies it on the given result.
+/// Infix version of Attempt.lift
 let inline (<!>) f result = lift f result 
 
 /// If the result is a Success it executes the given function on the value and the messages. Otherwise the exisiting failure is propagated.
@@ -82,7 +82,7 @@ let inline failureTee f result =
         Failure errs 
     either fSuccess fFailure result
 
-/// Collects a sequence of RopResults and accumulates their values. IF the sequence contains an error the error will be propagated.
+/// Collects a sequence of AttemptResults and accumulates their values. IF the sequence contains an error the error will be propagated.
 let inline collect xs = 
     Seq.fold (fun result next -> 
         match result, next with
@@ -91,18 +91,18 @@ let inline collect xs =
         | Failure(m1), Failure(m2) -> Failure(m1 @ m2)) (succeed []) xs
     |> lift List.rev
 
-/// Converts an option into a RopResult.
+/// Converts an option into a AttemptResult.
 let inline failIfNone message result =
     match result with
     | Some x -> succeed x
     | None -> fail message
 
 /// Builder type for railway-oriented computation expressions.
-type RopBuilder() =
+type AttemptBuilder() =
     member __.Zero() = succeed ()
     member __.Bind(m, f) = bind f m
     member __.Return(x) = succeed x
     member __.ReturnFrom(x) = x
 
 /// Railway-oriented computation expressions.
-let rop = RopBuilder()
+let attempt = AttemptBuilder()
