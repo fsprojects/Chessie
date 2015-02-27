@@ -159,28 +159,9 @@ Otherwise the exisiting error messages are propagated.</p>
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '5', 5)" onmouseover="showTip(event, '5', 5)">
-            attempt 
-          </code>
-          <div class="tip" id="5">
-            <strong>Signature:</strong> ErrorHandlingBuilder<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L116-116" class="github-link">
-              <img src="../content/img/github.png" class="normal" />
-              <img src="../content/img/github-blue.png" class="hover" />
-            </a>
-          <p>Wraps computations in a error handling computation expression.</p>
-
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '6', 6)" onmouseover="showTip(event, '6', 6)">
             bind f result
           </code>
-          <div class="tip" id="6">
+          <div class="tip" id="5">
             <strong>Signature:</strong> f:(&#39;?6135 -&gt; Result&lt;&#39;?6136,&#39;?6137&gt;) -&gt; result:Result&lt;&#39;?6135,&#39;?6137&gt; -&gt; Result&lt;&#39;?6136,&#39;?6137&gt;<br />
                           <strong>Type parameters:</strong> '?6135, '?6136, '?6137          </div>
         </td>
@@ -197,10 +178,10 @@ Otherwise the exisiting failure is propagated.</p>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '7', 7)" onmouseover="showTip(event, '7', 7)">
+          <code onmouseout="hideTip(event, '6', 6)" onmouseover="showTip(event, '6', 6)">
             collect xs
           </code>
-          <div class="tip" id="7">
+          <div class="tip" id="6">
             <strong>Signature:</strong> xs:seq&lt;Result&lt;&#39;?6165,&#39;?6166&gt;&gt; -&gt; Result&lt;&#39;?6165 list,&#39;?6166&gt;<br />
                           <strong>Type parameters:</strong> '?6165, '?6166          </div>
         </td>
@@ -217,10 +198,10 @@ If the sequence contains an error the error will be propagated.</p>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '8', 8)" onmouseover="showTip(event, '8', 8)">
+          <code onmouseout="hideTip(event, '7', 7)" onmouseover="showTip(event, '7', 7)">
             either fSuccess fFailure attemptResult
           </code>
-          <div class="tip" id="8">
+          <div class="tip" id="7">
             <strong>Signature:</strong> fSuccess:(&#39;?6125 * &#39;?6126 list -&gt; &#39;?6127) -&gt; fFailure:(&#39;?6126 list -&gt; &#39;?6127) -&gt; attemptResult:Result&lt;&#39;?6125,&#39;?6126&gt; -&gt; &#39;?6127<br />
                           <strong>Type parameters:</strong> '?6125, '?6126, '?6127          </div>
         </td>
@@ -236,10 +217,10 @@ If the sequence contains an error the error will be propagated.</p>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '9', 9)" onmouseover="showTip(event, '9', 9)">
+          <code onmouseout="hideTip(event, '8', 8)" onmouseover="showTip(event, '8', 8)">
             fail msg
           </code>
-          <div class="tip" id="9">
+          <div class="tip" id="8">
             <strong>Signature:</strong> msg:&#39;?6122 -&gt; Result&lt;&#39;?6123,&#39;?6122&gt;<br />
                           <strong>Type parameters:</strong> '?6122, '?6123          </div>
         </td>
@@ -255,10 +236,10 @@ If the sequence contains an error the error will be propagated.</p>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '10', 10)" onmouseover="showTip(event, '10', 10)">
+          <code onmouseout="hideTip(event, '9', 9)" onmouseover="showTip(event, '9', 9)">
             failIfNone message result
           </code>
-          <div class="tip" id="10">
+          <div class="tip" id="9">
             <strong>Signature:</strong> message:&#39;?6168 -&gt; result:&#39;?6169 option -&gt; Result&lt;&#39;?6169,&#39;?6168&gt;<br />
                           <strong>Type parameters:</strong> '?6168, '?6169          </div>
         </td>
@@ -274,10 +255,10 @@ If the sequence contains an error the error will be propagated.</p>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '11', 11)" onmouseover="showTip(event, '11', 11)">
+          <code onmouseout="hideTip(event, '10', 10)" onmouseover="showTip(event, '10', 10)">
             failureTee f result
           </code>
-          <div class="tip" id="11">
+          <div class="tip" id="10">
             <strong>Signature:</strong> f:(&#39;?6162 list -&gt; unit) -&gt; result:Result&lt;&#39;?6163,&#39;?6162&gt; -&gt; Result&lt;&#39;?6163,&#39;?6162&gt;<br />
                           <strong>Type parameters:</strong> '?6162, '?6163          </div>
         </td>
@@ -294,10 +275,10 @@ Otherwise the exisiting successful value is propagated.</p>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '12', 12)" onmouseover="showTip(event, '12', 12)">
+          <code onmouseout="hideTip(event, '11', 11)" onmouseover="showTip(event, '11', 11)">
             lift f result
           </code>
-          <div class="tip" id="12">
+          <div class="tip" id="11">
             <strong>Signature:</strong> f:(&#39;?6151 -&gt; &#39;?6152) -&gt; result:Result&lt;&#39;?6151,&#39;?6153&gt; -&gt; Result&lt;&#39;?6152,&#39;?6153&gt;<br />
                           <strong>Type parameters:</strong> '?6151, '?6152, '?6153          </div>
         </td>
@@ -313,10 +294,10 @@ Otherwise the exisiting successful value is propagated.</p>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '13', 13)" onmouseover="showTip(event, '13', 13)">
+          <code onmouseout="hideTip(event, '12', 12)" onmouseover="showTip(event, '12', 12)">
             mergeMessages msgs result
           </code>
-          <div class="tip" id="13">
+          <div class="tip" id="12">
             <strong>Signature:</strong> msgs:&#39;?6132 list -&gt; result:Result&lt;&#39;?6133,&#39;?6132&gt; -&gt; Result&lt;&#39;?6133,&#39;?6132&gt;<br />
                           <strong>Type parameters:</strong> '?6132, '?6133          </div>
         </td>
@@ -326,6 +307,25 @@ Otherwise the exisiting successful value is propagated.</p>
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
           <p>Appends the given messages with the messages in the given result.</p>
+
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '13', 13)" onmouseover="showTip(event, '13', 13)">
+            ok x
+          </code>
+          <div class="tip" id="13">
+            <strong>Signature:</strong> x:&#39;?6119 -&gt; Result&lt;&#39;?6119,&#39;?6120&gt;<br />
+                          <strong>Type parameters:</strong> '?6119, '?6120          </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L14-14" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          <p>Wraps a value in a Success</p>
 
         </td>
       </tr>
@@ -353,28 +353,9 @@ Otherwise the function throws an exception with Failure message of the result.</
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '15', 15)" onmouseover="showTip(event, '15', 15)">
-            succeed x
-          </code>
-          <div class="tip" id="15">
-            <strong>Signature:</strong> x:&#39;?6119 -&gt; Result&lt;&#39;?6119,&#39;?6120&gt;<br />
-                          <strong>Type parameters:</strong> '?6119, '?6120          </div>
-        </td>
-        <td class="xmldoc">
-            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L14-14" class="github-link">
-              <img src="../content/img/github.png" class="normal" />
-              <img src="../content/img/github-blue.png" class="hover" />
-            </a>
-          <p>Wraps a value in a Success</p>
-
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '16', 16)" onmouseover="showTip(event, '16', 16)">
             successTee f result
           </code>
-          <div class="tip" id="16">
+          <div class="tip" id="15">
             <strong>Signature:</strong> f:(&#39;?6159 * &#39;?6160 list -&gt; unit) -&gt; result:Result&lt;&#39;?6159,&#39;?6160&gt; -&gt; Result&lt;&#39;?6159,&#39;?6160&gt;<br />
                           <strong>Type parameters:</strong> '?6159, '?6160          </div>
         </td>
@@ -385,6 +366,25 @@ Otherwise the function throws an exception with Failure message of the result.</
             </a>
           <p>If the result is a Success it executes the given function on the value and the messages.
 Otherwise the exisiting failure is propagated.</p>
+
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '16', 16)" onmouseover="showTip(event, '16', 16)">
+            trial 
+          </code>
+          <div class="tip" id="16">
+            <strong>Signature:</strong> ErrorHandlingBuilder<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L116-116" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          <p>Wraps computations in a error handling computation expression.</p>
 
         </td>
       </tr>
