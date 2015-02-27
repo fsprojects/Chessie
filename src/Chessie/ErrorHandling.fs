@@ -64,12 +64,8 @@ let inline apply wrappedFunction result =
 /// This is the infix operator version of ErrorHandling.apply
 let inline (<*>) wrappedFunction result = apply wrappedFunction result
 
-/// If the Result is a Success then the value gets mapped by the given function.
-/// Otherwise the error gets propagated.
-let inline lift f result =
-    match result with
-    | Success(x, msgs2) -> Success(f x, msgs2)
-    | _ -> result
+/// Lifts a function into a Result container and applies it on the given result.
+let inline lift f result = apply (succeed f) result
 
 /// Lifts a function into a Result and applies it on the given result.
 /// This is the infix operator version of ErrorHandling.lift
