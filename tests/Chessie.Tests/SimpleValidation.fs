@@ -54,12 +54,13 @@ let ``should find long name``() =
 
 [<Test>]
 let ``should not complain on valid data``() = 
-    let v = 
+    let scott = 
         { Name = "Scott"
           EMail = "scott@chessie.com" }
-    v
+    scott
     |> combinedValidation
-    |> shouldEqual (Success(v, []))
+    |> returnOrFail
+    |> shouldEqual scott
 
 let canonicalizeEmail input = { input with EMail = input.EMail.Trim().ToLower() }
 
@@ -74,8 +75,9 @@ let ``should canonicalize valid data``() =
     { Name = "Scott"
       EMail = "SCOTT@CHESSIE.com" }
     |> usecase
-    |> shouldEqual (Success({ Name = "Scott"
-                              EMail = "scott@chessie.com" }, []))
+    |> returnOrFail
+    |> shouldEqual { Name = "Scott"
+                     EMail = "scott@chessie.com" }
 
 [<Test>]
 let ``should not canonicalize invalid data``() = 
