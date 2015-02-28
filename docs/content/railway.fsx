@@ -14,7 +14,7 @@ Additional resources:
     * [Slide deck](http://www.slideshare.net/ScottWlaschin/railway-oriented-programming)
     * [Video](https://vimeo.com/97344498)
 
-We start by referencing Chessie and opening the ErrorHandling module.
+We start by referencing Chessie and opening the ErrorHandling module:
 *)
 
 #r "Chessie.dll"
