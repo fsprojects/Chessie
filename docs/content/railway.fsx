@@ -3,21 +3,27 @@
 
 (**
 
-Using Chessie for Railway-oriented programming
-==============================================
+Using Chessie for Railway-oriented programming (ROP)
+====================================================
 
-Railway-oriented programming was introduced by Scott Wlaschin.
+This tutorial is based on an article about [Railway-oriented programming](http://fsharpforfunandprofit.com/posts/recipe-part2/) by Scott Wlaschin.
 
-Resources:
+Additional resources:
 
 * Railway Oriented Programming - A functional approach to error handling 
     * [Slide deck](http://www.slideshare.net/ScottWlaschin/railway-oriented-programming)
     * [Video](https://vimeo.com/97344498)
 
+We start by referencing Chessie and opening the ErrorHandling module.
 *)
+
 #r "Chessie.dll"
 
 open Chessie.ErrorHandling
+
+(**
+ Now we define some simple validation functions:
+*)
 
 type Request = 
     { Name : string

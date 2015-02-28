@@ -17,7 +17,8 @@ This project brings railway-oriented programming to .NET.
 Samples & documentation
 -----------------------
 
-[API Reference](reference/index.html) contains automatically generated documentation for all types, modules and functions in the library. 
+* Read the [tutorial](tutorial.html) to see how to use Chessie for railway-oriented programming.
+* [API Reference](reference/index.html) contains automatically generated documentation for all types, modules and functions in the library. 
 This includes additional brief samples on using most of the functions.
  
 Contributing and copyright
