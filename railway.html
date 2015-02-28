@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8"/>
-    <title>Using Chessie for Railway-oriented programming
+    <title>Using Chessie for Railway-oriented programming (ROP)
 </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta name="description" content="Railway-oriented programming for .NET"/>
@@ -33,11 +33,11 @@
       <div class="row">
         <div class="span9" id="main">
           
-<h1><a name="Using-Chessie-for-Railway-oriented-programming" class="anchor" href="#Using-Chessie-for-Railway-oriented-programming">Using Chessie for Railway-oriented programming</a></h1>
+<h1><a name="Using-Chessie-for-Railway-oriented-programming-ROP" class="anchor" href="#Using-Chessie-for-Railway-oriented-programming-ROP">Using Chessie for Railway-oriented programming (ROP)</a></h1>
 
-<p>Railway-oriented programming was introduced by Scott Wlaschin.</p>
+<p>This tutorial is based on an article about <a href="http://fsharpforfunandprofit.com/posts/recipe-part2/">Railway-oriented programming</a> by Scott Wlaschin.</p>
 
-<p>Resources:</p>
+<p>Additional resources:</p>
 
 <ul>
 <li>Railway Oriented Programming - A functional approach to error handling
@@ -46,6 +46,25 @@
 <li><a href="https://vimeo.com/97344498">Video</a></li>
 </ul></li>
 </ul>
+
+<p>We start by referencing Chessie and opening the ErrorHandling module:</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip">
+<span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+</pre>
+</td>
+<td class="snippet"><pre class="fssnip">
+<span class="prep">#r</span> <span class="s">&quot;Chessie.dll&quot;</span>
+
+<span class="k">open</span> <span onmouseout="hideTip(event, 'fs1', 1)" onmouseover="showTip(event, 'fs1', 1)" class="i">Chessie</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs2', 2)" onmouseover="showTip(event, 'fs2', 2)" class="i">ErrorHandling</span>
+</pre>
+</td>
+</tr>
+</table>
+
+<p>Now we define some simple validation functions:</p>
 
 <table class="pre"><tr><td class="lines"><pre class="fssnip">
 <span class="l"> 1: </span>
@@ -134,17 +153,9 @@
 <span class="l">84: </span>
 <span class="l">85: </span>
 <span class="l">86: </span>
-<span class="l">87: </span>
-<span class="l">88: </span>
-<span class="l">89: </span>
-<span class="l">90: </span>
 </pre>
 </td>
 <td class="snippet"><pre class="fssnip">
-<span class="prep">#r</span> <span class="s">&quot;Chessie.dll&quot;</span>
-
-<span class="k">open</span> <span onmouseout="hideTip(event, 'fs1', 1)" onmouseover="showTip(event, 'fs1', 1)" class="i">Chessie</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs2', 2)" onmouseover="showTip(event, 'fs2', 2)" class="i">ErrorHandling</span>
-
 <span class="k">type</span> <span onmouseout="hideTip(event, 'fs3', 3)" onmouseover="showTip(event, 'fs3', 3)" class="t">Request</span> <span class="o">=</span> 
     { <span onmouseout="hideTip(event, 'fs4', 4)" onmouseover="showTip(event, 'fs4', 4)" class="i">Name</span> <span class="o">:</span> <span onmouseout="hideTip(event, 'fs5', 5)" onmouseover="showTip(event, 'fs5', 5)" class="t">string</span>
       <span onmouseout="hideTip(event, 'fs6', 6)" onmouseover="showTip(event, 'fs6', 6)" class="i">EMail</span> <span class="o">:</span> <span onmouseout="hideTip(event, 'fs5', 7)" onmouseover="showTip(event, 'fs5', 7)" class="t">string</span> }
