@@ -90,9 +90,9 @@ let updateDatabase input =
 
 
 let log logF twoTrackInput = 
-    let success(x,msgs) = logF "DEBUG. Success so far."; Ok(x,msgs)
-    let failure msgs = logF <| sprintf "ERROR. %A" msgs; Fail(msgs)
-    either success failure twoTrackInput 
+    let success(x,msgs) = logF "DEBUG. Success so far."
+    let failure msgs = logF <| sprintf "ERROR. %A" msgs
+    eitherTee success failure twoTrackInput 
 
 let usecase2 logF = 
     usecase
