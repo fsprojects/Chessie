@@ -48,19 +48,19 @@ let combinedValidation =
 
 { Name = ""; EMail = "" }
 |> combinedValidation
-// [fsi:val it : Chessie.ErrorHandling.Result<Request,string> =
-//  Fail ["Name must not be blank"]]
+// [fsi:val it : Chessie.ErrorHandling.Result<Request,string> =]
+// [fsi:  Fail ["Name must not be blank"]]
     
 { Name = "Scott"; EMail = "" }
 |> combinedValidation
-// [fsi:val it : Chessie.ErrorHandling.Result<Request,string> =
-//  Fail ["Email must not be blank"]]
+// [fsi:val it : Chessie.ErrorHandling.Result<Request,string> =]
+// [fsi:  Fail ["Email must not be blank"]]
 
 { Name = "ScottScottScottScottScottScottScottScottScottScottScottScottScottScottScottScottScottScottScott"
   EMail = "" }
 |> combinedValidation
-// [fsi:val it : Chessie.ErrorHandling.Result<Request,string> =
-//  Fail ["Name must not be longer than 50 chars" ]]
+// [fsi:val it : Chessie.ErrorHandling.Result<Request,string> =]
+// [fsi:  Fail ["Name must not be longer than 50 chars" ]]
 
 { Name = "Scott"; EMail = "scott@chessie.com" }
 |> combinedValidation
@@ -102,6 +102,6 @@ let usecase2 =
 { Name = "Scott"; EMail = "SCOTT@CHESSIE.com" }
 |> usecase2
 |> returnOrFail
-// [fsi:DEBUG. Success so far.
-//val it : Request = {Name = "Scott";
-//                    EMail = "scott@chessie.com";}]
+// [fsi:DEBUG. Success so far.]
+// [fsi:val it : Request = {Name = "Scott";]
+// [fsi:                    EMail = "scott@chessie.com";}]
