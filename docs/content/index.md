@@ -18,9 +18,13 @@ Referencing single file
 -----------------------
 
 Chessie is a single-file module, so it's convienient to get it with [Paket GitHub dependencies][deps].
-To do so, simply add following line to your `paket.dependencies` file:
+To do so, just add following line to your `paket.dependencies` file:
 
     github fsprojects/Chessie src/Chessie/ErrorHandling.fs
+
+and following line to your `paket.references` file for the desired project:
+
+    File:ErrorHandling.fs . 
 
 
 Samples & documentation
