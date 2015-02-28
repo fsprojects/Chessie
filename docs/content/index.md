@@ -14,6 +14,19 @@ This project brings railway-oriented programming to .NET.
   <div class="span1"></div>
 </div>
 
+Referencing single file
+-----------------------
+
+Chessie is a single-file module, so it's convienient to get it with [Paket GitHub dependencies][deps].
+To do so, just add following line to your `paket.dependencies` file:
+
+    github fsprojects/Chessie src/Chessie/ErrorHandling.fs
+
+and following line to your `paket.references` file for the desired project:
+
+    File:ErrorHandling.fs . 
+
+
 Samples & documentation
 -----------------------
 
@@ -38,3 +51,4 @@ redistribution for both commercial and non-commercial purposes. For more informa
   [issues]: https://github.com/fsprojects/FSharpx.Async/issues
   [readme]: https://github.com/fsprojects/FSharpx.Async/blob/master/README.md
   [license]: https://github.com/fsprojects/FSharpx.Async/blob/master/LICENSE.txt
+  [deps]: https://fsprojects.github.io/Paket/github-dependencies.html
