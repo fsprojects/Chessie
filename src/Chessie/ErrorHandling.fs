@@ -77,25 +77,27 @@ let inline lift f result = apply (ok f) result
 /// This is the infix operator version of ErrorHandling.lift
 let inline (<!>) f result = lift f result
 
-/// If the result is a Success it executes the given function on the value and the messages.
-/// Otherwise the exisiting failure is propagated.
-let inline successTee f result = 
-    let inline fSuccess (x, msgs) = 
-        f (x, msgs)
-        Ok(x, msgs)
-    
-    let inline fFailure errs = Fail errs
-    either fSuccess fFailure result
-
-/// If the result is a Failure it executes the given function on the value and the messages. 
-/// Otherwise the exisiting successful value is propagated.
-let inline failureTee f result = 
-    let inline fSuccess (x, msgs) = Ok(x, msgs)
-    
-    let inline fFailure errs = 
-        f errs
+/// If the result is a Success it executes the given success function on the value and the messages.
+/// If the result is a Failure it executes the given failure function on the messages.
+/// Result is propagated unchanged.
+let inline eitherTee fSuccess fFailure result =
+    let inline fSuccess (x,msgs) =
+        fSuccess (x,msgs)
+        Ok (x,msgs)
+    let inline fFailure errs =
+        fFailure errs
         Fail errs
     either fSuccess fFailure result
+
+/// If the result is a Success it executes the given function on the value and the messages.
+/// Result is propagated unchanged.
+let inline successTee f result = 
+    eitherTee f ignore result
+
+/// If the result is a Failure it executes the given function on the messages.
+/// Result is propagated unchanged.
+let inline failureTee f result = 
+    eitherTee ignore f result
 
 /// Collects a sequence of Results and accumulates their values.
 /// If the sequence contains an error the error will be propagated.

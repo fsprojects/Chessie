@@ -1,3 +1,6 @@
+#### 0.0.7 - 28.02.2015
+* Added eitherTee - https://github.com/fsprojects/Chessie/pull/7
+
 #### 0.0.6 - 27.02.2015
 * First iteration on naming
 
