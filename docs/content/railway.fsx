@@ -26,19 +26,19 @@ type Request =
 let validateInput input = 
     if input.Name = "" then fail "Name must not be blank"
     elif input.EMail = "" then fail "Email must not be blank"
-    else succeed input // happy path
+    else ok input // happy path
 
 let validate1 input = 
     if input.Name = "" then fail "Name must not be blank"
-    else succeed input
+    else ok input
 
 let validate2 input = 
     if input.Name.Length > 50 then fail "Name must not be longer than 50 chars"
-    else succeed input
+    else ok input
 
 let validate3 input = 
     if input.EMail = "" then fail "Email must not be blank"
-    else succeed input
+    else ok input
 
 let combinedValidation = 
     // connect the two-tracks together
@@ -89,9 +89,9 @@ let updateDatabase input =
 
 
 let log twoTrackInput = 
-    let success(x,msgs) = printfn "DEBUG. Success so far."; Success(x,msgs)
-    let failure msgs = printf "ERROR. %A" msgs; Failure(msgs)
-    either success failure twoTrackInput 
+    let success(x,msgs) = printfn "DEBUG. Success so far."
+    let failure msgs = printf "ERROR. %A" msgs
+    eitherTee success failure twoTrackInput 
 
 let usecase2 = 
     usecase
