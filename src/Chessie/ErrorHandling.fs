@@ -81,13 +81,10 @@ let inline (<!>) f result = lift f result
 /// If the result is a Failure it executes the given failure function on the messages.
 /// Result is propagated unchanged.
 let inline eitherTee fSuccess fFailure result =
-    let inline fSuccess (x,msgs) =
-        fSuccess (x,msgs)
-        Ok (x,msgs)
-    let inline fFailure errs =
-        fFailure errs
-        Fail errs
-    either fSuccess fFailure result
+    let inline tee f x =
+        f x
+        x
+    tee (either fSuccess fFailure) result
 
 /// If the result is a Success it executes the given function on the value and the messages.
 /// Result is propagated unchanged.
