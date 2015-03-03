@@ -14,8 +14,8 @@ This project brings railway-oriented programming to .NET.
   <div class="span1"></div>
 </div>
 
-Referencing single file
------------------------
+Using Chessie with Paket
+------------------------
 
 Chessie is a single-file module, so it's convienient to get it with [Paket GitHub dependencies][deps].
 To do so, just add following line to your `paket.dependencies` file:
