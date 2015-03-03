@@ -14,17 +14,24 @@ This project brings railway-oriented programming to .NET.
   <div class="span1"></div>
 </div>
 
-Railway-oriented Programming
-----------------------------
+Referencing single file
+-----------------------
 
-* Scott Wlaschin: Railway Oriented Programming - A functional approach to error handling 
-    * [Slide deck](http://www.slideshare.net/ScottWlaschin/railway-oriented-programming)
-    * [Video](https://vimeo.com/97344498)
+Chessie is a single-file module, so it's convienient to get it with [Paket GitHub dependencies][deps].
+To do so, just add following line to your `paket.dependencies` file:
+
+    github fsprojects/Chessie src/Chessie/ErrorHandling.fs
+
+and following line to your `paket.references` file for the desired project:
+
+    File:ErrorHandling.fs . 
+
 
 Samples & documentation
 -----------------------
 
-[API Reference](reference/index.html) contains automatically generated documentation for all types, modules and functions in the library. 
+* Read the [tutorial](tutorial.html) to see how to use Chessie for railway-oriented programming.
+* [API Reference](reference/index.html) contains automatically generated documentation for all types, modules and functions in the library. 
 This includes additional brief samples on using most of the functions.
  
 Contributing and copyright
@@ -44,3 +51,4 @@ redistribution for both commercial and non-commercial purposes. For more informa
   [issues]: https://github.com/fsprojects/FSharpx.Async/issues
   [readme]: https://github.com/fsprojects/FSharpx.Async/blob/master/README.md
   [license]: https://github.com/fsprojects/FSharpx.Async/blob/master/LICENSE.txt
+  [deps]: https://fsprojects.github.io/Paket/github-dependencies.html

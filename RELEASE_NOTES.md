@@ -1,5 +1,8 @@
-#### 0.0.3 - 27.02.2015
-* Fix image link in nuget package
+#### 0.0.7 - 28.02.2015
+* Added eitherTee - https://github.com/fsprojects/Chessie/pull/7
+
+#### 0.0.6 - 27.02.2015
+* First iteration on naming
 
 #### 0.0.2 - 27.02.2015
 * XML-docs added
