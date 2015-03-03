@@ -30,7 +30,7 @@ and following line to your `paket.references` file for the desired project:
 Samples & documentation
 -----------------------
 
-* Read the [tutorial](tutorial.html) to see how to use Chessie for railway-oriented programming.
+* Read the [tutorial](railway.html) to see how to use Chessie for railway-oriented programming.
 * [API Reference](reference/index.html) contains automatically generated documentation for all types, modules and functions in the library. 
 This includes additional brief samples on using most of the functions.
  
