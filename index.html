@@ -48,10 +48,39 @@
   <div class="span1"></div>
 </div>
 
+<h2><a name="Referencing-single-file" class="anchor" href="#Referencing-single-file">Referencing single file</a></h2>
+
+<p>Chessie is a single-file module, so it's convienient to get it with <a href="https://fsprojects.github.io/Paket/github-dependencies.html">Paket GitHub dependencies</a>.
+To do so, just add following line to your <code>paket.dependencies</code> file:</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip">
+<span class="l">1: </span>
+</pre>
+</td>
+<td class="snippet"><pre class="fssnip">
+<span class="i">github</span> <span class="i">fsprojects</span><span class="o">/</span><span class="i">Chessie</span> <span class="i">src</span><span class="o">/</span><span class="i">Chessie</span><span class="o">/</span><span class="i">ErrorHandling</span><span class="o">.</span><span class="i">fs</span>
+</pre>
+</td>
+</tr>
+</table>
+
+<p>and following line to your <code>paket.references</code> file for the desired project:</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip">
+<span class="l">1: </span>
+</pre>
+</td>
+<td class="snippet"><pre class="fssnip">
+<span class="i">File</span><span class="o">:</span><span class="i">ErrorHandling</span><span class="o">.</span><span class="i">fs</span> <span class="o">.</span> 
+</pre>
+</td>
+</tr>
+</table>
+
 <h2><a name="Samples-amp-documentation" class="anchor" href="#Samples-amp-documentation">Samples &amp; documentation</a></h2>
 
 <ul>
-<li>Read the <a href="tutorial.html">tutorial</a> to see how to use Chessie for railway-oriented programming.</li>
+<li>Read the <a href="railway.html">tutorial</a> to see how to use Chessie for railway-oriented programming.</li>
 <li><a href="reference/index.html">API Reference</a> contains automatically generated documentation for all types, modules and functions in the library. 
 This includes additional brief samples on using most of the functions.</li>
 </ul>
