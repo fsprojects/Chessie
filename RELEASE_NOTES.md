@@ -1,3 +1,6 @@
+#### 0.0.8 - 04.04.2015
+* Added dependency on FSharp.Core nuget package
+
 #### 0.0.7 - 28.02.2015
 * Added eitherTee - https://github.com/fsprojects/Chessie/pull/7
 

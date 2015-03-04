@@ -11,10 +11,10 @@ type Result<'TSuccess, 'TMessage> =
     | Fail of 'TMessage list
 
 /// Wraps a value in a Success
-let inline ok x = Ok(x, [])
+let inline ok<'a,'b> (x:'a) : Result<'a,'b> = Ok(x, [])
 
 /// Wraps a message in a Failure
-let inline fail msg = Fail([ msg ])
+let inline fail<'a,'b> (msg:'b) : Result<'a,'b> = Fail([ msg ])
 
 /// Returns true if the result was not successful.
 let inline failed result = 

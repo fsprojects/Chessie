@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="ErrorHandling.fs" />
     <None Include="paket.template" />
+    <None Include="paket.references" />
   </ItemGroup>
   <PropertyGroup>
     <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">11</MinimumVisualStudioVersion>
