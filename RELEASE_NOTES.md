@@ -1,3 +1,6 @@
+#### 0.0.9 - 04.04.2015
+* Improving C# support
+
 #### 0.0.8 - 04.04.2015
 * Added dependency on FSharp.Core nuget package
 

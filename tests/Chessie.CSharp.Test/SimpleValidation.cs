@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using Chessie.ErrorHandling;
 
 namespace Chessie.CSharp.Test
 {
@@ -15,13 +16,13 @@ namespace Chessie.CSharp.Test
 
     public class Validation
     {
-        public static Chessie.ErrorHandling.Result<Request, string> ValidateInput(Request input)
+        public static Result<Request, string> ValidateInput(Request input)
         {
             if (input.Name == "")
-                return Chessie.ErrorHandling.fail<Request, string>("Name must not be blank");
+                return Result<Request, string>.FailWith("Name must not be blank");
             if (input.EMail == "")
-                return Chessie.ErrorHandling.fail<Request, string>("Email must not be blank");
-            return Chessie.ErrorHandling.ok<Request, string>(input);
+                return Result<Request, string>.FailWith("Email must not be blank");
+            return Result<Request, string>.Succeed(input);
 
         }
     }
@@ -34,7 +35,7 @@ namespace Chessie.CSharp.Test
         {
             var request = new Request { Name = "", EMail = "" };
             var result = Validation.ValidateInput(request);
-            Assert.AreEqual(Chessie.ErrorHandling.fail<Request, string>("Name must not be blank"), result);
+            Assert.AreEqual(Result<Request, string>.FailWith("Name must not be blank"), result);
         }
     }
 }
