@@ -60,6 +60,10 @@ module Operators =
         let inline fFailure (msgs) = Fail msgs
         either fSuccess fFailure result
 
+   /// Flattens a nested result given the Failure types are equal
+    let inline flatten (result : Result<Result<_,_>,_>) =
+        result |> bind (fun x -> x)
+
     /// If the result is a Success it executes the given function on the value. 
     /// Otherwise the exisiting failure is propagated.
     /// This is the infix operator version of ErrorHandling.bind
