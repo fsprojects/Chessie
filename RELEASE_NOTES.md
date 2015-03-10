@@ -1,7 +1,11 @@
-#### 0.0.9 - 04.04.2015
+#### 0.0.10 - 10.03.2015
+* Extended the builder class - https://github.com/fsprojects/Chessie/pull/11
+* New asyncTrial builder class - https://github.com/fsprojects/Chessie/pull/12
+
+#### 0.0.9 - 04.03.2015
 * Improving C# support
 
-#### 0.0.8 - 04.04.2015
+#### 0.0.8 - 04.03.2015
 * Added dependency on FSharp.Core nuget package
 
 #### 0.0.7 - 28.02.2015
