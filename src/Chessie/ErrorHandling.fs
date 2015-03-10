@@ -123,7 +123,7 @@ module Operators =
             | Ok(rs, m1), Ok(r, m2) -> Ok(r :: rs, m1 @ m2)
             | Ok(_, m1), Fail(m2) | Fail(m1), Ok(_, m2) -> Fail(m1 @ m2)
             | Fail(m1), Fail(m2) -> Fail(m1 @ m2)) (ok []) xs
-        |> lift List.rev
+        |> lift (List.rev >> List.toSeq)
 
     /// Converts an option into a Result.
     let inline failIfNone message result = 
@@ -258,22 +258,9 @@ type ResultExtensions () =
         collect values
 
     [<Extension>]
-    /// Lifts a Func into a Result and applies it on all values and collects a sequence of Results and accumulates their values.
+    /// Collects a sequence of Results and accumulates their values.
     /// If the sequence contains an error the error will be propagated.
-    static member inline Collect(values,func:Func<_,_>) =
-        let f1 (result:Result<'a,'b>) : Result<'c,'b> = 
-            match result with
-            | Ok(v,msgs) -> Ok(func.Invoke v,msgs)
-            | Fail(msgs) -> Fail(msgs)
-
-        Seq.fold (fun result next -> 
-            match result with
-            | Ok(rs, m1) -> 
-                match f1 next with
-                | Ok(r, m2) -> Ok(r :: rs, m1 @ m2)
-                | Fail(m2)  -> Fail(m1 @ m2)
-            | Fail(m1) ->
-                match next with
-                | Fail(m2)  -> Fail(m1 @ m2)
-                | Ok(_, m2) -> Fail(m1 @ m2)) (ok []) values
-        |> lift List.rev
+    static member inline Collect(value) =
+        match value with
+        | Ok(xs, msgs) -> collect xs
+        | Fail(msgs) -> fail msgs
