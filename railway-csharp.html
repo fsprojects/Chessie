@@ -2,9 +2,10 @@
 <html lang="en">
   <head>
     <meta charset="utf-8"/>
-    <title>AsyncResult<'a, 'b> - Chessie</title>
+    <title>Using Chessie for Railway-oriented programming (ROP)
+</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta name="description" content=""/>
+    <meta name="description" content="Railway-oriented programming for .NET"/>
     <meta name="author" content="Steffen Forkmann, Max Malook, Tomasz Heimowski"/>
 
     <script src="https://code.jquery.com/jquery-1.8.0.js"></script>
@@ -32,38 +33,48 @@
       <div class="row">
         <div class="span9" id="main">
           
+<h1><a name="Using-Chessie-for-Railway-oriented-programming-ROP" class="anchor" href="#Using-Chessie-for-Railway-oriented-programming-ROP">Using Chessie for Railway-oriented programming (ROP)</a></h1>
+
+<p>This C# tutorial is based on an article about <a href="http://fsharpforfunandprofit.com/posts/recipe-part2/">Railway-oriented programming</a> by Scott Wlaschin.</p>
+
+<p>Additional resources:</p>
+
+<ul>
+<li>Railway Oriented Programming - A functional approach to error handling
+<ul>
+<li><a href="http://www.slideshare.net/ScottWlaschin/railway-oriented-programming">Slide deck</a></li>
+<li><a href="https://vimeo.com/97344498">Video</a></li>
+</ul></li>
+</ul>
+
+<p>We start by referencing Chessie and opening the ErrorHandling module:</p>
+
+<table class="pre"><tr><td><pre lang="csharp"><span class="k">using</span> Chessie.ErrorHandling;
+<span class="k">using</span> Chessie.ErrorHandling.CSharp;
+</pre></td></tr></table>
+
+<p>Now we define some simple validation functions:</p>
+
+<table class="pre"><tr><td><pre lang="csharp"><span class="k">public</span> <span class="k">class</span> Request
+{
+    <span class="k">public</span> <span class="k">string</span> Name { get; set; }
+    <span class="k">public</span> <span class="k">string</span> EMail { get; set; }
+}
 
 
+<span class="k">public</span> <span class="k">class</span> Validation
+{
+    <span class="k">public</span> <span class="k">static</span> Result&lt;Request, <span class="k">string</span>&gt; ValidateInput(Request input)
+    {
+        <span class="k">if</span> (input.Name <span class="o">=</span><span class="o">=</span> <span class="s">""</span>)
+            <span class="k">return</span> Result&lt;Request, <span class="k">string</span>&gt;.FailWith(<span class="s">"Name must not be blank"</span>);
+        <span class="k">if</span> (input.EMail <span class="o">=</span><span class="o">=</span> <span class="s">""</span>)
+            <span class="k">return</span> Result&lt;Request, <span class="k">string</span>&gt;.FailWith(<span class="s">"Email must not be blank"</span>);
+        <span class="k">return</span> Result&lt;Request, <span class="k">string</span>&gt;.Succeed(input);
 
-<h1>AsyncResult<'a, 'b></h1>
-<div class="xmldoc">
-</div>
-  <h3>Union Cases</h3>
-  <table class="table table-bordered member-list">
-    <thead>
-      <tr><td>Union Case</td><td>Description</td></tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td class="member-name">
+    }
+}</pre></td></tr></table>
 
-          <code onmouseout="hideTip(event, '49', 49)" onmouseover="showTip(event, '49', 49)">
-            AR(Async&lt;Result&lt;&#39;a,&#39;b&gt;&gt;)
-          </code>
-          <div class="tip" id="49">
-            <strong>Signature:</strong> Async&lt;Result&lt;&#39;a,&#39;b&gt;&gt;<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L173-173" class="github-link">
-              <img src="../content/img/github.png" class="normal" />
-              <img src="../content/img/github-blue.png" class="hover" />
-            </a>
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
 
         </div>
         <div class="span3">
