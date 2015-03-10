@@ -240,7 +240,8 @@ open Chessie.ErrorHandling
 [<Extension>]
 type ResultExtensions () =
     [<Extension>]
-    static member inline Match(value, ifSuccess:Action<'a , ('b seq)>, ifFailure:Action<'b seq>) =
+    /// Allows pattern matching on Results from C#.
+    static member inline Match(value, ifSuccess:Action<'a , ('b list)>, ifFailure:Action<'b list>) =
        match value with
        | Ok(x, msgs) -> ifSuccess.Invoke(x,msgs)
        | Fail(msgs) -> ifFailure.Invoke(msgs)

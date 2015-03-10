@@ -60,7 +60,7 @@ namespace Chessie.CSharp.Test
             var result = Validation.ValidateInput(request);
             result.Match(
                (x, msgs) => { throw new Exception("wrong match case"); },
-               msgs => { Assert.AreEqual("Email must not be blank", msgs.First()); });
+               msgs => { Assert.AreEqual("Email must not be blank", msgs[0]); });
         }
     }
 }
