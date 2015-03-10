@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8"/>
-    <title>Result<'TSuccess, 'TMessage> - Chessie</title>
+    <title>ResultExtensions - Chessie</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta name="description" content=""/>
     <meta name="author" content="Steffen Forkmann, Max Malook, Tomasz Heimowski"/>
@@ -35,52 +35,31 @@
 
 
 
-<h1>Result<'TSuccess, 'TMessage></h1>
+<h1>ResultExtensions</h1>
 <div class="xmldoc">
-<p>Represents the result of a computation.</p>
 </div>
-  <h3>Union Cases</h3>
+  <h3>Constructors</h3>
   <table class="table table-bordered member-list">
     <thead>
-      <tr><td>Union Case</td><td>Description</td></tr>
+      <tr><td>Constructor</td><td>Description</td></tr>
     </thead>
     <tbody>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '50', 50)" onmouseover="showTip(event, '50', 50)">
-            Fail(&#39;TMessage list)
+          <code onmouseout="hideTip(event, '57', 57)" onmouseover="showTip(event, '57', 57)">
+            new()
           </code>
-          <div class="tip" id="50">
-            <strong>Signature:</strong> &#39;TMessage list<br />
+          <div class="tip" id="57">
+            <strong>Signature:</strong> unit -&gt; ResultExtensions<br />
                       </div>
         </td>
         <td class="xmldoc">
-            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L12-12" class="github-link">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L241-241" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
-          <p>Represents the result of a failed computation.</p>
-
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '51', 51)" onmouseover="showTip(event, '51', 51)">
-            Ok(&#39;TSuccess,&#39;TMessage list)
-          </code>
-          <div class="tip" id="51">
-            <strong>Signature:</strong> &#39;TSuccess * &#39;TMessage list<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L10-10" class="github-link">
-              <img src="../content/img/github.png" class="normal" />
-              <img src="../content/img/github-blue.png" class="hover" />
-            </a>
-          <p>Represents the result of a successful computation.</p>
-
+          
         </td>
       </tr>
     </tbody>
@@ -94,91 +73,79 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '52', 52)" onmouseover="showTip(event, '52', 52)">
-            FailWith(msgs)
+          <code onmouseout="hideTip(event, '58', 58)" onmouseover="showTip(event, '58', 58)">
+            Collect(values, func)
           </code>
-          <div class="tip" id="52">
-            <strong>Signature:</strong> msgs:&#39;TMessage -&gt; Result&lt;&#39;TSuccess,&#39;TMessage&gt;<br />
-                      </div>
+          <div class="tip" id="58">
+            <strong>Signature:</strong> (values:seq&lt;Result&lt;&#39;a,&#39;?6295&gt;&gt; * func:Func&lt;&#39;a,&#39;c&gt;) -&gt; Result&lt;&#39;c list,&#39;?6295&gt;<br />
+                          <strong>Type parameters:</strong> 'a, '?6295, 'c          </div>
         </td>
         <td class="xmldoc">
-            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L15-15" class="github-link">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L263-263" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
-          
+          <p>Lifts a Func into a Result and applies it on all values and collects a sequence of Results and accumulates their values.
+If the sequence contains an error the error will be propagated.</p>
+
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '53', 53)" onmouseover="showTip(event, '53', 53)">
-            FailWith(msgs)
+          <code onmouseout="hideTip(event, '59', 59)" onmouseover="showTip(event, '59', 59)">
+            Collect(values)
           </code>
-          <div class="tip" id="53">
-            <strong>Signature:</strong> msgs:seq&lt;&#39;TMessage&gt; -&gt; Result&lt;&#39;TSuccess,&#39;TMessage&gt;<br />
-                      </div>
+          <div class="tip" id="59">
+            <strong>Signature:</strong> values:seq&lt;Result&lt;&#39;?6291,&#39;?6292&gt;&gt; -&gt; Result&lt;&#39;?6291 list,&#39;?6292&gt;<br />
+                          <strong>Type parameters:</strong> '?6291, '?6292          </div>
         </td>
         <td class="xmldoc">
-            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L14-14" class="github-link">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L257-257" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
-          
+          <p>Collects a sequence of Results and accumulates their values.
+If the sequence contains an error the error will be propagated.</p>
+
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '54', 54)" onmouseover="showTip(event, '54', 54)">
-            Succeed(x, messages)
+          <code onmouseout="hideTip(event, '60', 60)" onmouseover="showTip(event, '60', 60)">
+            Map(value, func)
           </code>
-          <div class="tip" id="54">
-            <strong>Signature:</strong> (x:&#39;TSuccess * messages:seq&lt;&#39;TMessage&gt;) -&gt; Result&lt;&#39;TSuccess,&#39;TMessage&gt;<br />
-                      </div>
+          <div class="tip" id="60">
+            <strong>Signature:</strong> (value:Result&lt;&#39;?6287,&#39;?6288&gt; * func:Func&lt;&#39;?6287,&#39;?6289&gt;) -&gt; Result&lt;&#39;?6289,&#39;?6288&gt;<br />
+                          <strong>Type parameters:</strong> '?6287, '?6288, '?6289          </div>
         </td>
         <td class="xmldoc">
-            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L19-19" class="github-link">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L251-251" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
-          
+          <p>Lifts a Func into a Result and applies it on the given result.</p>
+
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '55', 55)" onmouseover="showTip(event, '55', 55)">
-            Succeed(x, message)
+          <code onmouseout="hideTip(event, '61', 61)" onmouseover="showTip(event, '61', 61)">
+            Match(value, ifSuccess, ifFailure)
           </code>
-          <div class="tip" id="55">
-            <strong>Signature:</strong> (x:&#39;TSuccess * message:&#39;TMessage) -&gt; Result&lt;&#39;TSuccess,&#39;TMessage&gt;<br />
-                      </div>
+          <div class="tip" id="61">
+            <strong>Signature:</strong> (value:Result&lt;&#39;a,&#39;b&gt; * ifSuccess:Action&lt;&#39;a,&#39;b list&gt; * ifFailure:Action&lt;&#39;b list&gt;) -&gt; unit<br />
+                          <strong>Type parameters:</strong> 'a, 'b          </div>
         </td>
         <td class="xmldoc">
-            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L18-18" class="github-link">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L244-244" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
-          
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
+          <p>Allows pattern matching on Results from C#.</p>
 
-          <code onmouseout="hideTip(event, '56', 56)" onmouseover="showTip(event, '56', 56)">
-            Succeed(x)
-          </code>
-          <div class="tip" id="56">
-            <strong>Signature:</strong> x:&#39;TSuccess -&gt; Result&lt;&#39;TSuccess,&#39;TMessage&gt;<br />
-                      </div>
-        </td>
-        <td class="xmldoc">
-            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L17-17" class="github-link">
-              <img src="../content/img/github.png" class="normal" />
-              <img src="../content/img/github-blue.png" class="hover" />
-            </a>
-          
         </td>
       </tr>
     </tbody>
