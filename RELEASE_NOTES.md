@@ -1,3 +1,6 @@
+#### 0.0.11 - 10.03.2015
+* Improving C# support
+
 #### 0.0.10 - 10.03.2015
 * Extended the builder class - https://github.com/fsprojects/Chessie/pull/11
 * New asyncTrial builder class - https://github.com/fsprojects/Chessie/pull/12

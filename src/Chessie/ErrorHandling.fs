@@ -242,6 +242,38 @@ type ResultExtensions () =
     [<Extension>]
     /// Allows pattern matching on Results from C#.
     static member inline Match(value, ifSuccess:Action<'a , ('b list)>, ifFailure:Action<'b list>) =
-       match value with
-       | Ok(x, msgs) -> ifSuccess.Invoke(x,msgs)
-       | Fail(msgs) -> ifFailure.Invoke(msgs)
+        match value with
+        | Ok(x, msgs) -> ifSuccess.Invoke(x,msgs)
+        | Fail(msgs) -> ifFailure.Invoke(msgs)
+
+    [<Extension>]
+    /// Lifts a Func into a Result and applies it on the given result.
+    static member inline Map(value,func:Func<_,_>) =
+        lift func.Invoke value
+
+    [<Extension>]
+    /// Collects a sequence of Results and accumulates their values.
+    /// If the sequence contains an error the error will be propagated.
+    static member inline Collect(values) =
+        collect values
+
+    [<Extension>]
+    /// Lifts a Func into a Result and applies it on all values and collects a sequence of Results and accumulates their values.
+    /// If the sequence contains an error the error will be propagated.
+    static member inline Collect(values,func:Func<_,_>) =
+        let f1 (result:Result<'a,'b>) : Result<'c,'b> = 
+            match result with
+            | Ok(v,msgs) -> Ok(func.Invoke v,msgs)
+            | Fail(msgs) -> Fail(msgs)
+
+        Seq.fold (fun result next -> 
+            match result with
+            | Ok(rs, m1) -> 
+                match f1 next with
+                | Ok(r, m2) -> Ok(r :: rs, m1 @ m2)
+                | Fail(m2)  -> Fail(m1 @ m2)
+            | Fail(m1) ->
+                match next with
+                | Fail(m2)  -> Fail(m1 @ m2)
+                | Ok(_, m2) -> Fail(m1 @ m2)) (ok []) values
+        |> lift List.rev
