@@ -11,25 +11,35 @@ type Result<'TSuccess, 'TMessage> =
     /// Represents the result of a failed computation.
     | Fail of 'TMessage list
 
-    static member FailWith(msgs:'TMessage seq) : Result<'TSuccess, 'TMessage> = Result<'TSuccess, 'TMessage>.Fail(msgs |> Seq.toList)
-    static member FailWith(msgs:'TMessage) : Result<'TSuccess, 'TMessage> = Result<'TSuccess, 'TMessage>.Fail([msgs])
-    
-    static member Succeed(x:'TSuccess) : Result<'TSuccess, 'TMessage> = Result<'TSuccess, 'TMessage>.Ok(x,[])
-    static member Succeed(x:'TSuccess,message:'TMessage) : Result<'TSuccess, 'TMessage> = Result<'TSuccess, 'TMessage>.Ok(x,[message])
-    static member Succeed(x:'TSuccess,messages:'TMessage seq) : Result<'TSuccess, 'TMessage> = Result<'TSuccess, 'TMessage>.Ok(x,messages |> Seq.toList)
+    /// Creates a Failure result with the given messages.
+    static member FailWith(messages:'TMessage seq) : Result<'TSuccess, 'TMessage> = Result<'TSuccess, 'TMessage>.Fail(messages |> Seq.toList)
 
+    /// Creates a Failure result with the given message.
+    static member FailWith(message:'TMessage) : Result<'TSuccess, 'TMessage> = Result<'TSuccess, 'TMessage>.Fail([message])
+    
+    /// Creates a Success result with the given value.
+    static member Succeed(value:'TSuccess) : Result<'TSuccess, 'TMessage> = Result<'TSuccess, 'TMessage>.Ok(value,[])
+
+    /// Creates a Success result with the given value and the given message.
+    static member Succeed(value:'TSuccess,message:'TMessage) : Result<'TSuccess, 'TMessage> = Result<'TSuccess, 'TMessage>.Ok(value,[message])
+
+    /// Creates a Success result with the given value and the given message.
+    static member Succeed(value:'TSuccess,messages:'TMessage seq) : Result<'TSuccess, 'TMessage> = Result<'TSuccess, 'TMessage>.Ok(value,messages |> Seq.toList)
+
+    /// Converts the result into a string.
     override this.ToString() =
         match this with
         | Ok(v,msgs) -> sprintf "OK: %A - %s" v (String.Join(Environment.NewLine, msgs |> Seq.map (fun x -> x.ToString())))
         | Fail(msgs) -> sprintf "Error: %s" (String.Join(Environment.NewLine, msgs |> Seq.map (fun x -> x.ToString())))
     
 [<AutoOpen>]
-module Operators =       
+/// Basic combinators and operators for error handling.
+module Combinators =       
     /// Wraps a value in a Success
-    let inline ok<'a,'b> (x:'a) : Result<'a,'b> = Ok(x, [])
+    let inline ok<'TSuccess,'TMessage> (x:'TSuccess) : Result<'TSuccess,'TMessage> = Ok(x, [])
 
     /// Wraps a message in a Failure
-    let inline fail<'a,'b> (msg:'b) : Result<'a,'b> = Fail([ msg ])
+    let inline fail<'TSuccess,'Message> (msg:'Message) : Result<'TSuccess,'Message> = Fail([ msg ])
 
     /// Returns true if the result was not successful.
     let inline failed result = 
@@ -238,17 +248,18 @@ open System.Runtime.CompilerServices
 open Chessie.ErrorHandling
 
 [<Extension>]
+/// Extensions methods for easier C# usage.
 type ResultExtensions () =
     [<Extension>]
     /// Allows pattern matching on Results from C#.
-    static member inline Match(value, ifSuccess:Action<'a , ('b list)>, ifFailure:Action<'b list>) =
+    static member inline Match(value, ifSuccess:Action<'TSuccess , ('TMessage list)>, ifFailure:Action<'TMessage list>) =
         match value with
         | Ok(x, msgs) -> ifSuccess.Invoke(x,msgs)
         | Fail(msgs) -> ifFailure.Invoke(msgs)
 
     [<Extension>]
     /// Allows pattern matching on Results from C#.
-    static member inline Either(value, ifSuccess:Func<'a , ('b list),'c>, ifFailure:Func<'b list,'c>) =
+    static member inline Either(value, ifSuccess:Func<'TSuccess , ('TMessage list),'TResult>, ifFailure:Func<'TMessage list,'TResult>) =
         match value with
         | Ok(x, msgs) -> ifSuccess.Invoke(x,msgs)
         | Fail(msgs) -> ifFailure.Invoke(msgs)
