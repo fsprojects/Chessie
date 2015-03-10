@@ -90,9 +90,9 @@ module Combinators =
     let inline apply wrappedFunction result = 
         match wrappedFunction, result with
         | Ok(f, msgs1), Ok(x, msgs2) -> Ok(f x, msgs1 @ msgs2)
-        | Fail errs, Ok(_, msgs) -> Fail(errs @ msgs)
-        | Ok(_, msgs), Fail errs -> Fail(errs @ msgs)
-        | Fail errs1, Fail errs2 -> Fail(errs1 @ errs2)
+        | Fail errs, Ok(_, msgs) -> Fail(errs)
+        | Ok(_, msgs), Fail errs -> Fail(errs)
+        | Fail errs1, Fail errs2 -> Fail(errs1)
 
     /// If the wrapped function is a success and the given result is a success the function is applied on the value. 
     /// Otherwise the exisiting error messages are propagated.
@@ -105,6 +105,9 @@ module Combinators =
     /// Lifts a function into a Result and applies it on the given result.
     /// This is the infix operator version of ErrorHandling.lift
     let inline (<!>) f result = lift f result
+
+    /// Promote a function to a monad/applicative, scanning the monadic/applicative arguments from left to right.
+    let inline lift2 f a b = f <!> a <*> b
 
     /// If the result is a Success it executes the given success function on the value and the messages.
     /// If the result is a Failure it executes the given failure function on the messages.
@@ -282,3 +285,16 @@ type ResultExtensions () =
         match value with
         | Ok(values:Result<'a,'b> seq, msgs:'b list) -> collect values
         | Fail(msgs:'b list) -> Fail msgs
+
+    [<Extension>]
+    static member inline SelectMany (o, f: Func<_,_>) =
+        bind f.Invoke o
+
+    [<Extension>]
+    static member SelectMany (o, f: Func<_,_>, mapper: Func<_,_,_>) =
+        let mapper = lift2 (fun a b -> mapper.Invoke(a,b))
+        let v = bind f.Invoke o
+        mapper o v
+
+    [<Extension>]
+    static member Select (o, f: Func<_,_>) = lift f.Invoke o
