@@ -2,6 +2,7 @@
 namespace Chessie.ErrorHandling
 
 open System
+
  
 /// Represents the result of a computation.
 type Result<'TSuccess, 'TMessage> = 
@@ -16,6 +17,11 @@ type Result<'TSuccess, 'TMessage> =
     static member Succeed(x:'TSuccess) : Result<'TSuccess, 'TMessage> = Result<'TSuccess, 'TMessage>.Ok(x,[])
     static member Succeed(x:'TSuccess,message:'TMessage) : Result<'TSuccess, 'TMessage> = Result<'TSuccess, 'TMessage>.Ok(x,[message])
     static member Succeed(x:'TSuccess,messages:'TMessage seq) : Result<'TSuccess, 'TMessage> = Result<'TSuccess, 'TMessage>.Ok(x,messages |> Seq.toList)
+
+    override this.ToString() =
+        match this with
+        | Ok(v,msgs) -> sprintf "OK: %A - %s" v (String.Join(Environment.NewLine, msgs |> Seq.map (fun x -> x.ToString())))
+        | Fail(msgs) -> sprintf "Error: %s" (String.Join(Environment.NewLine, msgs |> Seq.map (fun x -> x.ToString())))
     
 [<AutoOpen>]
 module Operators =       
@@ -163,7 +169,6 @@ module Operators =
     /// Wraps computations in an error handling computation expression.
     let trial = ErrorHandlingBuilder()
 
-
 type AsyncResult<'a, 'b> = 
     | AR of Async<Result<'a, 'b>>
 
@@ -225,3 +230,17 @@ module AsyncTrial =
             async.Using(resource, (binder >> Async.ofAsyncResult)) |> AR
     
     let asyncTrial = AsyncTrialBuilder()
+
+namespace Chessie.ErrorHandling.CSharp
+
+open System
+open System.Runtime.CompilerServices
+open Chessie.ErrorHandling
+
+[<Extension>]
+type ResultExtensions () =
+    [<Extension>]
+    static member inline Match(value, ifSuccess:Action<'a , ('b seq)>, ifFailure:Action<'b seq>) =
+       match value with
+       | Ok(x, msgs) -> ifSuccess.Invoke(x,msgs)
+       | Fail(msgs) -> ifFailure.Invoke(msgs)
