@@ -62,6 +62,7 @@
       <Link>FsUnit.fs</Link>
     </Compile>
     <Compile Include="SimpleValidation.fs" />
+    <Compile Include="BuilderTests.fs" />
     <None Include="paket.references" />
   </ItemGroup>
   <ItemGroup>
