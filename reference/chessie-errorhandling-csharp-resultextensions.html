@@ -113,9 +113,29 @@ If the sequence contains an error the error will be propagated.</p>
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '60', 60)" onmouseover="showTip(event, '60', 60)">
-            Map(value, func)
+            Flatten(value)
           </code>
           <div class="tip" id="60">
+            <strong>Signature:</strong> value:Result&lt;&#39;?6298,&#39;?6300&gt; -&gt; Result&lt;seq&lt;&#39;?6299&gt;,&#39;?6300&gt;<br />
+                          <strong>Type parameters:</strong> '?6298, '?6299, '?6300          </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L270-270" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          <p>Collects a sequence of Results and accumulates their values.
+If the sequence contains an error the error will be propagated.</p>
+
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '61', 61)" onmouseover="showTip(event, '61', 61)">
+            Map(value, func)
+          </code>
+          <div class="tip" id="61">
             <strong>Signature:</strong> (value:Result&lt;&#39;?6291,&#39;?6292&gt; * func:Func&lt;&#39;?6291,&#39;?6293&gt;) -&gt; Result&lt;&#39;?6293,&#39;?6292&gt;<br />
                           <strong>Type parameters:</strong> '?6291, '?6292, '?6293          </div>
         </td>
@@ -131,10 +151,10 @@ If the sequence contains an error the error will be propagated.</p>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '61', 61)" onmouseover="showTip(event, '61', 61)">
+          <code onmouseout="hideTip(event, '62', 62)" onmouseover="showTip(event, '62', 62)">
             Match(value, ifSuccess, ifFailure)
           </code>
-          <div class="tip" id="61">
+          <div class="tip" id="62">
             <strong>Signature:</strong> (value:Result&lt;&#39;a,&#39;b&gt; * ifSuccess:Action&lt;&#39;a,&#39;b list&gt; * ifFailure:Action&lt;&#39;b list&gt;) -&gt; unit<br />
                           <strong>Type parameters:</strong> 'a, 'b          </div>
         </td>
