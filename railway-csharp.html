@@ -73,7 +73,14 @@
         <span class="k">return</span> Result&lt;Request, <span class="k">string</span>&gt;.Succeed(input);
 
     }
-}</pre></td></tr></table>
+}
+</pre></td></tr></table>
+
+<p>Let's use the validation:</p>
+
+<table class="pre"><tr><td><pre lang="csharp"><span class="k">var</span> request <span class="o">=</span> <span class="k">new</span> Request { Name <span class="o">=</span> <span class="s">"Steffen"</span>, EMail <span class="o">=</span> <span class="s">"mail@support.com"</span> };
+<span class="k">var</span> result <span class="o">=</span> Validation.ValidateInput(request);
+<span class="o">/</span><span class="o">/</span> [fsi:Result&lt;Request, <span class="k">string</span>&gt;.Succeed(request)]</pre></td></tr></table>
 
 
         </div>
@@ -88,9 +95,10 @@
             <li><a href="/Chessie/license.html">License</a></li>
             <li><a href="/Chessie/release-notes.html">Release Notes</a></li>
             
-            <li class="nav-header">Articles</li>
+            <li class="nav-header">F# Articles</li>
             <li><a href="/Chessie/railway.html">Railway-oriented programming</a></li>
-            <li><a href="/Chessie/railway-csharp.html">Railway-oriented programming in C#</a></li>              
+            <li class="nav-header">C# Articles</li>
+            <li><a href="/Chessie/railway-csharp.html">Railway-oriented programming</a></li>              
 
             <li class="nav-header">Documentation</li>
             <li><a href="/Chessie/reference/index.html">API Reference</a></li>
