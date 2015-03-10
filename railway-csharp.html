@@ -79,8 +79,19 @@
 <p>Let's use the validation:</p>
 
 <table class="pre"><tr><td><pre lang="csharp"><span class="k">var</span> request <span class="o">=</span> <span class="k">new</span> Request { Name <span class="o">=</span> <span class="s">"Steffen"</span>, EMail <span class="o">=</span> <span class="s">"mail@support.com"</span> };
-<span class="k">var</span> result <span class="o">=</span> Validation.ValidateInput(request);
-<span class="o">/</span><span class="o">/</span> [fsi:Result&lt;Request, <span class="k">string</span>&gt;.Succeed(request)]</pre></td></tr></table>
+<span class="k">var</span> result <span class="o">=</span> Validation.ValidateInput(request); <span class="c">// Success</span>
+</pre></td></tr></table>
+
+<p>We can even pattern match on the result:</p>
+
+<table class="pre"><tr><td><pre lang="csharp">result.Match(
+    (x, msgs) <span class="o">=</span><span class="o">&gt;</span> {
+        Console.WriteLine(<span class="s">"Value: {0}"</span>, x);
+        Console.WriteLine(<span class="s">"Messages: {0}"</span>, msgs);
+    },
+    msgs <span class="o">=</span><span class="o">&gt;</span> {
+        Console.WriteLine(<span class="s">"Error-Messages: {0}"</span>, msgs);
+    });</pre></td></tr></table>
 
 
         </div>
