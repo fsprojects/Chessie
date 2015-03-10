@@ -263,4 +263,4 @@ type ResultExtensions () =
     static member inline Collect(value) =
         match value with
         | Ok(xs, msgs) -> collect xs
-        | Fail(msgs) -> fail msgs
+        | Fail(msgs) -> Fail(msgs)
