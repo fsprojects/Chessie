@@ -74,14 +74,14 @@
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '58', 58)" onmouseover="showTip(event, '58', 58)">
-            Collect(value)
+            Collect(values)
           </code>
           <div class="tip" id="58">
-            <strong>Signature:</strong> value:Result&lt;&#39;?6294,&#39;?6296&gt; -&gt; Result&lt;seq&lt;&#39;?6295&gt;,&#39;?6296&gt;<br />
-                          <strong>Type parameters:</strong> '?6294, '?6295, '?6296          </div>
+            <strong>Signature:</strong> values:seq&lt;Result&lt;&#39;?6295,&#39;?6296&gt;&gt; -&gt; Result&lt;seq&lt;&#39;?6295&gt;,&#39;?6296&gt;<br />
+                          <strong>Type parameters:</strong> '?6295, '?6296          </div>
         </td>
         <td class="xmldoc">
-            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L263-263" class="github-link">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L264-264" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
@@ -94,19 +94,18 @@ If the sequence contains an error the error will be propagated.</p>
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '59', 59)" onmouseover="showTip(event, '59', 59)">
-            Collect(values)
+            Either(value, ifSuccess, ifFailure)
           </code>
           <div class="tip" id="59">
-            <strong>Signature:</strong> values:seq&lt;Result&lt;&#39;?6291,&#39;?6292&gt;&gt; -&gt; Result&lt;seq&lt;&#39;?6291&gt;,&#39;?6292&gt;<br />
-                          <strong>Type parameters:</strong> '?6291, '?6292          </div>
+            <strong>Signature:</strong> (value:Result&lt;&#39;a,&#39;b&gt; * ifSuccess:Func&lt;&#39;a,&#39;b list,&#39;c&gt; * ifFailure:Func&lt;&#39;b list,&#39;c&gt;) -&gt; &#39;c<br />
+                          <strong>Type parameters:</strong> 'a, 'b, 'c          </div>
         </td>
         <td class="xmldoc">
-            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L257-257" class="github-link">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L251-251" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
-          <p>Collects a sequence of Results and accumulates their values.
-If the sequence contains an error the error will be propagated.</p>
+          <p>Allows pattern matching on Results from C#.</p>
 
         </td>
       </tr>
@@ -117,11 +116,11 @@ If the sequence contains an error the error will be propagated.</p>
             Map(value, func)
           </code>
           <div class="tip" id="60">
-            <strong>Signature:</strong> (value:Result&lt;&#39;?6287,&#39;?6288&gt; * func:Func&lt;&#39;?6287,&#39;?6289&gt;) -&gt; Result&lt;&#39;?6289,&#39;?6288&gt;<br />
-                          <strong>Type parameters:</strong> '?6287, '?6288, '?6289          </div>
+            <strong>Signature:</strong> (value:Result&lt;&#39;?6291,&#39;?6292&gt; * func:Func&lt;&#39;?6291,&#39;?6293&gt;) -&gt; Result&lt;&#39;?6293,&#39;?6292&gt;<br />
+                          <strong>Type parameters:</strong> '?6291, '?6292, '?6293          </div>
         </td>
         <td class="xmldoc">
-            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L251-251" class="github-link">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L258-258" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
