@@ -74,18 +74,18 @@
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '58', 58)" onmouseover="showTip(event, '58', 58)">
-            Collect(values, func)
+            Collect(value)
           </code>
           <div class="tip" id="58">
-            <strong>Signature:</strong> (values:seq&lt;Result&lt;&#39;a,&#39;?6295&gt;&gt; * func:Func&lt;&#39;a,&#39;c&gt;) -&gt; Result&lt;&#39;c list,&#39;?6295&gt;<br />
-                          <strong>Type parameters:</strong> 'a, '?6295, 'c          </div>
+            <strong>Signature:</strong> value:Result&lt;&#39;?6294,&#39;?6296&gt; -&gt; Result&lt;seq&lt;&#39;?6295&gt;,&#39;?6296 list&gt;<br />
+                          <strong>Type parameters:</strong> '?6294, '?6295, '?6296          </div>
         </td>
         <td class="xmldoc">
             <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L263-263" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
-          <p>Lifts a Func into a Result and applies it on all values and collects a sequence of Results and accumulates their values.
+          <p>Collects a sequence of Results and accumulates their values.
 If the sequence contains an error the error will be propagated.</p>
 
         </td>
@@ -97,7 +97,7 @@ If the sequence contains an error the error will be propagated.</p>
             Collect(values)
           </code>
           <div class="tip" id="59">
-            <strong>Signature:</strong> values:seq&lt;Result&lt;&#39;?6291,&#39;?6292&gt;&gt; -&gt; Result&lt;&#39;?6291 list,&#39;?6292&gt;<br />
+            <strong>Signature:</strong> values:seq&lt;Result&lt;&#39;?6291,&#39;?6292&gt;&gt; -&gt; Result&lt;seq&lt;&#39;?6291&gt;,&#39;?6292&gt;<br />
                           <strong>Type parameters:</strong> '?6291, '?6292          </div>
         </td>
         <td class="xmldoc">
