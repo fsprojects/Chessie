@@ -263,3 +263,11 @@ type ResultExtensions () =
     /// If the sequence contains an error the error will be propagated.
     static member inline Collect(values) =
         collect values
+
+    [<Extension>]
+    /// Collects a sequence of Results and accumulates their values.
+    /// If the sequence contains an error the error will be propagated.
+    static member inline Flatten(value) =
+        match value with
+        | Ok(values, msgs) -> collect values
+        | Fail(msgs) -> Fail msgs
