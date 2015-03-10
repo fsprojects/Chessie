@@ -52,6 +52,10 @@ let combinedValidation =
     >> bind validate2
     >> bind validate3
 
+(**
+ Let's use these with some basic combinators:
+*)
+
 { Name = ""; EMail = "" }
 |> combinedValidation
 // [fsi:val it : Chessie.ErrorHandling.Result<Request,string> =]
