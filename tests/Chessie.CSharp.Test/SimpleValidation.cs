@@ -63,4 +63,34 @@ namespace Chessie.CSharp.Test
                msgs => { Assert.AreEqual("Email must not be blank", msgs[0]); });
         }
     }
+
+    [TestFixture]
+    public class SimpleEitherPatternMatching
+    {
+        [Test]
+        public void CanMatchSuccess()
+        {
+            var request = new Request { Name = "Steffen", EMail = "mail@support.com" };
+            var result =
+                Validation
+                 .ValidateInput(request)
+                 .Either(
+                   (x, msgs) => { return x; },
+                   msgs => { throw new Exception("wrong match case"); });
+            Assert.AreEqual(request, result);
+        }
+
+        [Test]
+        public void CanMatchFailure()
+        {
+            var request = new Request { Name = "Steffen", EMail = "" };
+            var result =
+               Validation.ValidateInput(request)
+                .Either(
+                   (x, msgs) => { throw new Exception("wrong match case"); },
+                   msgs => { return msgs[0]; });
+
+            Assert.AreEqual("Email must not be blank", result);
+        }
+    }
 }

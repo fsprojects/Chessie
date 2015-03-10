@@ -247,6 +247,13 @@ type ResultExtensions () =
         | Fail(msgs) -> ifFailure.Invoke(msgs)
 
     [<Extension>]
+    /// Allows pattern matching on Results from C#.
+    static member inline Either(value, ifSuccess:Func<'a , ('b list),'c>, ifFailure:Func<'b list,'c>) =
+        match value with
+        | Ok(x, msgs) -> ifSuccess.Invoke(x,msgs)
+        | Fail(msgs) -> ifFailure.Invoke(msgs)
+
+    [<Extension>]
     /// Lifts a Func into a Result and applies it on the given result.
     static member inline Map(value,func:Func<_,_>) =
         lift func.Invoke value
@@ -256,11 +263,3 @@ type ResultExtensions () =
     /// If the sequence contains an error the error will be propagated.
     static member inline Collect(values) =
         collect values
-
-    [<Extension>]
-    /// Collects a sequence of Results and accumulates their values.
-    /// If the sequence contains an error the error will be propagated.
-    static member inline Collect(value) =
-        match value with
-        | Ok(xs, msgs) -> collect xs
-        | Fail(msgs) -> Fail(msgs)
