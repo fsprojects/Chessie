@@ -136,7 +136,7 @@ module Combinators =
             | Ok(rs, m1), Ok(r, m2) -> Ok(r :: rs, m1 @ m2)
             | Ok(_, m1), Fail(m2) | Fail(m1), Ok(_, m2) -> Fail(m1 @ m2)
             | Fail(m1), Fail(m2) -> Fail(m1 @ m2)) (ok []) xs
-        |> lift (List.rev >> List.toSeq)
+        |> lift List.rev
 
     /// Converts an option into a Result.
     let inline failIfNone message result = 
@@ -281,7 +281,7 @@ type ResultExtensions () =
     [<Extension>]
     /// Collects a sequence of Results and accumulates their values.
     /// If the sequence contains an error the error will be propagated.
-    static member inline Flatten(value) : Result<'a seq,'b>=
+    static member inline Flatten(value) : Result<'a list,'b>=
         match value with
         | Ok(values:Result<'a,'b> seq, msgs:'b list) -> collect values
         | Fail(msgs:'b list) -> Fail msgs
