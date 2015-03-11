@@ -1,10 +1,10 @@
 # A Tale of 3 Nightclubs
 
-This C# tutorial is based on [Scalaz tutorial](https://gist.github.com/oxbowlakes/970717) by Chris Marshall and was originally ported to [fsharpx](https://github.com/fsprojects/fsharpx/blob/master/tests/FSharpx.CSharpTests/ValidationExample.cs) by Mauricio Scheffer.
+This C# tutorial is based on a [Scalaz tutorial](https://gist.github.com/oxbowlakes/970717) by Chris Marshall and was originally ported to [fsharpx](https://github.com/fsprojects/fsharpx/blob/master/tests/FSharpx.CSharpTests/ValidationExample.cs) by Mauricio Scheffer.
 
 Additional resources:
 
-* Railway Oriented Programming - A functional approach to error handling
+* Railway Oriented Programming by Scott Wlaschin - A functional approach to error handling
 	* [Blog post](http://fsharpforfunandprofit.com/posts/recipe-part2/)
     * [Slide deck](http://www.slideshare.net/ScottWlaschin/railway-oriented-programming)
     * [Video](https://vimeo.com/97344498)

@@ -10,7 +10,7 @@ This tutorial is based on an article about [Railway-oriented programming](http:/
 
 Additional resources:
 
-* Railway Oriented Programming - A functional approach to error handling 
+* Railway Oriented Programming by Scott Wlaschin - A functional approach to error handling 
     * [Slide deck](http://www.slideshare.net/ScottWlaschin/railway-oriented-programming)
     * [Video](https://vimeo.com/97344498)
 
