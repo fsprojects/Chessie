@@ -50,8 +50,6 @@
 
 <h2><a name="Part-Zero-10-15-Saturday-Night" class="anchor" href="#Part-Zero-10-15-Saturday-Night">Part Zero : 10:15 Saturday Night</a></h2>
 
-<h3><a name="In-which-we-will-see-how-to-let-the-type-system-help-you-handle-failure" class="anchor" href="#In-which-we-will-see-how-to-let-the-type-system-help-you-handle-failure">In which we will see how to let the type system help you handle failure</a></h3>
-
 <p>We start by referencing Chessie and opening the ErrorHandling module and define a simple domain for nightclubs:</p>
 
 <table class="pre"><tr><td><pre lang="csharp"><span class="k">using</span> Chessie.ErrorHandling;
@@ -109,7 +107,9 @@
 }
 </pre></td></tr></table>
 
-<p>We can combine the validation via syntactic sugar and LINQ:</p>
+<h2><a name="Part-One-Clubbed-to-Death" class="anchor" href="#Part-One-Clubbed-to-Death">Part One : Clubbed to Death</a></h2>
+
+<p>Now let's compose some validation checks via syntactic sugar and LINQ:</p>
 
 <table class="pre"><tr><td><pre lang="csharp"><span class="k">class</span> ClubbedToDeath
 {
@@ -142,7 +142,11 @@ costRuby.Match(
     },
     msgs <span class="o">=</span><span class="o">&gt;</span> {
         Console.WriteLine(<span class="s">"Ruby is not allowed to enter: {0}"</span>, msgs);
-    });</pre></td></tr></table>
+    });
+</pre></td></tr></table>
+
+<p>The thing to note here is how the Validations can be composed together in a computation expression.
+The type system is making sure that failures flow through your computation in a safe manner.</p>
 
 
         </div>
