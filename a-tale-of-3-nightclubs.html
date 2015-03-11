@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>A Tale of 3 Nightclubs
+</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content="Railway-oriented programming for .NET"/>
+    <meta name="author" content="Steffen Forkmann, Max Malook, Tomasz Heimowski"/>
+
+    <script src="https://code.jquery.com/jquery-1.8.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.8.23/jquery-ui.js"></script>
+    <script src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
+    <link href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css" rel="stylesheet"/>
+
+    <link type="text/css" rel="stylesheet" href="/Chessie/content/style.css" />
+    <script type="text/javascript" src="/Chessie/content/tips.js"></script>
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="container">
+      <div class="masthead">
+        <ul class="nav nav-pills pull-right">
+          <li><a href="http://fsharp.org">fsharp.org</a></li>
+          <li><a href="http://github.com/fsprojects/Chessie">github page</a></li>
+        </ul>
+        <h3 class="muted"><a href="/Chessie/index.html">Chessie</a></h3>
+      </div>
+      <hr />
+      <div class="row">
+        <div class="span9" id="main">
+          
+<h1><a name="A-Tale-of-3-Nightclubs" class="anchor" href="#A-Tale-of-3-Nightclubs">A Tale of 3 Nightclubs</a></h1>
+
+<p>This C# tutorial is based on <a href="https://gist.github.com/oxbowlakes/970717">Scalaz tutorial</a> by Chris Marshall and was originally ported to <a href="https://github.com/fsprojects/fsharpx/blob/master/tests/FSharpx.CSharpTests/ValidationExample.cs">fsharpx</a> by Mauricio Scheffer.</p>
+
+<p>Additional resources:</p>
+
+<ul>
+<li>Railway Oriented Programming - A functional approach to error handling
+<ul>
+<li><a href="http://fsharpforfunandprofit.com/posts/recipe-part2/">Blog post</a></li>
+<li><a href="http://www.slideshare.net/ScottWlaschin/railway-oriented-programming">Slide deck</a></li>
+<li><a href="https://vimeo.com/97344498">Video</a></li>
+</ul></li>
+</ul>
+
+<h2><a name="Part-Zero-10-15-Saturday-Night" class="anchor" href="#Part-Zero-10-15-Saturday-Night">Part Zero : 10:15 Saturday Night</a></h2>
+
+<h3><a name="In-which-we-will-see-how-to-let-the-type-system-help-you-handle-failure" class="anchor" href="#In-which-we-will-see-how-to-let-the-type-system-help-you-handle-failure">In which we will see how to let the type system help you handle failure</a></h3>
+
+<p>We start by referencing Chessie and opening the ErrorHandling module and define a simple domain for nightclubs:</p>
+
+<table class="pre"><tr><td><pre lang="csharp"><span class="k">using</span> Chessie.ErrorHandling;
+<span class="k">using</span> Chessie.ErrorHandling.CSharp;
+
+
+<span class="k">enum</span> Sobriety { Sober, Tipsy, Drunk, Paralytic, Unconscious }
+<span class="k">enum</span> Gender { Male, Female }
+
+<span class="k">class</span> Person
+{
+    <span class="k">public</span> Gender Gender { get; <span class="k">private</span> set; }
+    <span class="k">public</span> <span class="k">int</span> Age { get; <span class="k">private</span> set; }
+    <span class="k">public</span> List&lt;<span class="k">string</span>&gt; Clothes { get; <span class="k">private</span> set; }
+    <span class="k">public</span> Sobriety Sobriety { get; <span class="k">private</span> set; }
+
+    <span class="k">public</span> Person(Gender gender, <span class="k">int</span> age, List&lt;<span class="k">string</span>&gt; clothes, Sobriety sobriety)
+    {
+        <span class="k">this</span>.Gender <span class="o">=</span> gender;
+        <span class="k">this</span>.Age <span class="o">=</span> age;
+        <span class="k">this</span>.Clothes <span class="o">=</span> clothes;
+        <span class="k">this</span>.Sobriety <span class="o">=</span> sobriety;
+    }
+}
+</pre></td></tr></table>
+
+<p>Now we define some validation methods that all nightclubs will perform:</p>
+
+<table class="pre"><tr><td><pre lang="csharp"><span class="k">class</span> Club
+{
+    <span class="k">public</span> <span class="k">static</span> Result&lt;Person, <span class="k">string</span>&gt; CheckAge(Person p)
+    {
+        <span class="k">if</span> (p.Age <span class="o">&lt;</span> 18)
+            <span class="k">return</span> Result&lt;Person, <span class="k">string</span>&gt;.FailWith(<span class="s">"Too young!"</span>);
+        <span class="k">if</span> (p.Age <span class="o">&gt;</span> 40)
+            <span class="k">return</span> Result&lt;Person, <span class="k">string</span>&gt;.FailWith(<span class="s">"Too old!"</span>);
+        <span class="k">return</span> Result&lt;Person, <span class="k">string</span>&gt;.Succeed(p);
+    }
+
+    <span class="k">public</span> <span class="k">static</span> Result&lt;Person, <span class="k">string</span>&gt; CheckClothes(Person p)
+    {
+        <span class="k">if</span> (p.Gender <span class="o">=</span><span class="o">=</span> Gender.Male <span class="o">&amp;</span><span class="o">&amp;</span> !p.Clothes.Contains(<span class="s">"Tie"</span>))
+            <span class="k">return</span> Result&lt;Person, <span class="k">string</span>&gt;.FailWith(<span class="s">"Smarten up!"</span>);
+        <span class="k">if</span> (p.Gender <span class="o">=</span><span class="o">=</span> Gender.Female <span class="o">&amp;</span><span class="o">&amp;</span> p.Clothes.Contains(<span class="s">"Trainers"</span>))
+            <span class="k">return</span> Result&lt;Person, <span class="k">string</span>&gt;.FailWith(<span class="s">"Wear high heels!"</span>);
+        <span class="k">return</span> Result&lt;Person, <span class="k">string</span>&gt;.Succeed(p);
+    }
+
+    <span class="k">public</span> <span class="k">static</span> Result&lt;Person, <span class="k">string</span>&gt; CheckSobriety(Person p)
+    {
+        <span class="k">if</span> (<span class="k">new</span>[] { Sobriety.Drunk, Sobriety.Paralytic, Sobriety.Unconscious }.Contains(p.Sobriety))
+            <span class="k">return</span> Result&lt;Person, <span class="k">string</span>&gt;.FailWith(<span class="s">"Sober up!"</span>);
+        <span class="k">return</span> Result&lt;Person, <span class="k">string</span>&gt;.Succeed(p);
+    }
+}
+</pre></td></tr></table>
+
+<p>We can combine the validation via syntactic sugar and LINQ:</p>
+
+<table class="pre"><tr><td><pre lang="csharp"><span class="k">class</span> ClubbedToDeath
+{
+    <span class="k">public</span> <span class="k">static</span> Result&lt;<span class="k">decimal</span>, <span class="k">string</span>&gt; CostToEnter(Person p)
+    {
+        <span class="k">return</span> <span class="k">from</span> a <span class="k">in</span> Club.CheckAge(p)
+               <span class="k">from</span> b <span class="k">in</span> Club.CheckClothes(a)
+               <span class="k">from</span> c <span class="k">in</span> Club.CheckSobriety(b)
+               <span class="k">select</span> c.Gender <span class="o">=</span><span class="o">=</span> Gender.Female <span class="o">?</span> 0m <span class="o">:</span> 5m;
+    }
+}
+</pre></td></tr></table>
+
+<p>Let's see how the validation works in action:</p>
+
+<table class="pre"><tr><td><pre lang="csharp"><span class="k">var</span> Dave <span class="o">=</span> <span class="k">new</span> Person(Gender.Male, 41, <span class="k">new</span> List&lt;<span class="k">string</span>&gt; { <span class="s">"Tie"</span>, <span class="s">"Jeans"</span> }, Sobriety.Sober);
+<span class="k">var</span> costDave <span class="o">=</span> ClubbedToDeath.CostToEnter(Dave); <span class="c">// Error "Too old!"</span>
+
+<span class="k">var</span> Ken <span class="o">=</span> <span class="k">new</span> Person(Gender.Male, 28, <span class="k">new</span> List&lt;<span class="k">string</span>&gt; { <span class="s">"Tie"</span>, <span class="s">"Shirt"</span> }, Sobriety.Tipsy);
+<span class="k">var</span> costKen <span class="o">=</span> ClubbedToDeath.CostToEnter(Ken);  <span class="c">// Success 5</span>
+</pre></td></tr></table>
+
+<p>We can even use pattern matching on the result:</p>
+
+<table class="pre"><tr><td><pre lang="csharp"><span class="k">var</span> Ruby <span class="o">=</span> <span class="k">new</span> Person(Gender.Female, 25, <span class="k">new</span> List&lt;<span class="k">string</span>&gt; { <span class="s">"High heels"</span> }, Sobriety.Tipsy);
+<span class="k">var</span> costRuby <span class="o">=</span> ClubbedToDeath.CostToEnter(Ruby);
+costRuby.Match(
+    (x, msgs) <span class="o">=</span><span class="o">&gt;</span> {
+        Console.WriteLine(<span class="s">"Cost for Ruby: {0}"</span>, x);
+    },
+    msgs <span class="o">=</span><span class="o">&gt;</span> {
+        Console.WriteLine(<span class="s">"Ruby is not allowed to enter: {0}"</span>, msgs);
+    });</pre></td></tr></table>
+
+
+        </div>
+        <div class="span3">
+          <img src="/Chessie/img/logo.png" alt="F# Project" style="width:150px;margin:10px" />  
+          <ul class="nav nav-list" id="menu" style="margin-top: 20px;">
+            <li class="nav-header">Chessie</li>
+            <li><a href="/Chessie/index.html">Home page</a></li>
+            <li class="divider"></li>
+            <li><a href="http://nuget.org/packages/Chessie">Get Library via NuGet</a></li>
+            <li><a href="http://github.com/fsprojects/Chessie">Source Code on GitHub</a></li>
+            <li><a href="/Chessie/license.html">License</a></li>
+            <li><a href="/Chessie/release-notes.html">Release Notes</a></li>
+            
+            <li class="nav-header">F# Articles</li>
+            <li><a href="/Chessie/railway.html">Railway-oriented programming</a></li>
+            <li class="nav-header">C# Articles</li>
+            <li><a href="/Chessie/a-tale-of-3-nightclubs.html">A Tale of 3 Nightclubs</a></li>              
+
+            <li class="nav-header">Documentation</li>
+            <li><a href="/Chessie/reference/index.html">API Reference</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <a href="http://github.com/fsprojects/Chessie"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"/></a>
+  </body>
+  </html>
