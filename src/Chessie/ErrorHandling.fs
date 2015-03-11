@@ -30,8 +30,8 @@ type Result<'TSuccess, 'TMessage> =
     override this.ToString() =
         match this with
         | Ok(v,msgs) -> sprintf "OK: %A - %s" v (String.Join(Environment.NewLine, msgs |> Seq.map (fun x -> x.ToString())))
-        | Fail(msgs) -> sprintf "Error: %s" (String.Join(Environment.NewLine, msgs |> Seq.map (fun x -> x.ToString())))
-    
+        | Fail(msgs) -> sprintf "Error: %s" (String.Join(Environment.NewLine, msgs |> Seq.map (fun x -> x.ToString())))    
+
 [<AutoOpen>]
 /// Basic combinators and operators for error handling.
 module Combinators =       
@@ -301,3 +301,10 @@ type ResultExtensions () =
 
     [<Extension>]
     static member Select (o, f: Func<_,_>) = lift f.Invoke o
+
+    /// Returns the given message or fails if the result was a success.
+    [<Extension>]
+    static member FailedWith(this) = 
+        match this with
+        | Ok(v,msgs) -> failwithf "Result was a success: %A - %s" v (String.Join(Environment.NewLine, msgs |> Seq.map (fun x -> x.ToString())))
+        | Fail(msgs) -> msgs

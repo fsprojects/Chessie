@@ -131,7 +131,7 @@ namespace Chessie.CSharp.Test
         public void Part1()
         {
             var costDave = ClubbedToDeath.CostToEnter(Dave);
-            Assert.AreEqual(Result<decimal, string>.FailWith("Too old!"), costDave);
+            Assert.AreEqual("Too old!", costDave.FailedWith().First());
 
             var costKen = ClubbedToDeath.CostToEnter(Ken);
             Assert.AreEqual(Result<decimal, string>.Succeed(5m), costKen);
@@ -145,7 +145,7 @@ namespace Chessie.CSharp.Test
                 sobriety: Ruby.Sobriety,
                 gender: Ruby.Gender);
             var costRuby17 = ClubbedToDeath.CostToEnter(Ruby17);
-            Assert.AreEqual(Result<decimal, string>.FailWith("Too young!"), costRuby17);
+            Assert.AreEqual("Too young!", costRuby17.FailedWith().First());
 
             var KenUnconscious = new Person(
                 age: Ken.Age,
@@ -153,7 +153,8 @@ namespace Chessie.CSharp.Test
                 gender: Ken.Gender,
                 sobriety: Sobriety.Unconscious);
             var costKenUnconscious = ClubbedToDeath.CostToEnter(KenUnconscious);
-           Assert.AreEqual(Result<decimal, string>.FailWith("Sober up!"), costKenUnconscious);
+
+            Assert.AreEqual("Sober up!", costKenUnconscious.FailedWith().First());
 
             /**
              * The thing to note here is how the Validations can be composed together in a computation expression.
