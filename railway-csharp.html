@@ -35,7 +35,8 @@
           
 <h1><a name="Using-Chessie-for-Railway-oriented-programming-ROP" class="anchor" href="#Using-Chessie-for-Railway-oriented-programming-ROP">Using Chessie for Railway-oriented programming (ROP)</a></h1>
 
-<p>This C# tutorial is based on an article about <a href="http://fsharpforfunandprofit.com/posts/recipe-part2/">Railway-oriented programming</a> by Scott Wlaschin.</p>
+<p>This C# tutorial is based on an article about <a href="http://fsharpforfunandprofit.com/posts/recipe-part2/">Railway-oriented programming</a> by Scott Wlaschin and
+a <a href="https://github.com/fsprojects/fsharpx/blob/master/tests/FSharpx.CSharpTests/ValidationExample.cs">tutorial</a> by Mauricio Scheffer.</p>
 
 <p>Additional resources:</p>
 
@@ -47,50 +48,96 @@
 </ul></li>
 </ul>
 
-<p>We start by referencing Chessie and opening the ErrorHandling module:</p>
+<p>We start by referencing Chessie and opening the ErrorHandling module and define a simple domain for nightclubs:</p>
 
 <table class="pre"><tr><td><pre lang="csharp"><span class="k">using</span> Chessie.ErrorHandling;
 <span class="k">using</span> Chessie.ErrorHandling.CSharp;
-</pre></td></tr></table>
 
-<p>Now we define some simple validation functions:</p>
 
-<table class="pre"><tr><td><pre lang="csharp"><span class="k">public</span> <span class="k">class</span> Request
+<span class="k">enum</span> Sobriety { Sober, Tipsy, Drunk, Paralytic, Unconscious }
+<span class="k">enum</span> Gender { Male, Female }
+
+<span class="k">class</span> Person
 {
-    <span class="k">public</span> <span class="k">string</span> Name { get; set; }
-    <span class="k">public</span> <span class="k">string</span> EMail { get; set; }
-}
+    <span class="k">public</span> Gender Gender { get; <span class="k">private</span> set; }
+    <span class="k">public</span> <span class="k">int</span> Age { get; <span class="k">private</span> set; }
+    <span class="k">public</span> List&lt;<span class="k">string</span>&gt; Clothes { get; <span class="k">private</span> set; }
+    <span class="k">public</span> Sobriety Sobriety { get; <span class="k">private</span> set; }
 
-
-<span class="k">public</span> <span class="k">class</span> Validation
-{
-    <span class="k">public</span> <span class="k">static</span> Result&lt;Request, <span class="k">string</span>&gt; ValidateInput(Request input)
+    <span class="k">public</span> Person(Gender gender, <span class="k">int</span> age, List&lt;<span class="k">string</span>&gt; clothes, Sobriety sobriety)
     {
-        <span class="k">if</span> (input.Name <span class="o">=</span><span class="o">=</span> <span class="s">""</span>)
-            <span class="k">return</span> Result&lt;Request, <span class="k">string</span>&gt;.FailWith(<span class="s">"Name must not be blank"</span>);
-        <span class="k">if</span> (input.EMail <span class="o">=</span><span class="o">=</span> <span class="s">""</span>)
-            <span class="k">return</span> Result&lt;Request, <span class="k">string</span>&gt;.FailWith(<span class="s">"Email must not be blank"</span>);
-        <span class="k">return</span> Result&lt;Request, <span class="k">string</span>&gt;.Succeed(input);
-
+        <span class="k">this</span>.Gender <span class="o">=</span> gender;
+        <span class="k">this</span>.Age <span class="o">=</span> age;
+        <span class="k">this</span>.Clothes <span class="o">=</span> clothes;
+        <span class="k">this</span>.Sobriety <span class="o">=</span> sobriety;
     }
 }
 </pre></td></tr></table>
 
-<p>Let's use the validation:</p>
+<p>Now we define some validation methods that all nightclubs will perform:</p>
 
-<table class="pre"><tr><td><pre lang="csharp"><span class="k">var</span> request <span class="o">=</span> <span class="k">new</span> Request { Name <span class="o">=</span> <span class="s">"Steffen"</span>, EMail <span class="o">=</span> <span class="s">"mail@support.com"</span> };
-<span class="k">var</span> result <span class="o">=</span> Validation.ValidateInput(request); <span class="c">// Success</span>
+<table class="pre"><tr><td><pre lang="csharp"><span class="k">class</span> Club
+{
+    <span class="k">public</span> <span class="k">static</span> Result&lt;Person, <span class="k">string</span>&gt; CheckAge(Person p)
+    {
+        <span class="k">if</span> (p.Age <span class="o">&lt;</span> 18)
+            <span class="k">return</span> Result&lt;Person, <span class="k">string</span>&gt;.FailWith(<span class="s">"Too young!"</span>);
+        <span class="k">if</span> (p.Age <span class="o">&gt;</span> 40)
+            <span class="k">return</span> Result&lt;Person, <span class="k">string</span>&gt;.FailWith(<span class="s">"Too old!"</span>);
+        <span class="k">return</span> Result&lt;Person, <span class="k">string</span>&gt;.Succeed(p);
+    }
+
+    <span class="k">public</span> <span class="k">static</span> Result&lt;Person, <span class="k">string</span>&gt; CheckClothes(Person p)
+    {
+        <span class="k">if</span> (p.Gender <span class="o">=</span><span class="o">=</span> Gender.Male <span class="o">&amp;</span><span class="o">&amp;</span> !p.Clothes.Contains(<span class="s">"Tie"</span>))
+            <span class="k">return</span> Result&lt;Person, <span class="k">string</span>&gt;.FailWith(<span class="s">"Smarten up!"</span>);
+        <span class="k">if</span> (p.Gender <span class="o">=</span><span class="o">=</span> Gender.Female <span class="o">&amp;</span><span class="o">&amp;</span> p.Clothes.Contains(<span class="s">"Trainers"</span>))
+            <span class="k">return</span> Result&lt;Person, <span class="k">string</span>&gt;.FailWith(<span class="s">"Wear high heels!"</span>);
+        <span class="k">return</span> Result&lt;Person, <span class="k">string</span>&gt;.Succeed(p);
+    }
+
+    <span class="k">public</span> <span class="k">static</span> Result&lt;Person, <span class="k">string</span>&gt; CheckSobriety(Person p)
+    {
+        <span class="k">if</span> (<span class="k">new</span>[] { Sobriety.Drunk, Sobriety.Paralytic, Sobriety.Unconscious }.Contains(p.Sobriety))
+            <span class="k">return</span> Result&lt;Person, <span class="k">string</span>&gt;.FailWith(<span class="s">"Sober up!"</span>);
+        <span class="k">return</span> Result&lt;Person, <span class="k">string</span>&gt;.Succeed(p);
+    }
+}
 </pre></td></tr></table>
 
-<p>We can even pattern match on the result:</p>
+<p>We can combine the validation via syntactic sugar and LINQ:</p>
 
-<table class="pre"><tr><td><pre lang="csharp">result.Match(
+<table class="pre"><tr><td><pre lang="csharp"><span class="k">class</span> ClubbedToDeath
+{
+    <span class="k">public</span> <span class="k">static</span> Result&lt;<span class="k">decimal</span>, <span class="k">string</span>&gt; CostToEnter(Person p)
+    {
+        <span class="k">return</span> <span class="k">from</span> a <span class="k">in</span> Club.CheckAge(p)
+               <span class="k">from</span> b <span class="k">in</span> Club.CheckClothes(a)
+               <span class="k">from</span> c <span class="k">in</span> Club.CheckSobriety(b)
+               <span class="k">select</span> c.Gender <span class="o">=</span><span class="o">=</span> Gender.Female <span class="o">?</span> 0m <span class="o">:</span> 5m;
+    }
+}
+</pre></td></tr></table>
+
+<p>Let's see how the validation works in action:</p>
+
+<table class="pre"><tr><td><pre lang="csharp"><span class="k">var</span> Dave <span class="o">=</span> <span class="k">new</span> Person(Gender.Male, 41, <span class="k">new</span> List&lt;<span class="k">string</span>&gt; { <span class="s">"Tie"</span>, <span class="s">"Jeans"</span> }, Sobriety.Sober);
+<span class="k">var</span> costDave <span class="o">=</span> ClubbedToDeath.CostToEnter(Dave); <span class="c">// Error "Too old!"</span>
+
+<span class="k">var</span> Ken <span class="o">=</span> <span class="k">new</span> Person(Gender.Male, 28, <span class="k">new</span> List&lt;<span class="k">string</span>&gt; { <span class="s">"Tie"</span>, <span class="s">"Shirt"</span> }, Sobriety.Tipsy);
+<span class="k">var</span> costKen <span class="o">=</span> ClubbedToDeath.CostToEnter(Ken);  <span class="c">// Success 5</span>
+</pre></td></tr></table>
+
+<p>We can even use pattern matching on the result:</p>
+
+<table class="pre"><tr><td><pre lang="csharp"><span class="k">var</span> Ruby <span class="o">=</span> <span class="k">new</span> Person(Gender.Female, 25, <span class="k">new</span> List&lt;<span class="k">string</span>&gt; { <span class="s">"High heels"</span> }, Sobriety.Tipsy);
+<span class="k">var</span> costRuby <span class="o">=</span> ClubbedToDeath.CostToEnter(Ruby);
+costRuby.Match(
     (x, msgs) <span class="o">=</span><span class="o">&gt;</span> {
-        Console.WriteLine(<span class="s">"Value: {0}"</span>, x);
-        Console.WriteLine(<span class="s">"Messages: {0}"</span>, msgs);
+        Console.WriteLine(<span class="s">"Cost for Ruby: {0}"</span>, x);
     },
     msgs <span class="o">=</span><span class="o">&gt;</span> {
-        Console.WriteLine(<span class="s">"Error-Messages: {0}"</span>, msgs);
+        Console.WriteLine(<span class="s">"Ruby is not allowed to enter: {0}"</span>, msgs);
     });</pre></td></tr></table>
 
 
