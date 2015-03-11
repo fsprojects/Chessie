@@ -36,7 +36,7 @@ namespace Chessie.CSharp.Test
         {
             var request = new Request { Name = "Steffen", EMail = "mail@support.com" };
             var result = Validation.ValidateInput(request);
-            Assert.AreEqual(Result<Request, string>.Succeed(request), result);
+            Assert.AreEqual(request, result.SucceededWith());
         }
     }
 

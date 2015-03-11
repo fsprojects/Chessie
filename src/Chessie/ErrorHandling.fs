@@ -302,9 +302,16 @@ type ResultExtensions () =
     [<Extension>]
     static member Select (o, f: Func<_,_>) = lift f.Invoke o
 
-    /// Returns the given message or fails if the result was a success.
+    /// Returns the error messages or fails if the result was a success.
     [<Extension>]
-    static member FailedWith(this) = 
+    static member FailedWith(this:Result<'TSuccess, 'TMessage>) = 
         match this with
         | Ok(v,msgs) -> failwithf "Result was a success: %A - %s" v (String.Join(Environment.NewLine, msgs |> Seq.map (fun x -> x.ToString())))
         | Fail(msgs) -> msgs
+
+    /// Returns the result or fails if the result was an error.
+    [<Extension>]
+    static member SucceededWith(this:Result<'TSuccess, 'TMessage>) : 'TSuccess = 
+        match this with
+        | Ok(v,msgs) -> v
+        | Fail(msgs) -> failwithf "Result was an error: %s" (String.Join(Environment.NewLine, msgs |> Seq.map (fun x -> x.ToString())))
