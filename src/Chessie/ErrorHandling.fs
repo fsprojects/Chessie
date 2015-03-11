@@ -281,9 +281,12 @@ type ResultExtensions () =
     [<Extension>]
     /// Collects a sequence of Results and accumulates their values.
     /// If the sequence contains an error the error will be propagated.
-    static member inline Flatten(value) : Result<'a list,'b>=
+    static member inline Flatten(value) : Result<seq<'a>,'b>=
         match value with
-        | Ok(values:Result<'a,'b> seq, msgs:'b list) -> collect values
+        | Ok(values:Result<'a,'b> seq, msgs:'b list) -> 
+            match collect values with
+            | Ok(values,msgs) -> Ok(values |> List.toSeq,msgs)
+            | Fail(msgs:'b list) -> Fail msgs
         | Fail(msgs:'b list) -> Fail msgs
 
     [<Extension>]
