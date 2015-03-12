@@ -315,3 +315,12 @@ type ResultExtensions () =
         match this with
         | Ok(v,msgs) -> v
         | Fail(msgs) -> failwithf "Result was an error: %s" (String.Join(Environment.NewLine, msgs |> Seq.map (fun x -> x.ToString())))
+
+    
+    [<Extension>]
+    /// Executes the given function on a given success or captures the failure
+    static member inline Try(func: Func<_>) =        
+        try
+            ok(func.Invoke())
+        with
+        | exn -> fail exn
