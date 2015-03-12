@@ -26,6 +26,13 @@ type Result<'TSuccess, 'TMessage> =
     /// Creates a Success result with the given value and the given message.
     static member Succeed(value:'TSuccess,messages:'TMessage seq) : Result<'TSuccess, 'TMessage> = Result<'TSuccess, 'TMessage>.Ok(value,messages |> Seq.toList)
 
+    /// Executes the given function on a given success or captures the failure
+    static member Try(func: Func<_>) : Result<'TSuccess,exn> =        
+        try
+            Ok(func.Invoke(),[])
+        with
+        | exn -> Fail[exn]
+
     /// Converts the result into a string.
     override this.ToString() =
         match this with
@@ -249,16 +256,6 @@ namespace Chessie.ErrorHandling.CSharp
 open System
 open System.Runtime.CompilerServices
 open Chessie.ErrorHandling
-
-[<AutoOpen>]
-module Extensions =
-    type Result<'TSuccess,'Message> with
-        /// Executes the given function on a given success or captures the failure
-        static member Try(func: Func<_>) : Result<'TSuccess,exn> =        
-            try
-                ok(func.Invoke())
-            with
-            | exn -> fail exn
 
 [<Extension>]
 /// Extensions methods for easier C# usage.

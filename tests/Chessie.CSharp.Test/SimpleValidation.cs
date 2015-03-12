@@ -29,6 +29,25 @@ namespace Chessie.CSharp.Test
     }
 
     [TestFixture]
+    public class TrySpecs
+    {
+        [Test]
+        public void TryWillCatch()
+        {
+            var exn = new Exception("Hello World");
+            var result = Result<string, Exception>.Try(() => { throw exn; });
+            Assert.AreEqual(exn, result.FailedWith().First());
+        }
+
+        [Test]
+        public void TryWillReturnValue()
+        {
+            var result = Result<string, Exception>.Try(() => { return "hello world"; });
+            Assert.AreEqual("hello world", result.SucceededWith());
+        }
+    }
+
+    [TestFixture]
     public class SimpleValidation
     {
         [Test]
