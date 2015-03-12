@@ -2,9 +2,9 @@
 <html lang="en">
   <head>
     <meta charset="utf-8"/>
-    <title>release-notes</title>
+    <title>Extensions - Chessie</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta name="description" content="Railway-oriented programming for .NET"/>
+    <meta name="description" content=""/>
     <meta name="author" content="Steffen Forkmann, Max Malook, Tomasz Heimowski"/>
 
     <script src="https://code.jquery.com/jquery-1.8.0.js"></script>
@@ -32,55 +32,42 @@
       <div class="row">
         <div class="span9" id="main">
           
-<h4><a name="0-0-22-12-03-2015" class="anchor" href="#0-0-22-12-03-2015">0.0.22 - 12.03.2015</a></h4>
 
-<ul>
-<li>Improving C# support</li>
-</ul>
 
-<h4><a name="0-0-10-10-03-2015" class="anchor" href="#0-0-10-10-03-2015">0.0.10 - 10.03.2015</a></h4>
 
-<ul>
-<li>Extended the builder class - <a href="https://github.com/fsprojects/Chessie/pull/11">https://github.com/fsprojects/Chessie/pull/11</a></li>
-<li>New asyncTrial builder class - <a href="https://github.com/fsprojects/Chessie/pull/12">https://github.com/fsprojects/Chessie/pull/12</a></li>
-</ul>
+<h1>Extensions</h1>
+<div class="xmldoc">
+</div>
 
-<h4><a name="0-0-9-04-03-2015" class="anchor" href="#0-0-9-04-03-2015">0.0.9 - 04.03.2015</a></h4>
+<!-- Render nested types and modules, if there are any -->
 
-<ul>
-<li>Improving C# support</li>
-</ul>
+  <h3>Type extensions</h3>
+  <table class="table table-bordered member-list">
+    <thead>
+      <tr><td>Type extension</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="member-name">
 
-<h4><a name="0-0-8-04-03-2015" class="anchor" href="#0-0-8-04-03-2015">0.0.8 - 04.03.2015</a></h4>
+          <code onmouseout="hideTip(event, '26', 26)" onmouseover="showTip(event, '26', 26)">
+            Try(func)
+          </code>
+          <div class="tip" id="26">
+            <strong>Signature:</strong> func:Func&lt;&#39;TSuccess&gt; -&gt; Result&lt;&#39;TSuccess,exn&gt;<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L257-257" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          <p>Executes the given function on a given success or captures the failure</p>
 
-<ul>
-<li>Added dependency on FSharp.Core nuget package</li>
-</ul>
-
-<h4><a name="0-0-7-28-02-2015" class="anchor" href="#0-0-7-28-02-2015">0.0.7 - 28.02.2015</a></h4>
-
-<ul>
-<li>Added eitherTee - <a href="https://github.com/fsprojects/Chessie/pull/7">https://github.com/fsprojects/Chessie/pull/7</a></li>
-</ul>
-
-<h4><a name="0-0-6-27-02-2015" class="anchor" href="#0-0-6-27-02-2015">0.0.6 - 27.02.2015</a></h4>
-
-<ul>
-<li>First iteration on naming</li>
-</ul>
-
-<h4><a name="0-0-2-27-02-2015" class="anchor" href="#0-0-2-27-02-2015">0.0.2 - 27.02.2015</a></h4>
-
-<ul>
-<li>XML-docs added</li>
-</ul>
-
-<h4><a name="0-0-1-26-02-2015" class="anchor" href="#0-0-1-26-02-2015">0.0.1 - 26.02.2015</a></h4>
-
-<ul>
-<li>Extracted ROP from Paket</li>
-</ul>
-
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
         </div>
         <div class="span3">
