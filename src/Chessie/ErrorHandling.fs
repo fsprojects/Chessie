@@ -255,34 +255,34 @@ open Chessie.ErrorHandling
 type ResultExtensions () =
     [<Extension>]
     /// Allows pattern matching on Results from C#.
-    static member inline Match(value, ifSuccess:Action<'TSuccess , ('TMessage list)>, ifFailure:Action<'TMessage list>) =
-        match value with
+    static member inline Match(this, ifSuccess:Action<'TSuccess , ('TMessage list)>, ifFailure:Action<'TMessage list>) =
+        match this with
         | Ok(x, msgs) -> ifSuccess.Invoke(x,msgs)
         | Fail(msgs) -> ifFailure.Invoke(msgs)
 
     [<Extension>]
     /// Allows pattern matching on Results from C#.
-    static member inline Either(value, ifSuccess:Func<'TSuccess , ('TMessage list),'TResult>, ifFailure:Func<'TMessage list,'TResult>) =
-        match value with
+    static member inline Either(this, ifSuccess:Func<'TSuccess , ('TMessage list),'TResult>, ifFailure:Func<'TMessage list,'TResult>) =
+        match this with
         | Ok(x, msgs) -> ifSuccess.Invoke(x,msgs)
         | Fail(msgs) -> ifFailure.Invoke(msgs)
 
     [<Extension>]
     /// Lifts a Func into a Result and applies it on the given result.
-    static member inline Map(value,func:Func<_,_>) =
+    static member inline Map(value:Result<'TSuccess, 'TMessage>,func:Func<_,_>) =
         lift func.Invoke value
 
     [<Extension>]
     /// Collects a sequence of Results and accumulates their values.
     /// If the sequence contains an error the error will be propagated.
-    static member inline Collect(values) =
+    static member inline Collect(values) : Result<'TSuccess list, 'TMessage> =
         collect values
 
     [<Extension>]
     /// Collects a sequence of Results and accumulates their values.
     /// If the sequence contains an error the error will be propagated.
-    static member inline Flatten(value) : Result<seq<'a>,'b>=
-        match value with
+    static member inline Flatten(this) : Result<seq<'a>,'b>=
+        match this with
         | Ok(values:Result<'a,'b> seq, msgs:'b list) -> 
             match collect values with
             | Ok(values,msgs) -> Ok(values |> List.toSeq,msgs)
@@ -290,28 +290,28 @@ type ResultExtensions () =
         | Fail(msgs:'b list) -> Fail msgs
 
     [<Extension>]
-    static member inline SelectMany (o, f: Func<_,_>) =
-        bind f.Invoke o
+    static member inline SelectMany (this:Result<'TSuccess, 'TMessage>, func: Func<_,_>) =
+        bind func.Invoke this
 
     [<Extension>]
-    static member SelectMany (o, f: Func<_,_>, mapper: Func<_,_,_>) =
+    static member inline SelectMany (this:Result<'TSuccess, 'TMessage>, func: Func<_,_>, mapper: Func<_,_,_>) =
         let mapper = lift2 (fun a b -> mapper.Invoke(a,b))
-        let v = bind f.Invoke o
-        mapper o v
+        let v = bind func.Invoke this
+        mapper this v
 
     [<Extension>]
-    static member Select (o, f: Func<_,_>) = lift f.Invoke o
+    static member inline Select (this:Result<'TSuccess, 'TMessage>, func: Func<_,_>) = lift func.Invoke this
 
     /// Returns the error messages or fails if the result was a success.
     [<Extension>]
-    static member FailedWith(this:Result<'TSuccess, 'TMessage>) = 
+    static member inline FailedWith(this:Result<'TSuccess, 'TMessage>) = 
         match this with
         | Ok(v,msgs) -> failwithf "Result was a success: %A - %s" v (String.Join(Environment.NewLine, msgs |> Seq.map (fun x -> x.ToString())))
         | Fail(msgs) -> msgs
 
     /// Returns the result or fails if the result was an error.
     [<Extension>]
-    static member SucceededWith(this:Result<'TSuccess, 'TMessage>) : 'TSuccess = 
+    static member inline SucceededWith(this:Result<'TSuccess, 'TMessage>) : 'TSuccess = 
         match this with
         | Ok(v,msgs) -> v
         | Fail(msgs) -> failwithf "Result was an error: %s" (String.Join(Environment.NewLine, msgs |> Seq.map (fun x -> x.ToString())))
