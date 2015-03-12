@@ -250,9 +250,20 @@ open System
 open System.Runtime.CompilerServices
 open Chessie.ErrorHandling
 
+[<AutoOpen>]
+module Extensions =
+    type Result<'TSuccess,'Message> with
+        /// Executes the given function on a given success or captures the failure
+        static member Try(func: Func<_>) : Result<'TSuccess,exn> =        
+            try
+                ok(func.Invoke())
+            with
+            | exn -> fail exn
+
 [<Extension>]
 /// Extensions methods for easier C# usage.
 type ResultExtensions () =
+
     [<Extension>]
     /// Allows pattern matching on Results from C#.
     static member inline Match(this, ifSuccess:Action<'TSuccess , ('TMessage list)>, ifFailure:Action<'TMessage list>) =
@@ -315,12 +326,3 @@ type ResultExtensions () =
         match this with
         | Ok(v,msgs) -> v
         | Fail(msgs) -> failwithf "Result was an error: %s" (String.Join(Environment.NewLine, msgs |> Seq.map (fun x -> x.ToString())))
-
-    
-    [<Extension>]
-    /// Executes the given function on a given success or captures the failure
-    static member inline Try(func: Func<_>) =        
-        try
-            ok(func.Invoke())
-        with
-        | exn -> fail exn
