@@ -3,11 +3,10 @@ namespace Chessie.ErrorHandling
 
 open System
 
- 
 /// Represents the result of a computation.
 type Result<'TSuccess, 'TMessage> = 
     /// Represents the result of a successful computation.
-    | Ok of 'TSuccess * 'TMessage list
+    | Okay of 'TSuccess * 'TMessage list
     /// Represents the result of a failed computation.
     | Fail of 'TMessage list
 
@@ -18,25 +17,28 @@ type Result<'TSuccess, 'TMessage> =
     static member FailWith(message:'TMessage) : Result<'TSuccess, 'TMessage> = Result<'TSuccess, 'TMessage>.Fail([message])
     
     /// Creates a Success result with the given value.
-    static member Succeed(value:'TSuccess) : Result<'TSuccess, 'TMessage> = Result<'TSuccess, 'TMessage>.Ok(value,[])
+    static member Succeed(value:'TSuccess) : Result<'TSuccess, 'TMessage> = Result<'TSuccess, 'TMessage>.Okay(value,[])
 
     /// Creates a Success result with the given value and the given message.
-    static member Succeed(value:'TSuccess,message:'TMessage) : Result<'TSuccess, 'TMessage> = Result<'TSuccess, 'TMessage>.Ok(value,[message])
+    static member Succeed(value:'TSuccess,message:'TMessage) : Result<'TSuccess, 'TMessage> = Result<'TSuccess, 'TMessage>.Okay(value,[message])
 
     /// Creates a Success result with the given value and the given message.
-    static member Succeed(value:'TSuccess,messages:'TMessage seq) : Result<'TSuccess, 'TMessage> = Result<'TSuccess, 'TMessage>.Ok(value,messages |> Seq.toList)
+    static member Succeed(value:'TSuccess,messages:'TMessage seq) : Result<'TSuccess, 'TMessage> = Result<'TSuccess, 'TMessage>.Okay(value,messages |> Seq.toList)
 
     /// Converts the result into a string.
     override this.ToString() =
         match this with
-        | Ok(v,msgs) -> sprintf "OK: %A - %s" v (String.Join(Environment.NewLine, msgs |> Seq.map (fun x -> x.ToString())))
+        | Okay(v,msgs) -> sprintf "OK: %A - %s" v (String.Join(Environment.NewLine, msgs |> Seq.map (fun x -> x.ToString())))
         | Fail(msgs) -> sprintf "Error: %s" (String.Join(Environment.NewLine, msgs |> Seq.map (fun x -> x.ToString())))    
 
-[<AutoOpen>]
 /// Basic combinators and operators for error handling.
-module Combinators =       
+[<AutoOpen>]
+module Trial =  
     /// Wraps a value in a Success
-    let inline ok<'TSuccess,'TMessage> (x:'TSuccess) : Result<'TSuccess,'TMessage> = Ok(x, [])
+    let inline ok<'TSuccess,'TMessage> (x:'TSuccess) : Result<'TSuccess,'TMessage> = Okay(x, [])
+
+    /// Wraps a value in a Success and adds a message
+    let inline warn<'TSuccess,'TMessage> (msg:'TMessage) (x:'TSuccess) : Result<'TSuccess,'TMessage> = Result.Succeed (x,msg)
 
     /// Wraps a message in a Failure
     let inline fail<'TSuccess,'Message> (msg:'Message) : Result<'TSuccess,'Message> = Fail([ msg ])
@@ -50,7 +52,7 @@ module Combinators =
     /// Takes a Result and maps it with fSuccess if it is a Success otherwise it maps it with fFailure.
     let inline either fSuccess fFailure trialResult = 
         match trialResult with
-        | Ok(x, msgs) -> fSuccess (x, msgs)
+        | Okay(x, msgs) -> fSuccess (x, msgs)
         | Fail(msgs) -> fFailure (msgs)
 
     /// If the given result is a Success the wrapped value will be returned. 
@@ -65,7 +67,7 @@ module Combinators =
 
     /// Appends the given messages with the messages in the given result.
     let inline mergeMessages msgs result = 
-        let inline fSuccess (x, msgs2) = Ok(x, msgs @ msgs2)
+        let inline fSuccess (x, msgs2) = Okay(x, msgs @ msgs2)
         let inline fFailure errs = Fail(errs @ msgs)
         either fSuccess fFailure result
 
@@ -89,9 +91,9 @@ module Combinators =
     /// Otherwise the exisiting error messages are propagated.
     let inline apply wrappedFunction result = 
         match wrappedFunction, result with
-        | Ok(f, msgs1), Ok(x, msgs2) -> Ok(f x, msgs1 @ msgs2)
-        | Fail errs, Ok(_, msgs) -> Fail(errs)
-        | Ok(_, msgs), Fail errs -> Fail(errs)
+        | Okay(f, msgs1), Okay(x, msgs2) -> Okay(f x, msgs1 @ msgs2)
+        | Fail errs, Okay(_, msgs) -> Fail(errs)
+        | Okay(_, msgs), Fail errs -> Fail(errs)
         | Fail errs1, Fail errs2 -> Fail(errs1)
 
     /// If the wrapped function is a success and the given result is a success the function is applied on the value. 
@@ -113,9 +115,7 @@ module Combinators =
     /// If the result is a Failure it executes the given failure function on the messages.
     /// Result is propagated unchanged.
     let inline eitherTee fSuccess fFailure result =
-        let inline tee f x =
-            f x
-            x
+        let inline tee f x = f x; x;
         tee (either fSuccess fFailure) result
 
     /// If the result is a Success it executes the given function on the value and the messages.
@@ -133,8 +133,8 @@ module Combinators =
     let inline collect xs = 
         Seq.fold (fun result next -> 
             match result, next with
-            | Ok(rs, m1), Ok(r, m2) -> Ok(r :: rs, m1 @ m2)
-            | Ok(_, m1), Fail(m2) | Fail(m1), Ok(_, m2) -> Fail(m1 @ m2)
+            | Okay(rs, m1), Okay(r, m2) -> Okay(r :: rs, m1 @ m2)
+            | Okay(_, m1), Fail(m2) | Fail(m1), Okay(_, m2) -> Fail(m1 @ m2)
             | Fail(m1), Fail(m2) -> Fail(m1 @ m2)) (ok []) xs
         |> lift List.rev
 
@@ -182,22 +182,34 @@ module Combinators =
     /// Wraps computations in an error handling computation expression.
     let trial = ErrorHandlingBuilder()
 
+/// Represents the result of an async computation
 type AsyncResult<'a, 'b> = 
     | AR of Async<Result<'a, 'b>>
 
+/// Useful functions for combining error handling computations with async computations.
 [<AutoOpen>]
 module AsyncExtensions = 
+    /// Useful functions for combining error handling computations with async computations.
     [<RequireQualifiedAccess>]
     module Async = 
+        /// Creates an async computation that return the given value
         let singleton value = value |> async.Return
+
+        /// Creates an async computation that runs a computation and
+        /// when it generates a result run a binding function on the said result
         let bind f x = async.Bind(x, f)
+
+        /// Creates an async computation that runs a mapping function on the result of an async computation
         let map f x = x |> bind (f >> singleton)
+
+        /// Creates an async computation from an asyncTrial computation
         let ofAsyncResult (AR x) = x
 
+/// Basic support for async error handling computation
 [<AutoOpen>]
 module AsyncTrial = 
+    /// Builder type for error handling in async computation expressions.
     type AsyncTrialBuilder() = 
-        
         member __.Return value : AsyncResult<'a, 'b> = 
             value
             |> ok
@@ -242,6 +254,7 @@ module AsyncTrial =
         member __.Using(resource : 'T when 'T :> System.IDisposable, binder : 'T -> AsyncResult<'a, 'b>) : AsyncResult<'a, 'b> = 
             async.Using(resource, (binder >> Async.ofAsyncResult)) |> AR
     
+    // Wraps async computations in an error handling computation expression.
     let asyncTrial = AsyncTrialBuilder()
 
 namespace Chessie.ErrorHandling.CSharp
@@ -250,55 +263,61 @@ open System
 open System.Runtime.CompilerServices
 open Chessie.ErrorHandling
 
-[<Extension>]
 /// Extensions methods for easier C# usage.
+[<Extension>]
 type ResultExtensions () =
-    [<Extension>]
     /// Allows pattern matching on Results from C#.
+    [<Extension>]
     static member inline Match(value, ifSuccess:Action<'TSuccess , ('TMessage list)>, ifFailure:Action<'TMessage list>) =
         match value with
-        | Ok(x, msgs) -> ifSuccess.Invoke(x,msgs)
+        | Okay(x, msgs) -> ifSuccess.Invoke(x,msgs)
         | Fail(msgs) -> ifFailure.Invoke(msgs)
-
-    [<Extension>]
+    
     /// Allows pattern matching on Results from C#.
+    [<Extension>]
     static member inline Either(value, ifSuccess:Func<'TSuccess , ('TMessage list),'TResult>, ifFailure:Func<'TMessage list,'TResult>) =
         match value with
-        | Ok(x, msgs) -> ifSuccess.Invoke(x,msgs)
+        | Okay(x, msgs) -> ifSuccess.Invoke(x,msgs)
         | Fail(msgs) -> ifFailure.Invoke(msgs)
 
-    [<Extension>]
     /// Lifts a Func into a Result and applies it on the given result.
+    [<Extension>]
     static member inline Map(value,func:Func<_,_>) =
         lift func.Invoke value
 
-    [<Extension>]
     /// Collects a sequence of Results and accumulates their values.
     /// If the sequence contains an error the error will be propagated.
+    [<Extension>]
     static member inline Collect(values) =
         collect values
 
-    [<Extension>]
     /// Collects a sequence of Results and accumulates their values.
     /// If the sequence contains an error the error will be propagated.
+    [<Extension>]
     static member inline Flatten(value) : Result<seq<'a>,'b>=
         match value with
-        | Ok(values:Result<'a,'b> seq, msgs:'b list) -> 
+        | Okay(values:Result<'a,'b> seq, msgs:'b list) -> 
             match collect values with
-            | Ok(values,msgs) -> Ok(values |> List.toSeq,msgs)
+            | Okay(values,msgs) -> Okay(values |> List.toSeq,msgs)
             | Fail(msgs:'b list) -> Fail msgs
         | Fail(msgs:'b list) -> Fail msgs
 
+    /// If the result is a Success it executes the given Func on the value.
+    /// Otherwise the exisiting failure is propagated.
     [<Extension>]
     static member inline SelectMany (o, f: Func<_,_>) =
         bind f.Invoke o
 
+    /// If the result is a Success it executes the given Func on the value.
+    /// If the result of the Func is a Succes it maps it using the given Func.
+    /// Otherwise the exisiting failure is propagated.
     [<Extension>]
     static member SelectMany (o, f: Func<_,_>, mapper: Func<_,_,_>) =
         let mapper = lift2 (fun a b -> mapper.Invoke(a,b))
         let v = bind f.Invoke o
         mapper o v
 
+    /// Lifts a Func into a Result and applies it on the given result.
     [<Extension>]
     static member Select (o, f: Func<_,_>) = lift f.Invoke o
 
@@ -306,12 +325,12 @@ type ResultExtensions () =
     [<Extension>]
     static member FailedWith(this:Result<'TSuccess, 'TMessage>) = 
         match this with
-        | Ok(v,msgs) -> failwithf "Result was a success: %A - %s" v (String.Join(Environment.NewLine, msgs |> Seq.map (fun x -> x.ToString())))
+        | Okay(v,msgs) -> failwithf "Result was a success: %A - %s" v (String.Join(Environment.NewLine, msgs |> Seq.map (fun x -> x.ToString())))
         | Fail(msgs) -> msgs
 
     /// Returns the result or fails if the result was an error.
     [<Extension>]
     static member SucceededWith(this:Result<'TSuccess, 'TMessage>) : 'TSuccess = 
         match this with
-        | Ok(v,msgs) -> v
+        | Okay(v,msgs) -> v
         | Fail(msgs) -> failwithf "Result was an error: %s" (String.Join(Environment.NewLine, msgs |> Seq.map (fun x -> x.ToString())))
