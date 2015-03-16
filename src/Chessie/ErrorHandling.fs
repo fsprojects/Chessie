@@ -105,7 +105,7 @@ module Trial =
     let inline (<*>) wrappedFunction result = apply wrappedFunction result
 
     /// Lifts a function into a Result container and applies it on the given result.
-    let inline lift f result = apply (pass f) result
+    let inline lift f result = apply (ok f) result
 
     /// Lifts a function into a Result and applies it on the given result.
     /// This is the infix operator version of ErrorHandling.lift
@@ -138,13 +138,13 @@ module Trial =
             match result, next with
             | OK(rs, m1), OK(r, m2) -> OK(r :: rs, m1 @ m2)
             | OK(_, m1), Fail(m2) | Fail(m1), OK(_, m2) -> Fail(m1 @ m2)
-            | Fail(m1), Fail(m2) -> Fail(m1 @ m2)) (pass []) xs
+            | Fail(m1), Fail(m2) -> Fail(m1 @ m2)) (ok []) xs
         |> lift List.rev
 
     /// Converts an option into a Result.
     let inline failIfNone message result = 
         match result with
-        | Some x -> pass x
+        | Some x -> ok x
         | None -> fail message
 
     /// Categorizes a result based on its state and the presence of extra messages
@@ -161,9 +161,9 @@ module Trial =
 
     /// Builder type for error handling computation expressions.
     type TrialBuilder() = 
-        member __.Zero() = pass()
+        member __.Zero() = ok()
         member __.Bind(m, f) = bind f m
-        member __.Return(x) = pass x
+        member __.Return(x) = ok x
         member __.ReturnFrom(x) = x
         member __.Combine (a, b) = bind b a
         member __.Delay f = f
@@ -227,7 +227,7 @@ module AsyncTrial =
     type AsyncTrialBuilder() = 
         member __.Return value : AsyncResult<'a, 'b> = 
             value
-            |> pass
+            |> ok
             |> Async.singleton
             |> AR
         
