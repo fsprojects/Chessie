@@ -41,7 +41,7 @@ module Trial =
     let inline pass<'TSuccess,'TMessage> (x:'TSuccess) : Result<'TSuccess,'TMessage> = OK(x, [])
 
     /// Wraps a value in a Success and adds a message
-    let inline warn<'TSuccess,'TMessage> (msg:'TMessage) (x:'TSuccess) : Result<'TSuccess,'TMessage> = Result.Succeed (x,msg)
+    let inline warn<'TSuccess,'TMessage> (msg:'TMessage) (x:'TSuccess) : Result<'TSuccess,'TMessage> = OK(x,[msg])
 
     /// Wraps a message in a Failure
     let inline fail<'TSuccess,'Message> (msg:'Message) : Result<'TSuccess,'Message> = Fail([ msg ])
@@ -156,7 +156,7 @@ module Trial =
 
     let inline failOnWarnings result =
       match result with
-      | Warn (_,msgs) -> Fail [] |> mergeMessages msgs
+      | Warn (_,msgs) -> Fail msgs
       | _             -> result 
 
     /// Builder type for error handling computation expressions.
