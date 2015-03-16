@@ -102,6 +102,7 @@ let buildReference () =
 
 // Build documentation from `fsx` and `md` files in `docs/content`
 let buildDocumentation () =
+  let fsiEval = FsiEvaluator ()
   let subdirs = Directory.EnumerateDirectories(content, "*", SearchOption.AllDirectories)
   for dir in Seq.append [content] subdirs do
     let sub = if dir.Length > content.Length then dir.Substring(content.Length + 1) else "."
@@ -117,7 +118,8 @@ let buildDocumentation () =
       ( dir, docTemplate, output @@ sub, replacements = ("root", root)::info,
         layoutRoots = layoutRoots,
         ?assemblyReferences = references,
-        generateAnchors = true )
+        generateAnchors = true,
+        fsiEvaluator = fsiEval)
 
 // Generate
 copyFiles()

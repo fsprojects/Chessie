@@ -9,21 +9,21 @@ open System
 let ``Using CE syntax should be equivilent to bind`` () =
     let sut =
         trial {
-            let! bob = ok "bob"
+            let! bob = pass "bob"
             let greeting = sprintf "Hello %s" bob
             return greeting
         }
-    sut |> shouldEqual (bind (sprintf "Hello %s" >> ok) (ok "bob"))
+    sut |> shouldEqual (bind (sprintf "Hello %s" >> pass) (pass "bob"))
 
 [<Test>]
 let ``You should be able to "combine" in CE syntax`` () =
     let sut =
         trial {
             if "bob" = "bob" then
-                do! ok ()
+                do! pass ()
             return "bob"
         }
-    sut |> shouldEqual (ok "bob")
+    sut |> shouldEqual (pass "bob")
 
 [<Test>]
 let ``Try .. with works in CE syntax`` () =
@@ -36,7 +36,7 @@ let ``Try .. with works in CE syntax`` () =
                 with
                 | e -> e.Message
         }
-    sut |> shouldEqual (ok "bang")
+    sut |> shouldEqual (pass "bang")
 
 [<Test>]
 let ``Try .. finally works in CE syntax`` () =
@@ -49,7 +49,7 @@ let ``Try .. finally works in CE syntax`` () =
                 i := 1
         }
     with
-    | e -> ok ()
+    | e -> pass ()
     |> returnOrFail
     !i |> shouldEqual 1
 
@@ -58,11 +58,11 @@ let ``use! works in CE expressions`` () =
     use mem = new IO.MemoryStream()
     try
         trial {
-            use! mem = ok <| new IO.StreamReader(mem)
+            use! mem = pass <| new IO.StreamReader(mem)
             failwith "bang"
         }
     with
-    | e -> ok ()
+    | e -> pass ()
     |> returnOrFail
     (fun () -> mem.ReadByte() |> ignore) |> shouldFail<ObjectDisposedException>
     
