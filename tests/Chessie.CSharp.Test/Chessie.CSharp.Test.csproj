@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -40,15 +40,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="NightClubsValidation.cs" />
-    <Compile Include="SimpleValidation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SimpleValidation.cs" />
     <None Include="paket.references" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Chessie\Chessie.fsproj">
-      <Project>{5c095a65-1bf4-4c24-82d2-a07e8c258789}</Project>
+      <Project>{5C095A65-1BF4-4C24-82D2-A07E8C258789}</Project>
       <Name>Chessie</Name>
     </ProjectReference>
   </ItemGroup>
@@ -131,7 +131,6 @@
   <ItemGroup>
     <Reference Include="nunit.framework">
       <HintPath>..\..\packages\NUnit\lib\nunit.framework.dll</HintPath>
-      <Private>True</Private>
       <Paket>True</Paket>
     </Reference>
   </ItemGroup>
