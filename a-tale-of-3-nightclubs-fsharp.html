@@ -246,8 +246,8 @@ The type system is making sure that failures flow through your computation in a 
 <div class="tip" id="fs19">Multiple items<br />Person.Sobriety: Sobriety<br /><br />--------------------<br />type Sobriety =<br />&#160;&#160;| Sober<br />&#160;&#160;| Tipsy<br />&#160;&#160;| Drunk<br />&#160;&#160;| Paralytic<br />&#160;&#160;| Unconscious<br /><br />Full name: A-tale-of-3-nightclubs-fsharp.Sobriety</div>
 <div class="tip" id="fs20">val checkAge : p:Person -&gt; Result&lt;Person,string&gt;<br /><br />Full name: A-tale-of-3-nightclubs-fsharp.Club.checkAge</div>
 <div class="tip" id="fs21">val p : Person</div>
-<div class="tip" id="fs22">val fail : msg:&#39;Message -&gt; Result&lt;&#39;TSuccess,&#39;Message&gt;<br /><br />Full name: Chessie.ErrorHandling.Combinators.fail</div>
-<div class="tip" id="fs23">val ok : x:&#39;TSuccess -&gt; Result&lt;&#39;TSuccess,&#39;TMessage&gt;<br /><br />Full name: Chessie.ErrorHandling.Combinators.ok</div>
+<div class="tip" id="fs22">val fail : msg:&#39;Message -&gt; Result&lt;&#39;TSuccess,&#39;Message&gt;<br /><br />Full name: Chessie.ErrorHandling.Trial.fail</div>
+<div class="tip" id="fs23">val ok : x:&#39;TSuccess -&gt; Result&lt;&#39;TSuccess,&#39;TMessage&gt;<br /><br />Full name: Chessie.ErrorHandling.Trial.ok</div>
 <div class="tip" id="fs24">val checkClothes : p:Person -&gt; Result&lt;Person,string&gt;<br /><br />Full name: A-tale-of-3-nightclubs-fsharp.Club.checkClothes</div>
 <div class="tip" id="fs25">Person.Gender: Gender</div>
 <div class="tip" id="fs26">val not : value:bool -&gt; bool<br /><br />Full name: Microsoft.FSharp.Core.Operators.not</div>
@@ -256,7 +256,7 @@ The type system is making sure that failures flow through your computation in a 
 <div class="tip" id="fs29">Person.Sobriety: Sobriety</div>
 <div class="tip" id="fs30">module Club<br /><br />from A-tale-of-3-nightclubs-fsharp</div>
 <div class="tip" id="fs31">val costToEnter : p:Person -&gt; Result&lt;decimal,string&gt;<br /><br />Full name: A-tale-of-3-nightclubs-fsharp.ClubbedToDeath.costToEnter</div>
-<div class="tip" id="fs32">val trial : ErrorHandlingBuilder<br /><br />Full name: Chessie.ErrorHandling.Combinators.trial</div>
+<div class="tip" id="fs32">val trial : TrialBuilder<br /><br />Full name: Chessie.ErrorHandling.Trial.trial</div>
 <div class="tip" id="fs33">val a : Person</div>
 <div class="tip" id="fs34">val b : Person</div>
 <div class="tip" id="fs35">val c : Person</div>
@@ -280,6 +280,7 @@ The type system is making sure that failures flow through your computation in a 
             
             <li class="nav-header">F# Articles</li>
             <li><a href="/Chessie/railway.html">Railway-oriented programming</a></li>
+            <li><a href="/Chessie/passwarnfail.html">Handling warnings and errors</a></li>
             <li><a href="/Chessie/a-tale-of-3-nightclubs-fsharp.html">A Tale of 3 Nightclubs</a></li>
             <li class="nav-header">C# Articles</li>
             <li><a href="/Chessie/a-tale-of-3-nightclubs.html">A Tale of 3 Nightclubs</a></li>              

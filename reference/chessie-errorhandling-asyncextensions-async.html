@@ -37,6 +37,7 @@
 
 <h1>Async</h1>
 <div class="xmldoc">
+<p>Useful functions for combining error handling computations with async computations.</p>
 </div>
 
 <!-- Render nested types and modules, if there are any -->
@@ -54,15 +55,17 @@
             bind(f x)
           </code>
           <div class="tip" id="1">
-            <strong>Signature:</strong> f:(&#39;?6423 -&gt; Async&lt;&#39;?6424&gt;) -&gt; x:Async&lt;&#39;?6423&gt; -&gt; Async&lt;&#39;?6424&gt;<br />
-                          <strong>Type parameters:</strong> '?6423, '?6424          </div>
+            <strong>Signature:</strong> f:(&#39;?6370 -&gt; Async&lt;&#39;?6371&gt;) -&gt; x:Async&lt;&#39;?6370&gt; -&gt; Async&lt;&#39;?6371&gt;<br />
+                          <strong>Type parameters:</strong> '?6370, '?6371          </div>
         </td>
         <td class="xmldoc">
-            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L200-200" class="github-link">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L215-215" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
-          
+          <p>Creates an async computation that runs a computation and
+when it generates a result run a binding function on the said result</p>
+
         </td>
       </tr>
       <tr>
@@ -72,15 +75,16 @@
             map(f x)
           </code>
           <div class="tip" id="2">
-            <strong>Signature:</strong> f:(&#39;?6426 -&gt; &#39;?6427) -&gt; x:Async&lt;&#39;?6426&gt; -&gt; Async&lt;&#39;?6427&gt;<br />
-                          <strong>Type parameters:</strong> '?6426, '?6427          </div>
+            <strong>Signature:</strong> f:(&#39;?6373 -&gt; &#39;?6374) -&gt; x:Async&lt;&#39;?6373&gt; -&gt; Async&lt;&#39;?6374&gt;<br />
+                          <strong>Type parameters:</strong> '?6373, '?6374          </div>
         </td>
         <td class="xmldoc">
-            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L201-201" class="github-link">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L218-218" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
-          
+          <p>Creates an async computation that runs a mapping function on the result of an async computation</p>
+
         </td>
       </tr>
       <tr>
@@ -90,15 +94,16 @@
             ofAsyncResult(arg1)
           </code>
           <div class="tip" id="3">
-            <strong>Signature:</strong> AsyncResult&lt;&#39;?6429,&#39;?6430&gt; -&gt; Async&lt;Result&lt;&#39;?6429,&#39;?6430&gt;&gt;<br />
-                          <strong>Type parameters:</strong> '?6429, '?6430          </div>
+            <strong>Signature:</strong> AsyncResult&lt;&#39;?6376,&#39;?6377&gt; -&gt; Async&lt;Result&lt;&#39;?6376,&#39;?6377&gt;&gt;<br />
+                          <strong>Type parameters:</strong> '?6376, '?6377          </div>
         </td>
         <td class="xmldoc">
-            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L202-202" class="github-link">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L221-221" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
-          
+          <p>Creates an async computation from an asyncTrial computation</p>
+
         </td>
       </tr>
       <tr>
@@ -108,15 +113,16 @@
             singleton(value)
           </code>
           <div class="tip" id="4">
-            <strong>Signature:</strong> value:&#39;?6421 -&gt; Async&lt;&#39;?6421&gt;<br />
-                          <strong>Type parameters:</strong> '?6421          </div>
+            <strong>Signature:</strong> value:&#39;?6368 -&gt; Async&lt;&#39;?6368&gt;<br />
+                          <strong>Type parameters:</strong> '?6368          </div>
         </td>
         <td class="xmldoc">
-            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L199-199" class="github-link">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L211-211" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
-          
+          <p>Creates an async computation that return the given value</p>
+
         </td>
       </tr>
     </tbody>
@@ -136,6 +142,7 @@
             
             <li class="nav-header">F# Articles</li>
             <li><a href="/Chessie/railway.html">Railway-oriented programming</a></li>
+            <li><a href="/Chessie/passwarnfail.html">Handling warnings and errors</a></li>
             <li><a href="/Chessie/a-tale-of-3-nightclubs-fsharp.html">A Tale of 3 Nightclubs</a></li>
             <li class="nav-header">C# Articles</li>
             <li><a href="/Chessie/a-tale-of-3-nightclubs.html">A Tale of 3 Nightclubs</a></li>              
