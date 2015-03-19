@@ -1,3 +1,7 @@
+#### 0.1.0 - 19.03.2015
+* Aligned naming of library elements (`trail`, `TrailBuilder`, and `module Trial`)
+* Added Pass/Warn/Fail semantics
+
 #### 0.0.19 - 10.03.2015
 * Improving C# support
 
