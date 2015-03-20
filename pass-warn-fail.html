@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Combining terminal and non-terminal errors
+</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content="Railway-oriented programming for .NET"/>
+    <meta name="author" content="Steffen Forkmann, Max Malook, Tomasz Heimowski"/>
+
+    <script src="https://code.jquery.com/jquery-1.8.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.8.23/jquery-ui.js"></script>
+    <script src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
+    <link href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css" rel="stylesheet"/>
+
+    <link type="text/css" rel="stylesheet" href="/Chessie/content/style.css" />
+    <script type="text/javascript" src="/Chessie/content/tips.js"></script>
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="container">
+      <div class="masthead">
+        <ul class="nav nav-pills pull-right">
+          <li><a href="http://fsharp.org">fsharp.org</a></li>
+          <li><a href="http://github.com/fsprojects/Chessie">github page</a></li>
+        </ul>
+        <h3 class="muted"><a href="/Chessie/index.html">Chessie</a></h3>
+      </div>
+      <hr />
+      <div class="row">
+        <div class="span9" id="main">
+          
+<h1><a name="Combining-terminal-and-non-terminal-errors" class="anchor" href="#Combining-terminal-and-non-terminal-errors">Combining terminal and non-terminal errors</a></h1>
+
+<p>One feature of programming with "two-track" data is that once a value is on the <em>failure track</em> 
+operations against it may be skipped if they expect a value on the <em>passing track</em>. However, this 
+is not always the desired behavior. In many cases, we will want to perform mulitple operations on a 
+value and record any unusual or interesting results, but still keep thing on the <em>passing track</em>. 
+One obvious scenario is when we want to validate multiple pieces of input (such as might be 
+received from an HTTP request).</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip">
+<span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+</pre>
+</td>
+<td class="snippet"><pre class="fssnip">
+<span class="k">type</span> <span onmouseout="hideTip(event, 'fs5', 6)" onmouseover="showTip(event, 'fs5', 6)" class="t">Applicant</span> <span class="o">=</span> 
+  { <span onmouseout="hideTip(event, 'fs6', 7)" onmouseover="showTip(event, 'fs6', 7)" class="i">FullName</span>      <span class="o">:</span><span onmouseout="hideTip(event, 'fs7', 8)" onmouseover="showTip(event, 'fs7', 8)" class="t">string</span> <span class="o">*</span> <span onmouseout="hideTip(event, 'fs7', 9)" onmouseover="showTip(event, 'fs7', 9)" class="t">string</span>
+    <span onmouseout="hideTip(event, 'fs8', 10)" onmouseover="showTip(event, 'fs8', 10)" class="i">DateOfBirth</span>   <span class="o">:</span><span onmouseout="hideTip(event, 'fs9', 11)" onmouseover="showTip(event, 'fs9', 11)" class="t">DateTime</span>
+    <span onmouseout="hideTip(event, 'fs10', 12)" onmouseover="showTip(event, 'fs10', 12)" class="i">FavoriteColor</span> <span class="o">:</span><span onmouseout="hideTip(event, 'fs11', 13)" onmouseover="showTip(event, 'fs11', 13)" class="t">Color</span> <span onmouseout="hideTip(event, 'fs12', 14)" onmouseover="showTip(event, 'fs12', 14)" class="t">option</span> }
+</pre>
+</td>
+</tr>
+</table>
+
+<p>Given some aggregate user-supplied data, we want to check each datum.</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip">
+<span class="l"> 1: </span>
+<span class="l"> 2: </span>
+<span class="l"> 3: </span>
+<span class="l"> 4: </span>
+<span class="l"> 5: </span>
+<span class="l"> 6: </span>
+<span class="l"> 7: </span>
+<span class="l"> 8: </span>
+<span class="l"> 9: </span>
+<span class="l">10: </span>
+<span class="l">11: </span>
+<span class="l">12: </span>
+<span class="l">13: </span>
+<span class="l">14: </span>
+<span class="l">15: </span>
+<span class="l">16: </span>
+<span class="l">17: </span>
+<span class="l">18: </span>
+<span class="l">19: </span>
+</pre>
+</td>
+<td class="snippet"><pre class="fssnip">
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs13', 15)" onmouseover="showTip(event, 'fs13', 15)" class="f">checkName</span> <span onmouseout="hideTip(event, 'fs14', 16)" onmouseover="showTip(event, 'fs14', 16)" class="f">getName</span> <span onmouseout="hideTip(event, 'fs15', 17)" onmouseover="showTip(event, 'fs15', 17)" class="i">msg</span> <span onmouseout="hideTip(event, 'fs16', 18)" onmouseover="showTip(event, 'fs16', 18)" class="i">request</span> <span class="o">=</span>
+  <span class="k">let</span> <span onmouseout="hideTip(event, 'fs17', 19)" onmouseover="showTip(event, 'fs17', 19)" class="i">name</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs14', 20)" onmouseover="showTip(event, 'fs14', 20)" class="f">getName</span> <span onmouseout="hideTip(event, 'fs16', 21)" onmouseover="showTip(event, 'fs16', 21)" class="i">request</span>
+  <span class="k">if</span> <span onmouseout="hideTip(event, 'fs18', 22)" onmouseover="showTip(event, 'fs18', 22)" class="t">String</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs19', 23)" onmouseover="showTip(event, 'fs19', 23)" class="f">IsNullOrWhiteSpace</span> <span onmouseout="hideTip(event, 'fs17', 24)" onmouseover="showTip(event, 'fs17', 24)" class="i">name</span>
+    <span class="k">then</span>  <span class="c">// note the invalid datum, but stay on the _passing_ track</span>
+          <span onmouseout="hideTip(event, 'fs16', 25)" onmouseover="showTip(event, 'fs16', 25)" class="i">request</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs20', 26)" onmouseover="showTip(event, 'fs20', 26)" class="f">warn</span> <span onmouseout="hideTip(event, 'fs15', 27)" onmouseover="showTip(event, 'fs15', 27)" class="i">msg</span>
+    <span class="k">else</span>  <span class="c">// no issues, proceed on the &quot;happy path&quot;</span>
+          <span onmouseout="hideTip(event, 'fs16', 28)" onmouseover="showTip(event, 'fs16', 28)" class="i">request</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs21', 29)" onmouseover="showTip(event, 'fs21', 29)" class="f">pass</span>
+
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs22', 30)" onmouseover="showTip(event, 'fs22', 30)" class="f">checkFirstName</span>  <span class="o">=</span> <span onmouseout="hideTip(event, 'fs13', 31)" onmouseover="showTip(event, 'fs13', 31)" class="f">checkName</span> (<span class="k">fun</span> {<span class="i">FullName</span> <span class="o">=</span> (<span onmouseout="hideTip(event, 'fs17', 32)" onmouseover="showTip(event, 'fs17', 32)" class="i">name</span>,_)} <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs17', 33)" onmouseover="showTip(event, 'fs17', 33)" class="i">name</span>) <span class="s">&quot;First name is missing&quot;</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs23', 34)" onmouseover="showTip(event, 'fs23', 34)" class="f">checkLastName</span>   <span class="o">=</span> <span onmouseout="hideTip(event, 'fs13', 35)" onmouseover="showTip(event, 'fs13', 35)" class="f">checkName</span> (<span class="k">fun</span> {<span class="i">FullName</span> <span class="o">=</span> (_,<span onmouseout="hideTip(event, 'fs17', 36)" onmouseover="showTip(event, 'fs17', 36)" class="i">name</span>)} <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs17', 37)" onmouseover="showTip(event, 'fs17', 37)" class="i">name</span>) <span class="s">&quot;Last name is missing&quot;</span>
+
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs24', 38)" onmouseover="showTip(event, 'fs24', 38)" class="f">checkAge</span> <span onmouseout="hideTip(event, 'fs25', 39)" onmouseover="showTip(event, 'fs25', 39)" class="i">request</span> <span class="o">=</span>
+  <span class="k">let</span> <span onmouseout="hideTip(event, 'fs26', 40)" onmouseover="showTip(event, 'fs26', 40)" class="i">dob</span>   <span class="o">=</span> <span onmouseout="hideTip(event, 'fs25', 41)" onmouseover="showTip(event, 'fs25', 41)" class="i">request</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs8', 42)" onmouseover="showTip(event, 'fs8', 42)" class="i">DateOfBirth</span>
+  <span class="k">let</span> <span onmouseout="hideTip(event, 'fs27', 43)" onmouseover="showTip(event, 'fs27', 43)" class="i">diff</span>  <span class="o">=</span> <span onmouseout="hideTip(event, 'fs9', 44)" onmouseover="showTip(event, 'fs9', 44)" class="t">DateTime</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs28', 45)" onmouseover="showTip(event, 'fs28', 45)" class="i">Today</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs29', 46)" onmouseover="showTip(event, 'fs29', 46)" class="f">Subtract</span> <span onmouseout="hideTip(event, 'fs26', 47)" onmouseover="showTip(event, 'fs26', 47)" class="i">dob</span>
+  <span class="k">if</span>  <span onmouseout="hideTip(event, 'fs27', 48)" onmouseover="showTip(event, 'fs27', 48)" class="i">diff</span>  <span class="o">&lt;</span> <span onmouseout="hideTip(event, 'fs30', 49)" onmouseover="showTip(event, 'fs30', 49)" class="t">TimeSpan</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs31', 50)" onmouseover="showTip(event, 'fs31', 50)" class="f">FromDays</span> (<span class="n">18.0</span> <span class="o">*</span> <span class="n">365.0</span>)
+    <span class="k">then</span>  <span class="c">// note the invalid datum, but stay on the _passing_ track</span>
+          <span onmouseout="hideTip(event, 'fs25', 51)" onmouseover="showTip(event, 'fs25', 51)" class="i">request</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs20', 52)" onmouseover="showTip(event, 'fs20', 52)" class="f">warn</span> <span class="s">&quot;DateOfBirth is too recent&quot;</span>
+    <span class="k">else</span>  <span class="c">// no issues, proceed on the &quot;happy path&quot;</span>
+          <span onmouseout="hideTip(event, 'fs25', 53)" onmouseover="showTip(event, 'fs25', 53)" class="i">request</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs21', 54)" onmouseover="showTip(event, 'fs21', 54)" class="f">pass</span>
+</pre>
+</td>
+</tr>
+</table>
+
+<p>Now we can combine our individual checks, returning the original value along-side any issues.</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip">
+<span class="l"> 1: </span>
+<span class="l"> 2: </span>
+<span class="l"> 3: </span>
+<span class="l"> 4: </span>
+<span class="l"> 5: </span>
+<span class="l"> 6: </span>
+<span class="l"> 7: </span>
+<span class="l"> 8: </span>
+<span class="l"> 9: </span>
+<span class="l">10: </span>
+<span class="l">11: </span>
+<span class="l">12: </span>
+<span class="l">13: </span>
+<span class="l">14: </span>
+<span class="l">15: </span>
+<span class="l">16: </span>
+<span class="l">17: </span>
+<span class="l">18: </span>
+<span class="l">19: </span>
+<span class="l">20: </span>
+<span class="l">21: </span>
+<span class="l">22: </span>
+</pre>
+</td>
+<td class="snippet"><pre class="fssnip">
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs32', 55)" onmouseover="showTip(event, 'fs32', 55)" class="f">checkApplicant</span> <span onmouseout="hideTip(event, 'fs25', 56)" onmouseover="showTip(event, 'fs25', 56)" class="i">request</span> <span class="o">=</span>  
+  <span onmouseout="hideTip(event, 'fs25', 57)" onmouseover="showTip(event, 'fs25', 57)" class="i">request</span> 
+  <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs24', 58)" onmouseover="showTip(event, 'fs24', 58)" class="f">checkAge</span>
+  <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs33', 59)" onmouseover="showTip(event, 'fs33', 59)" class="f">bind</span> <span onmouseout="hideTip(event, 'fs22', 60)" onmouseover="showTip(event, 'fs22', 60)" class="f">checkFirstName</span>
+  <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs33', 61)" onmouseover="showTip(event, 'fs33', 61)" class="f">bind</span> <span onmouseout="hideTip(event, 'fs23', 62)" onmouseover="showTip(event, 'fs23', 62)" class="f">checkLastName</span>
+
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs34', 63)" onmouseover="showTip(event, 'fs34', 63)" class="f">processRequest</span> <span onmouseout="hideTip(event, 'fs25', 64)" onmouseover="showTip(event, 'fs25', 64)" class="i">request</span> <span class="o">=</span> 
+  <span class="k">match</span> <span onmouseout="hideTip(event, 'fs32', 65)" onmouseover="showTip(event, 'fs32', 65)" class="f">checkApplicant</span> <span onmouseout="hideTip(event, 'fs25', 66)" onmouseover="showTip(event, 'fs25', 66)" class="i">request</span> <span class="k">with</span>
+  | <span onmouseout="hideTip(event, 'fs35', 67)" onmouseover="showTip(event, 'fs35', 67)" class="p">Pass</span>  _       <span class="k">-&gt;</span>  <span onmouseout="hideTip(event, 'fs36', 68)" onmouseover="showTip(event, 'fs36', 68)" class="f">printfn</span> <span class="s">&quot;All Good!!!&quot;</span>
+  | <span onmouseout="hideTip(event, 'fs37', 69)" onmouseover="showTip(event, 'fs37', 69)" class="p">Warn</span> (_,<span onmouseout="hideTip(event, 'fs38', 70)" onmouseover="showTip(event, 'fs38', 70)" class="i">log</span>)  <span class="k">-&gt;</span>  <span onmouseout="hideTip(event, 'fs36', 71)" onmouseover="showTip(event, 'fs36', 71)" class="f">printfn</span> <span class="s">&quot;Got some issues:&quot;</span>
+                      <span class="k">for</span> <span onmouseout="hideTip(event, 'fs39', 72)" onmouseover="showTip(event, 'fs39', 72)" class="i">msg</span> <span class="k">in</span> <span onmouseout="hideTip(event, 'fs38', 73)" onmouseover="showTip(event, 'fs38', 73)" class="i">log</span> <span class="k">do</span> <span onmouseout="hideTip(event, 'fs36', 74)" onmouseover="showTip(event, 'fs36', 74)" class="f">printfn</span> <span class="s">&quot;  </span><span class="pf">%s</span><span class="s">&quot;</span> <span onmouseout="hideTip(event, 'fs39', 75)" onmouseover="showTip(event, 'fs39', 75)" class="i">msg</span>
+  | _             <span class="k">-&gt;</span>  <span onmouseout="hideTip(event, 'fs36', 76)" onmouseover="showTip(event, 'fs36', 76)" class="f">printfn</span> <span class="s">&quot;Something went horribly wrong.&quot;</span>
+
+            
+<span class="c">// good request</span>
+<span onmouseout="hideTip(event, 'fs34', 77)" onmouseover="showTip(event, 'fs34', 77)" class="f">processRequest</span> {<span class="i">FullName</span>      <span class="o">=</span> <span class="s">&quot;John&quot;</span>,<span class="s">&quot;Smith&quot;</span> 
+                <span class="i">DateOfBirth</span>   <span class="o">=</span> <span onmouseout="hideTip(event, 'fs9', 78)" onmouseover="showTip(event, 'fs9', 78)" class="t">DateTime</span> (<span class="n">1995</span>,<span class="n">12</span>,<span class="n">21</span>)
+                <span class="i">FavoriteColor</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs40', 79)" onmouseover="showTip(event, 'fs40', 79)" class="p">None</span>}
+<span class="c">// bad request</span>
+<span onmouseout="hideTip(event, 'fs34', 80)" onmouseover="showTip(event, 'fs34', 80)" class="f">processRequest</span> {<span class="i">FullName</span>      <span class="o">=</span> <span class="s">&quot;Beck&quot;</span>,<span class="s">&quot;&quot;</span> 
+                <span class="i">DateOfBirth</span>   <span class="o">=</span> <span onmouseout="hideTip(event, 'fs9', 81)" onmouseover="showTip(event, 'fs9', 81)" class="t">DateTime</span> (<span class="n">2005</span>,<span class="n">04</span>,<span class="n">13</span>)
+                <span class="i">FavoriteColor</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs41', 82)" onmouseover="showTip(event, 'fs41', 82)" class="p">Some</span> <span onmouseout="hideTip(event, 'fs11', 83)" onmouseover="showTip(event, 'fs11', 83)" class="t">Color</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs42', 84)" onmouseover="showTip(event, 'fs42', 84)" class="i">Gold</span>}
+</pre>
+</td>
+</tr>
+</table>
+
+<table class="pre"><tr><td><pre><code>All Good!!!
+Got some issues:
+  DateOfBirth is too recent
+  Last name is missing</code></pre></td></tr></table>
+
+<p>We can also mixed warnings in with operations that are terminal. In other words, we can still build 
+workflows where certain operations switch the data over to the <em>failure track</em>.</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip">
+<span class="l"> 1: </span>
+<span class="l"> 2: </span>
+<span class="l"> 3: </span>
+<span class="l"> 4: </span>
+<span class="l"> 5: </span>
+<span class="l"> 6: </span>
+<span class="l"> 7: </span>
+<span class="l"> 8: </span>
+<span class="l"> 9: </span>
+<span class="l">10: </span>
+<span class="l">11: </span>
+<span class="l">12: </span>
+<span class="l">13: </span>
+<span class="l">14: </span>
+<span class="l">15: </span>
+<span class="l">16: </span>
+<span class="l">17: </span>
+<span class="l">18: </span>
+<span class="l">19: </span>
+<span class="l">20: </span>
+<span class="l">21: </span>
+<span class="l">22: </span>
+<span class="l">23: </span>
+<span class="l">24: </span>
+<span class="l">25: </span>
+<span class="l">26: </span>
+<span class="l">27: </span>
+<span class="l">28: </span>
+<span class="l">29: </span>
+<span class="l">30: </span>
+<span class="l">31: </span>
+<span class="l">32: </span>
+<span class="l">33: </span>
+<span class="l">34: </span>
+</pre>
+</td>
+<td class="snippet"><pre class="fssnip">
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs43', 85)" onmouseover="showTip(event, 'fs43', 85)" class="f">disallowPink</span> <span onmouseout="hideTip(event, 'fs25', 86)" onmouseover="showTip(event, 'fs25', 86)" class="i">request</span> <span class="o">=</span>
+  <span class="k">match</span> <span onmouseout="hideTip(event, 'fs25', 87)" onmouseover="showTip(event, 'fs25', 87)" class="i">request</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs10', 88)" onmouseover="showTip(event, 'fs10', 88)" class="i">FavoriteColor</span> <span class="k">with</span>
+  | <span onmouseout="hideTip(event, 'fs41', 89)" onmouseover="showTip(event, 'fs41', 89)" class="p">Some</span> <span onmouseout="hideTip(event, 'fs44', 90)" onmouseover="showTip(event, 'fs44', 90)" class="i">c</span> <span class="c">// no idea why we&#39;re being mean to this particular color</span>
+    <span class="k">when</span> <span onmouseout="hideTip(event, 'fs44', 91)" onmouseover="showTip(event, 'fs44', 91)" class="i">c</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs11', 92)" onmouseover="showTip(event, 'fs11', 92)" class="t">Color</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs45', 93)" onmouseover="showTip(event, 'fs45', 93)" class="i">Pink</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs46', 94)" onmouseover="showTip(event, 'fs46', 94)" class="f">fail</span> <span class="s">&quot;Get outta here with that color!&quot;</span>
+  | _                   <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs21', 95)" onmouseover="showTip(event, 'fs21', 95)" class="f">pass</span> <span onmouseout="hideTip(event, 'fs25', 96)" onmouseover="showTip(event, 'fs25', 96)" class="i">request</span>
+
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs47', 97)" onmouseover="showTip(event, 'fs47', 97)" class="f">recheckApplicant</span> <span onmouseout="hideTip(event, 'fs25', 98)" onmouseover="showTip(event, 'fs25', 98)" class="i">request</span> <span class="o">=</span>
+  <span onmouseout="hideTip(event, 'fs25', 99)" onmouseover="showTip(event, 'fs25', 99)" class="i">request</span>
+  <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs24', 100)" onmouseover="showTip(event, 'fs24', 100)" class="f">checkAge</span>
+  <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs33', 101)" onmouseover="showTip(event, 'fs33', 101)" class="f">bind</span> <span onmouseout="hideTip(event, 'fs43', 102)" onmouseover="showTip(event, 'fs43', 102)" class="f">disallowPink</span>
+  <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs33', 103)" onmouseover="showTip(event, 'fs33', 103)" class="f">bind</span> <span onmouseout="hideTip(event, 'fs22', 104)" onmouseover="showTip(event, 'fs22', 104)" class="f">checkFirstName</span>
+  <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs33', 105)" onmouseover="showTip(event, 'fs33', 105)" class="f">bind</span> <span onmouseout="hideTip(event, 'fs23', 106)" onmouseover="showTip(event, 'fs23', 106)" class="f">checkLastName</span>
+
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs48', 107)" onmouseover="showTip(event, 'fs48', 107)" class="f">reportMessages</span> <span onmouseout="hideTip(event, 'fs25', 108)" onmouseover="showTip(event, 'fs25', 108)" class="i">request</span> <span class="o">=</span>
+  <span class="k">match</span> <span onmouseout="hideTip(event, 'fs47', 109)" onmouseover="showTip(event, 'fs47', 109)" class="f">recheckApplicant</span> <span onmouseout="hideTip(event, 'fs25', 110)" onmouseover="showTip(event, 'fs25', 110)" class="i">request</span> <span class="k">with</span>
+  | <span onmouseout="hideTip(event, 'fs35', 111)" onmouseover="showTip(event, 'fs35', 111)" class="p">Pass</span>  _       <span class="k">-&gt;</span>  <span onmouseout="hideTip(event, 'fs36', 112)" onmouseover="showTip(event, 'fs36', 112)" class="f">printfn</span> <span class="s">&quot;Nothing to report&quot;</span>
+  | <span onmouseout="hideTip(event, 'fs37', 113)" onmouseover="showTip(event, 'fs37', 113)" class="p">Warn</span> (_,<span onmouseout="hideTip(event, 'fs38', 114)" onmouseover="showTip(event, 'fs38', 114)" class="i">log</span>)  <span class="k">-&gt;</span>  <span onmouseout="hideTip(event, 'fs36', 115)" onmouseover="showTip(event, 'fs36', 115)" class="f">printfn</span> <span class="s">&quot;Got some issues:&quot;</span>
+                      <span class="k">for</span> <span onmouseout="hideTip(event, 'fs39', 116)" onmouseover="showTip(event, 'fs39', 116)" class="i">msg</span> <span class="k">in</span> <span onmouseout="hideTip(event, 'fs38', 117)" onmouseover="showTip(event, 'fs38', 117)" class="i">log</span> <span class="k">do</span> <span onmouseout="hideTip(event, 'fs36', 118)" onmouseover="showTip(event, 'fs36', 118)" class="f">printfn</span> <span class="s">&quot;  </span><span class="pf">%s</span><span class="s">&quot;</span> <span onmouseout="hideTip(event, 'fs39', 119)" onmouseover="showTip(event, 'fs39', 119)" class="i">msg</span>
+  | <span onmouseout="hideTip(event, 'fs49', 120)" onmouseover="showTip(event, 'fs49', 120)" class="p">Fail</span>  <span onmouseout="hideTip(event, 'fs50', 121)" onmouseover="showTip(event, 'fs50', 121)" class="i">errors</span>  <span class="k">-&gt;</span>  <span onmouseout="hideTip(event, 'fs36', 122)" onmouseover="showTip(event, 'fs36', 122)" class="f">printfn</span> <span class="s">&quot;Got errors:&quot;</span>
+                      <span class="k">for</span> <span onmouseout="hideTip(event, 'fs39', 123)" onmouseover="showTip(event, 'fs39', 123)" class="i">msg</span> <span class="k">in</span> <span onmouseout="hideTip(event, 'fs50', 124)" onmouseover="showTip(event, 'fs50', 124)" class="i">errors</span> <span class="k">do</span> <span onmouseout="hideTip(event, 'fs36', 125)" onmouseover="showTip(event, 'fs36', 125)" class="f">printfn</span> <span class="s">&quot;  </span><span class="pf">%s</span><span class="s">&quot;</span> <span onmouseout="hideTip(event, 'fs39', 126)" onmouseover="showTip(event, 'fs39', 126)" class="i">msg</span>
+
+<span class="c">// terminal request</span>
+<span onmouseout="hideTip(event, 'fs48', 127)" onmouseover="showTip(event, 'fs48', 127)" class="f">reportMessages</span> {<span class="i">FullName</span>      <span class="o">=</span> <span class="s">&quot;John&quot;</span>,<span class="s">&quot;Smith&quot;</span> 
+                <span class="i">DateOfBirth</span>   <span class="o">=</span> <span onmouseout="hideTip(event, 'fs9', 128)" onmouseover="showTip(event, 'fs9', 128)" class="t">DateTime</span> (<span class="n">1995</span>,<span class="n">12</span>,<span class="n">21</span>)
+                <span class="i">FavoriteColor</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs41', 129)" onmouseover="showTip(event, 'fs41', 129)" class="p">Some</span> <span onmouseout="hideTip(event, 'fs11', 130)" onmouseover="showTip(event, 'fs11', 130)" class="t">Color</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs45', 131)" onmouseover="showTip(event, 'fs45', 131)" class="i">Pink</span>}
+
+<span class="c">// non-terminal request with warnings</span>
+<span onmouseout="hideTip(event, 'fs48', 132)" onmouseover="showTip(event, 'fs48', 132)" class="f">reportMessages</span> {<span class="i">FullName</span>      <span class="o">=</span> <span class="s">&quot;&quot;</span>,<span class="s">&quot;Smith&quot;</span> 
+                <span class="i">DateOfBirth</span>   <span class="o">=</span> <span onmouseout="hideTip(event, 'fs9', 133)" onmouseover="showTip(event, 'fs9', 133)" class="t">DateTime</span> (<span class="n">1995</span>,<span class="n">12</span>,<span class="n">21</span>)
+                <span class="i">FavoriteColor</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs41', 134)" onmouseover="showTip(event, 'fs41', 134)" class="p">Some</span> <span onmouseout="hideTip(event, 'fs11', 135)" onmouseover="showTip(event, 'fs11', 135)" class="t">Color</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs51', 136)" onmouseover="showTip(event, 'fs51', 136)" class="i">Green</span>}
+<span class="c">// good request</span>
+<span onmouseout="hideTip(event, 'fs48', 137)" onmouseover="showTip(event, 'fs48', 137)" class="f">reportMessages</span> {<span class="i">FullName</span>      <span class="o">=</span> <span class="s">&quot;Bob&quot;</span>,<span class="s">&quot;Smith&quot;</span> 
+                <span class="i">DateOfBirth</span>   <span class="o">=</span> <span onmouseout="hideTip(event, 'fs9', 138)" onmouseover="showTip(event, 'fs9', 138)" class="t">DateTime</span> (<span class="n">1995</span>,<span class="n">12</span>,<span class="n">21</span>)
+                <span class="i">FavoriteColor</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs41', 139)" onmouseover="showTip(event, 'fs41', 139)" class="p">Some</span> <span onmouseout="hideTip(event, 'fs11', 140)" onmouseover="showTip(event, 'fs11', 140)" class="t">Color</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs51', 141)" onmouseover="showTip(event, 'fs51', 141)" class="i">Green</span>}
+</pre>
+</td>
+</tr>
+</table>
+
+<table class="pre"><tr><td><pre><code>Got errors:
+  Get outta here with that color!
+Got some issues:
+  First name is missing
+Nothing to report</code></pre></td></tr></table>
+
+<p>In effect, we've turned "two-track" data into "three-track" data. But we can also flip this around. 
+That's is, run operations over the data accumlating warnings. Then at the end, if we have any 
+messages at all, switch to the <em>failure track</em>.</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip">
+<span class="l"> 1: </span>
+<span class="l"> 2: </span>
+<span class="l"> 3: </span>
+<span class="l"> 4: </span>
+<span class="l"> 5: </span>
+<span class="l"> 6: </span>
+<span class="l"> 7: </span>
+<span class="l"> 8: </span>
+<span class="l"> 9: </span>
+<span class="l">10: </span>
+<span class="l">11: </span>
+<span class="l">12: </span>
+<span class="l">13: </span>
+<span class="l">14: </span>
+<span class="l">15: </span>
+<span class="l">16: </span>
+<span class="l">17: </span>
+<span class="l">18: </span>
+<span class="l">19: </span>
+<span class="l">20: </span>
+<span class="l">21: </span>
+<span class="l">22: </span>
+<span class="l">23: </span>
+<span class="l">24: </span>
+<span class="l">25: </span>
+<span class="l">26: </span>
+</pre>
+</td>
+<td class="snippet"><pre class="fssnip">
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs52', 142)" onmouseover="showTip(event, 'fs52', 142)" class="f">warnOnNoColor</span> <span onmouseout="hideTip(event, 'fs25', 143)" onmouseover="showTip(event, 'fs25', 143)" class="i">request</span> <span class="o">=</span>
+  <span class="k">match</span> <span onmouseout="hideTip(event, 'fs25', 144)" onmouseover="showTip(event, 'fs25', 144)" class="i">request</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs10', 145)" onmouseover="showTip(event, 'fs10', 145)" class="i">FavoriteColor</span> <span class="k">with</span>
+  | <span onmouseout="hideTip(event, 'fs40', 146)" onmouseover="showTip(event, 'fs40', 146)" class="p">None</span>    <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs25', 147)" onmouseover="showTip(event, 'fs25', 147)" class="i">request</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs20', 148)" onmouseover="showTip(event, 'fs20', 148)" class="f">warn</span> <span class="s">&quot;No color provided&quot;</span>
+  | <span onmouseout="hideTip(event, 'fs41', 149)" onmouseover="showTip(event, 'fs41', 149)" class="p">Some</span> _  <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs21', 150)" onmouseover="showTip(event, 'fs21', 150)" class="f">pass</span> <span onmouseout="hideTip(event, 'fs25', 151)" onmouseover="showTip(event, 'fs25', 151)" class="i">request</span>
+
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs53', 152)" onmouseover="showTip(event, 'fs53', 152)" class="f">``checkApplicant (again)``</span> <span onmouseout="hideTip(event, 'fs25', 153)" onmouseover="showTip(event, 'fs25', 153)" class="i">request</span> <span class="o">=</span>
+  <span onmouseout="hideTip(event, 'fs25', 154)" onmouseover="showTip(event, 'fs25', 154)" class="i">request</span>
+  <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs24', 155)" onmouseover="showTip(event, 'fs24', 155)" class="f">checkAge</span>
+  <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs33', 156)" onmouseover="showTip(event, 'fs33', 156)" class="f">bind</span> <span onmouseout="hideTip(event, 'fs22', 157)" onmouseover="showTip(event, 'fs22', 157)" class="f">checkFirstName</span>
+  <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs33', 158)" onmouseover="showTip(event, 'fs33', 158)" class="f">bind</span> <span onmouseout="hideTip(event, 'fs23', 159)" onmouseover="showTip(event, 'fs23', 159)" class="f">checkLastName</span>
+  <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs33', 160)" onmouseover="showTip(event, 'fs33', 160)" class="f">bind</span> <span onmouseout="hideTip(event, 'fs52', 161)" onmouseover="showTip(event, 'fs52', 161)" class="f">warnOnNoColor</span>
+
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs54', 162)" onmouseover="showTip(event, 'fs54', 162)" class="f">``processRequest (again)``</span> <span onmouseout="hideTip(event, 'fs25', 163)" onmouseover="showTip(event, 'fs25', 163)" class="i">request</span> <span class="o">=</span>
+  <span class="c">// turn any warning messages into failure messages</span>
+  <span class="k">let</span> <span onmouseout="hideTip(event, 'fs55', 164)" onmouseover="showTip(event, 'fs55', 164)" class="i">result</span> <span class="o">=</span>  <span onmouseout="hideTip(event, 'fs25', 165)" onmouseover="showTip(event, 'fs25', 165)" class="i">request</span>
+                <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs53', 166)" onmouseover="showTip(event, 'fs53', 166)" class="f">``checkApplicant (again)``</span>
+                <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs56', 167)" onmouseover="showTip(event, 'fs56', 167)" class="f">failOnWarnings</span>
+  <span class="c">// now we only have 2 tracks on which the data may lay</span>
+  <span class="k">match</span> <span onmouseout="hideTip(event, 'fs55', 168)" onmouseover="showTip(event, 'fs55', 168)" class="i">result</span> <span class="k">with</span>
+  | <span onmouseout="hideTip(event, 'fs49', 169)" onmouseover="showTip(event, 'fs49', 169)" class="p">Fail</span> <span onmouseout="hideTip(event, 'fs50', 170)" onmouseover="showTip(event, 'fs50', 170)" class="i">errors</span> <span class="k">-&gt;</span>  <span class="k">for</span> <span onmouseout="hideTip(event, 'fs57', 171)" onmouseover="showTip(event, 'fs57', 171)" class="i">x</span> <span class="k">in</span> <span onmouseout="hideTip(event, 'fs50', 172)" onmouseover="showTip(event, 'fs50', 172)" class="i">errors</span> <span class="k">do</span> <span onmouseout="hideTip(event, 'fs36', 173)" onmouseover="showTip(event, 'fs36', 173)" class="f">printfn</span> <span class="s">&quot;ERROR! </span><span class="pf">%s</span><span class="s">&quot;</span> <span onmouseout="hideTip(event, 'fs57', 174)" onmouseover="showTip(event, 'fs57', 174)" class="i">x</span>
+  | _           <span class="k">-&gt;</span>  <span onmouseout="hideTip(event, 'fs36', 175)" onmouseover="showTip(event, 'fs36', 175)" class="f">printfn</span> <span class="s">&quot;SUCCESS!!!&quot;</span>
+
+<span class="c">// terminal request</span>
+<span onmouseout="hideTip(event, 'fs54', 176)" onmouseover="showTip(event, 'fs54', 176)" class="f">``processRequest (again)``</span> {<span class="i">FullName</span>      <span class="o">=</span> <span class="s">&quot;&quot;</span>,<span class="s">&quot;&quot;</span> 
+                            <span class="i">DateOfBirth</span>   <span class="o">=</span> <span onmouseout="hideTip(event, 'fs9', 177)" onmouseover="showTip(event, 'fs9', 177)" class="t">DateTime</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs28', 178)" onmouseover="showTip(event, 'fs28', 178)" class="i">Today</span>
+                            <span class="i">FavoriteColor</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs40', 179)" onmouseover="showTip(event, 'fs40', 179)" class="p">None</span>}
+</pre>
+</td>
+</tr>
+</table>
+
+<table class="pre"><tr><td><pre><code>ERROR! DateOfBirth is too recent
+ERROR! First name is missing
+ERROR! Last name is missing
+ERROR! No color provided</code></pre></td></tr></table>
+
+<div class="tip" id="fs1">namespace Chessie</div>
+<div class="tip" id="fs2">namespace Chessie.ErrorHandling</div>
+<div class="tip" id="fs3">namespace System</div>
+<div class="tip" id="fs4">namespace System.Drawing</div>
+<div class="tip" id="fs5">type Applicant =<br />&#160;&#160;{FullName: string * string;<br />&#160;&#160;&#160;DateOfBirth: DateTime;<br />&#160;&#160;&#160;FavoriteColor: Color option;}<br /><br />Full name: Pass-warn-fail.Applicant</div>
+<div class="tip" id="fs6">Applicant.FullName: string * string</div>
+<div class="tip" id="fs7">Multiple items<br />val string : value:&#39;T -&gt; string<br /><br />Full name: Microsoft.FSharp.Core.Operators.string<br /><br />--------------------<br />type string = String<br /><br />Full name: Microsoft.FSharp.Core.string</div>
+<div class="tip" id="fs8">Applicant.DateOfBirth: DateTime</div>
+<div class="tip" id="fs9">Multiple items<br />type DateTime =<br />&#160;&#160;struct<br />&#160;&#160;&#160;&#160;new : ticks:int64 -&gt; DateTime + 10 overloads<br />&#160;&#160;&#160;&#160;member Add : value:TimeSpan -&gt; DateTime<br />&#160;&#160;&#160;&#160;member AddDays : value:float -&gt; DateTime<br />&#160;&#160;&#160;&#160;member AddHours : value:float -&gt; DateTime<br />&#160;&#160;&#160;&#160;member AddMilliseconds : value:float -&gt; DateTime<br />&#160;&#160;&#160;&#160;member AddMinutes : value:float -&gt; DateTime<br />&#160;&#160;&#160;&#160;member AddMonths : months:int -&gt; DateTime<br />&#160;&#160;&#160;&#160;member AddSeconds : value:float -&gt; DateTime<br />&#160;&#160;&#160;&#160;member AddTicks : value:int64 -&gt; DateTime<br />&#160;&#160;&#160;&#160;member AddYears : value:int -&gt; DateTime<br />&#160;&#160;&#160;&#160;...<br />&#160;&#160;end<br /><br />Full name: System.DateTime<br /><br />--------------------<br />DateTime()<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />DateTime(ticks: int64) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />DateTime(ticks: int64, kind: DateTimeKind) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />DateTime(year: int, month: int, day: int) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />DateTime(year: int, month: int, day: int, calendar: Globalization.Calendar) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />DateTime(year: int, month: int, day: int, hour: int, minute: int, second: int) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />DateTime(year: int, month: int, day: int, hour: int, minute: int, second: int, millisecond: int) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />DateTime(year: int, month: int, day: int, hour: int, minute: int, second: int, calendar: Globalization.Calendar) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />DateTime(year: int, month: int, day: int, hour: int, minute: int, second: int, kind: DateTimeKind) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em><br />DateTime(year: int, month: int, day: int, hour: int, minute: int, second: int, millisecond: int, calendar: Globalization.Calendar) : unit<br />&#160;&#160;&#160;<em>(+0 other overloads)</em></div>
+<div class="tip" id="fs10">Applicant.FavoriteColor: Color option</div>
+<div class="tip" id="fs11">type Color =<br />&#160;&#160;struct<br />&#160;&#160;&#160;&#160;member A : byte<br />&#160;&#160;&#160;&#160;member B : byte<br />&#160;&#160;&#160;&#160;member Equals : obj:obj -&gt; bool<br />&#160;&#160;&#160;&#160;member G : byte<br />&#160;&#160;&#160;&#160;member GetBrightness : unit -&gt; float32<br />&#160;&#160;&#160;&#160;member GetHashCode : unit -&gt; int<br />&#160;&#160;&#160;&#160;member GetHue : unit -&gt; float32<br />&#160;&#160;&#160;&#160;member GetSaturation : unit -&gt; float32<br />&#160;&#160;&#160;&#160;member IsEmpty : bool<br />&#160;&#160;&#160;&#160;member IsKnownColor : bool<br />&#160;&#160;&#160;&#160;...<br />&#160;&#160;end<br /><br />Full name: System.Drawing.Color</div>
+<div class="tip" id="fs12">type &#39;T option = Option&lt;&#39;T&gt;<br /><br />Full name: Microsoft.FSharp.Core.option&lt;_&gt;</div>
+<div class="tip" id="fs13">val checkName : getName:(&#39;a -&gt; string) -&gt; msg:&#39;b -&gt; request:&#39;a -&gt; Result&lt;&#39;a,&#39;b&gt;<br /><br />Full name: Pass-warn-fail.checkName</div>
+<div class="tip" id="fs14">val getName : (&#39;a -&gt; string)</div>
+<div class="tip" id="fs15">val msg : &#39;b</div>
+<div class="tip" id="fs16">val request : &#39;a</div>
+<div class="tip" id="fs17">val name : string</div>
+<div class="tip" id="fs18">Multiple items<br />type String =<br />&#160;&#160;new : value:char -&gt; string + 7 overloads<br />&#160;&#160;member Chars : int -&gt; char<br />&#160;&#160;member Clone : unit -&gt; obj<br />&#160;&#160;member CompareTo : value:obj -&gt; int + 1 overload<br />&#160;&#160;member Contains : value:string -&gt; bool<br />&#160;&#160;member CopyTo : sourceIndex:int * destination:char[] * destinationIndex:int * count:int -&gt; unit<br />&#160;&#160;member EndsWith : value:string -&gt; bool + 2 overloads<br />&#160;&#160;member Equals : obj:obj -&gt; bool + 2 overloads<br />&#160;&#160;member GetEnumerator : unit -&gt; CharEnumerator<br />&#160;&#160;member GetHashCode : unit -&gt; int<br />&#160;&#160;...<br /><br />Full name: System.String<br /><br />--------------------<br />String(value: nativeptr&lt;char&gt;) : unit<br />String(value: nativeptr&lt;sbyte&gt;) : unit<br />String(value: char []) : unit<br />String(c: char, count: int) : unit<br />String(value: nativeptr&lt;char&gt;, startIndex: int, length: int) : unit<br />String(value: nativeptr&lt;sbyte&gt;, startIndex: int, length: int) : unit<br />String(value: char [], startIndex: int, length: int) : unit<br />String(value: nativeptr&lt;sbyte&gt;, startIndex: int, length: int, enc: Text.Encoding) : unit</div>
+<div class="tip" id="fs19">String.IsNullOrWhiteSpace(value: string) : bool</div>
+<div class="tip" id="fs20">val warn : msg:&#39;TMessage -&gt; x:&#39;TSuccess -&gt; Result&lt;&#39;TSuccess,&#39;TMessage&gt;<br /><br />Full name: Chessie.ErrorHandling.Trial.warn</div>
+<div class="tip" id="fs21">val pass : x:&#39;TSuccess -&gt; Result&lt;&#39;TSuccess,&#39;TMessage&gt;<br /><br />Full name: Chessie.ErrorHandling.Trial.pass</div>
+<div class="tip" id="fs22">val checkFirstName : (Applicant -&gt; Result&lt;Applicant,string&gt;)<br /><br />Full name: Pass-warn-fail.checkFirstName</div>
+<div class="tip" id="fs23">val checkLastName : (Applicant -&gt; Result&lt;Applicant,string&gt;)<br /><br />Full name: Pass-warn-fail.checkLastName</div>
+<div class="tip" id="fs24">val checkAge : request:Applicant -&gt; Result&lt;Applicant,string&gt;<br /><br />Full name: Pass-warn-fail.checkAge</div>
+<div class="tip" id="fs25">val request : Applicant</div>
+<div class="tip" id="fs26">val dob : DateTime</div>
+<div class="tip" id="fs27">val diff : TimeSpan</div>
+<div class="tip" id="fs28">property DateTime.Today: DateTime</div>
+<div class="tip" id="fs29">DateTime.Subtract(value: TimeSpan) : DateTime<br />DateTime.Subtract(value: DateTime) : TimeSpan</div>
+<div class="tip" id="fs30">Multiple items<br />type TimeSpan =<br />&#160;&#160;struct<br />&#160;&#160;&#160;&#160;new : ticks:int64 -&gt; TimeSpan + 3 overloads<br />&#160;&#160;&#160;&#160;member Add : ts:TimeSpan -&gt; TimeSpan<br />&#160;&#160;&#160;&#160;member CompareTo : value:obj -&gt; int + 1 overload<br />&#160;&#160;&#160;&#160;member Days : int<br />&#160;&#160;&#160;&#160;member Duration : unit -&gt; TimeSpan<br />&#160;&#160;&#160;&#160;member Equals : obj:TimeSpan -&gt; bool + 1 overload<br />&#160;&#160;&#160;&#160;member GetHashCode : unit -&gt; int<br />&#160;&#160;&#160;&#160;member Hours : int<br />&#160;&#160;&#160;&#160;member Milliseconds : int<br />&#160;&#160;&#160;&#160;member Minutes : int<br />&#160;&#160;&#160;&#160;...<br />&#160;&#160;end<br /><br />Full name: System.TimeSpan<br /><br />--------------------<br />TimeSpan()<br />TimeSpan(ticks: int64) : unit<br />TimeSpan(hours: int, minutes: int, seconds: int) : unit<br />TimeSpan(days: int, hours: int, minutes: int, seconds: int) : unit<br />TimeSpan(days: int, hours: int, minutes: int, seconds: int, milliseconds: int) : unit</div>
+<div class="tip" id="fs31">TimeSpan.FromDays(value: float) : TimeSpan</div>
+<div class="tip" id="fs32">val checkApplicant : request:Applicant -&gt; Result&lt;Applicant,string&gt;<br /><br />Full name: Pass-warn-fail.checkApplicant</div>
+<div class="tip" id="fs33">val bind : f:(&#39;a -&gt; Result&lt;&#39;b,&#39;c&gt;) -&gt; result:Result&lt;&#39;a,&#39;c&gt; -&gt; Result&lt;&#39;b,&#39;c&gt;<br /><br />Full name: Chessie.ErrorHandling.Trial.bind</div>
+<div class="tip" id="fs34">val processRequest : request:Applicant -&gt; unit<br /><br />Full name: Pass-warn-fail.processRequest</div>
+<div class="tip" id="fs35">active recognizer Pass: Result&lt;&#39;a,&#39;b&gt; -&gt; Choice&lt;&#39;a,(&#39;a * &#39;b list),&#39;b list&gt;<br /><br />Full name: Chessie.ErrorHandling.Trial.( |Pass|Warn|Fail| )</div>
+<div class="tip" id="fs36">val printfn : format:Printf.TextWriterFormat&lt;&#39;T&gt; -&gt; &#39;T<br /><br />Full name: Microsoft.FSharp.Core.ExtraTopLevelOperators.printfn</div>
+<div class="tip" id="fs37">active recognizer Warn: Result&lt;&#39;a,&#39;b&gt; -&gt; Choice&lt;&#39;a,(&#39;a * &#39;b list),&#39;b list&gt;<br /><br />Full name: Chessie.ErrorHandling.Trial.( |Pass|Warn|Fail| )</div>
+<div class="tip" id="fs38">val log : string list</div>
+<div class="tip" id="fs39">val msg : string</div>
+<div class="tip" id="fs40">union case Option.None: Option&lt;&#39;T&gt;</div>
+<div class="tip" id="fs41">union case Option.Some: Value: &#39;T -&gt; Option&lt;&#39;T&gt;</div>
+<div class="tip" id="fs42">property Color.Gold: Color</div>
+<div class="tip" id="fs43">val disallowPink : request:Applicant -&gt; Result&lt;Applicant,string&gt;<br /><br />Full name: Pass-warn-fail.disallowPink</div>
+<div class="tip" id="fs44">val c : Color</div>
+<div class="tip" id="fs45">property Color.Pink: Color</div>
+<div class="tip" id="fs46">val fail : msg:&#39;Message -&gt; Result&lt;&#39;TSuccess,&#39;Message&gt;<br /><br />Full name: Chessie.ErrorHandling.Trial.fail</div>
+<div class="tip" id="fs47">val recheckApplicant : request:Applicant -&gt; Result&lt;Applicant,string&gt;<br /><br />Full name: Pass-warn-fail.recheckApplicant</div>
+<div class="tip" id="fs48">val reportMessages : request:Applicant -&gt; unit<br /><br />Full name: Pass-warn-fail.reportMessages</div>
+<div class="tip" id="fs49">Multiple items<br />union case Result.Fail: &#39;TMessage list -&gt; Result&lt;&#39;TSuccess,&#39;TMessage&gt;<br /><br />--------------------<br />active recognizer Fail: Result&lt;&#39;a,&#39;b&gt; -&gt; Choice&lt;&#39;a,(&#39;a * &#39;b list),&#39;b list&gt;<br /><br />Full name: Chessie.ErrorHandling.Trial.( |Pass|Warn|Fail| )</div>
+<div class="tip" id="fs50">val errors : string list</div>
+<div class="tip" id="fs51">property Color.Green: Color</div>
+<div class="tip" id="fs52">val warnOnNoColor : request:Applicant -&gt; Result&lt;Applicant,string&gt;<br /><br />Full name: Pass-warn-fail.warnOnNoColor</div>
+<div class="tip" id="fs53">val ( checkApplicant (again) ) : request:Applicant -&gt; Result&lt;Applicant,string&gt;<br /><br />Full name: Pass-warn-fail.( checkApplicant (again) )</div>
+<div class="tip" id="fs54">val ( processRequest (again) ) : request:Applicant -&gt; unit<br /><br />Full name: Pass-warn-fail.( processRequest (again) )</div>
+<div class="tip" id="fs55">val result : Result&lt;Applicant,string&gt;</div>
+<div class="tip" id="fs56">val failOnWarnings : result:Result&lt;&#39;a,&#39;b&gt; -&gt; Result&lt;&#39;a,&#39;b&gt;<br /><br />Full name: Chessie.ErrorHandling.Trial.failOnWarnings</div>
+<div class="tip" id="fs57">val x : string</div>
+
+        </div>
+        <div class="span3">
+          <img src="/Chessie/img/logo.png" alt="F# Project" style="width:150px;margin:10px" />  
+          <ul class="nav nav-list" id="menu" style="margin-top: 20px;">
+            <li class="nav-header">Chessie</li>
+            <li><a href="/Chessie/index.html">Home page</a></li>
+            <li class="divider"></li>
+            <li><a href="http://nuget.org/packages/Chessie">Get Library via NuGet</a></li>
+            <li><a href="http://github.com/fsprojects/Chessie">Source Code on GitHub</a></li>
+            <li><a href="/Chessie/license.html">License</a></li>
+            <li><a href="/Chessie/release-notes.html">Release Notes</a></li>
+            
+            <li class="nav-header">F# Articles</li>
+            <li><a href="/Chessie/railway.html">Railway-oriented programming</a></li>
+            <li><a href="/Chessie/pass-warn-fail.html">Handling warnings and errors</a></li>
+            <li><a href="/Chessie/a-tale-of-3-nightclubs-fsharp.html">A Tale of 3 Nightclubs</a></li>
+            <li class="nav-header">C# Articles</li>
+            <li><a href="/Chessie/a-tale-of-3-nightclubs.html">A Tale of 3 Nightclubs</a></li>              
+
+            <li class="nav-header">Documentation</li>
+            <li><a href="/Chessie/reference/index.html">API Reference</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <a href="http://github.com/fsprojects/Chessie"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"/></a>
+  </body>
+  </html>
