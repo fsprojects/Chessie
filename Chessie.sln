@@ -23,7 +23,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "content", "content", "{8E6D
 		docs\content\a-tale-of-3-nightclubs.md = docs\content\a-tale-of-3-nightclubs.md
 		docs\content\index.md = docs\content\index.md
 		docs\content\railway.fsx = docs\content\railway.fsx
-		docs\content\PassWarnFail.fsx = docs\content\PassWarnFail.fsx
+		docs\content\pass-warn-fail.fsx = docs\content\pass-warn-fail.fsx
 	EndProjectSection
 EndProject
 Project("{f2a71f9b-5d33-465a-a702-920d77279786}") = "Chessie", "src\Chessie\Chessie.fsproj", "{5C095A65-1BF4-4C24-82D2-A07E8C258789}"
