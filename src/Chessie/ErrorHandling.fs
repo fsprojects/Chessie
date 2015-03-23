@@ -290,39 +290,39 @@ open Chessie.ErrorHandling
 type ResultExtensions () =
     /// Allows pattern matching on Results from C#.
     [<Extension>]
-    static member inline Match(value, ifSuccess:Action<'TSuccess , ('TMessage list)>, ifFailure:Action<'TMessage list>) =
-        match value with
+    static member inline Match(this, ifSuccess:Action<'TSuccess , ('TMessage list)>, ifFailure:Action<'TMessage list>) =
+        match this with
         | Result.Ok(x, msgs) -> ifSuccess.Invoke(x,msgs)
         | Result.Fail(msgs) -> ifFailure.Invoke(msgs)
     
     /// Allows pattern matching on Results from C#.
     [<Extension>]
-    static member inline Either(value, ifSuccess:Func<'TSuccess , ('TMessage list),'TResult>, ifFailure:Func<'TMessage list,'TResult>) =
-        match value with
+    static member inline Either(this, ifSuccess:Func<'TSuccess , ('TMessage list),'TResult>, ifFailure:Func<'TMessage list,'TResult>) =
+        match this with
         | Result.Ok(x, msgs) -> ifSuccess.Invoke(x,msgs)
         | Result.Fail(msgs) -> ifFailure.Invoke(msgs)
 
     /// Lifts a Func into a Result and applies it on the given result.
     [<Extension>]
-    static member inline Map(value,func:Func<_,_>) =
-        lift func.Invoke value
+    static member inline Map(this:Result<'TSuccess, 'TMessage>,func:Func<_,_>) =
+        lift func.Invoke this
 
     /// Collects a sequence of Results and accumulates their values.
     /// If the sequence contains an error the error will be propagated.
     [<Extension>]
-    static member inline Collect(values) =
+    static member inline Collect(values:seq<Result<'TSuccess, 'TMessage>>) =
         collect values
 
     /// Collects a sequence of Results and accumulates their values.
     /// If the sequence contains an error the error will be propagated.
     [<Extension>]
-    static member inline Flatten(value) : Result<seq<'a>,'b>=
-        match value with
-        | Result.Ok(values:Result<'a,'b> seq, msgs:'b list) -> 
+    static member inline Flatten(this) : Result<seq<'TSuccess>,'TMessage>=
+        match this with
+        | Result.Ok(values:Result<'TSuccess,'TMessage> seq, msgs:'TMessage list) -> 
             match collect values with
             | Result.Ok(values,msgs) -> Ok(values |> List.toSeq,msgs)
-            | Result.Fail(msgs:'b list) -> Fail msgs
-        | Result.Fail(msgs:'b list) -> Fail msgs
+            | Result.Fail(msgs:'TMessage list) -> Fail msgs
+        | Result.Fail(msgs:'TMessage list) -> Fail msgs
 
     /// If the result is a Success it executes the given Func on the value.
     /// Otherwise the exisiting failure is propagated.
