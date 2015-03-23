@@ -36,21 +36,21 @@ let ``should find empty name``() =
     { Name = ""
       EMail = "" }
     |> combinedValidation
-    |> shouldEqual (Fail [ "Name must not be blank" ])
+    |> shouldEqual (Bad [ "Name must not be blank" ])
 
 [<Test>]
 let ``should find empty mail``() = 
     { Name = "Scott"
       EMail = "" }
     |> combinedValidation
-    |> shouldEqual (Fail [ "Email must not be blank" ])
+    |> shouldEqual (Bad [ "Email must not be blank" ])
 
 [<Test>]
 let ``should find long name``() = 
     { Name = "ScottScottScottScottScottScottScottScottScottScottScottScottScottScottScottScottScottScottScott"
       EMail = "" }
     |> combinedValidation
-    |> shouldEqual (Fail [ "Name must not be longer than 50 chars" ])
+    |> shouldEqual (Bad [ "Name must not be longer than 50 chars" ])
 
 [<Test>]
 let ``should not complain on valid data``() = 
@@ -82,7 +82,7 @@ let ``should not canonicalize invalid data``() =
     { Name = ""
       EMail = "SCOTT@CHESSIE.com" }
     |> usecase
-    |> shouldEqual (Fail [ "Name must not be blank" ])
+    |> shouldEqual (Bad [ "Name must not be blank" ])
 
 // a dead-end function    
 let updateDatabase input =
