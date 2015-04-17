@@ -90,7 +90,7 @@ let Dave = { Person.Gender = Male; Age = 41; Clothes = set ["Tie"; "Jeans"]; Sob
 let Ruby = { Person.Gender = Female; Age = 25; Clothes = set ["High heels"]; Sobriety = Tipsy }
 
 ClubbedToDeath.costToEnter Dave 
-// [fsi:val it : Chessie.ErrorHandling.Result<decimal,string> = Fail ["Too old!"]]
+// [fsi:val it : Chessie.ErrorHandling.Result<decimal,string> = Bad ["Too old!"]]
 
 ClubbedToDeath.costToEnter Ken
 // [fsi:val it : Result<decimal,string> = Ok (5M,[])]
@@ -99,7 +99,7 @@ ClubbedToDeath.costToEnter Ruby
 // [fsi:val it : Result<decimal,string> = Ok (0M,[])]
 
 ClubbedToDeath.costToEnter { Ruby with Age = 17 } 
-// [fsi:val it : Chessie.ErrorHandling.Result<decimal,string> = Fail ["Too young!"]]
+// [fsi:val it : Chessie.ErrorHandling.Result<decimal,string> = Bad ["Too young!"]]
 
 (**
 The thing to note here is how the Validations can be composed together in a computation expression.

@@ -1,3 +1,6 @@
+#### 0.2.0 - 23.03.2015
+* BREAKING: Fixed conflicts reported in https://github.com/fsprojects/Chessie/issues/17
+
 #### 0.1.1 - 23.03.2015
 * Improve C# signatures
 
