@@ -104,7 +104,7 @@ module Trial =
         | Ok(f, msgs1), Ok(x, msgs2) -> Ok(f x, msgs1 @ msgs2)
         | Bad errs, Ok(_, msgs) -> Bad(errs)
         | Ok(_, msgs), Bad errs -> Bad(errs)
-        | Bad errs1, Bad errs2 -> Bad(errs1)
+        | Bad errs1, Bad errs2 -> Bad(errs1 @ errs2)
 
     /// If the wrapped function is a success and the given result is a success the function is applied on the value. 
     /// Otherwise the exisiting error messages are propagated.
