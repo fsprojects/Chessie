@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using Chessie.ErrorHandling;
-using Chessie.ErrorHandling.CSharp;
+using Chessie.ErrorHandling.Compat;
 
 namespace Chessie.CSharp.Test
 {
@@ -17,14 +17,13 @@ namespace Chessie.CSharp.Test
 
     public class Validation
     {
-        public static Result<Request, string> ValidateInput(Request input)
+        public static Outcome<Request, string> ValidateInput(Request input)
         {
             if (input.Name == "")
-                return Result<Request, string>.FailWith("Name must not be blank");
+              return Outcome.FailWith<Request,string>("Name must not be blank");
             if (input.EMail == "")
-                return Result<Request, string>.FailWith("Email must not be blank");
-            return Result<Request, string>.Succeed(input);
-
+              return Outcome.FailWith<Request,string>("Email must not be blank");
+            return Outcome.PassWith<Request,string>(input);
         }
     }
 
@@ -35,14 +34,14 @@ namespace Chessie.CSharp.Test
         public void TryWillCatch()
         {
             var exn = new Exception("Hello World");
-            var result = Result<string, Exception>.Try(() => { throw exn; });
+            var result = Outcome.Try<string>(() => { throw exn; });
             Assert.AreEqual(exn, result.FailedWith().First());
         }
 
         [Test]
         public void TryWillReturnValue()
         {
-            var result = Result<string, Exception>.Try(() => { return "hello world"; });
+            var result = Outcome.Try(() => { return "hello world"; });
             Assert.AreEqual("hello world", result.SucceededWith());
         }
     }
@@ -79,7 +78,7 @@ namespace Chessie.CSharp.Test
             var result = Validation.ValidateInput(request);
             result.Match(
                (x, msgs) => { throw new Exception("wrong match case"); },
-               msgs => { Assert.AreEqual("Email must not be blank", msgs[0]); });
+               msgs => { Assert.AreEqual("Email must not be blank", msgs.First()); });
         }
     }
 
@@ -107,7 +106,7 @@ namespace Chessie.CSharp.Test
                Validation.ValidateInput(request)
                 .Either(
                    (x, msgs) => { throw new Exception("wrong match case"); },
-                   msgs => { return msgs[0]; });
+                   msgs => { return msgs.First(); });
 
             Assert.AreEqual("Email must not be blank", result);
         }

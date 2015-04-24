@@ -32,19 +32,19 @@ type Request =
 let validateInput input = 
     if input.Name = "" then fail "Name must not be blank"
     elif input.EMail = "" then fail "Email must not be blank"
-    else ok input // happy path
+    else pass input // happy path
 
 let validate1 input = 
     if input.Name = "" then fail "Name must not be blank"
-    else ok input
+    else pass input
 
 let validate2 input = 
     if input.Name.Length > 50 then fail "Name must not be longer than 50 chars"
-    else ok input
+    else pass input
 
 let validate3 input = 
     if input.EMail = "" then fail "Email must not be blank"
-    else ok input
+    else pass input
 
 let combinedValidation = 
     // connect the two-tracks together
@@ -74,7 +74,7 @@ let combinedValidation =
 
 { Name = "Scott"; EMail = "scott@chessie.com" }
 |> combinedValidation
-|> returnOrFail
+|> returnOrRaise
 // [fsi:val it : Request = {Name = "Scott"; EMail = "scott@chessie.com";}]
 
 
@@ -82,11 +82,11 @@ let canonicalizeEmail input = { input with EMail = input.EMail.Trim().ToLower() 
 
 let usecase = 
     combinedValidation
-    >> (lift canonicalizeEmail)
+    >> (map canonicalizeEmail)
 
 { Name = "Scott"; EMail = "SCOTT@CHESSIE.com" }
 |> usecase
-|> returnOrFail
+|> returnOrRaise
 // [fsi:val it : Request = {Name = "Scott"; EMail = "scott@chessie.com";}]
 
 { Name = ""; EMail = "SCOTT@CHESSIE.com" }
@@ -105,13 +105,13 @@ let log twoTrackInput =
 
 let usecase2 = 
     usecase
-    >> (successTee updateDatabase)
+    >> (passTee updateDatabase)
     >> log
 
 
 { Name = "Scott"; EMail = "SCOTT@CHESSIE.com" }
 |> usecase2
-|> returnOrFail
+|> returnOrRaise
 // [fsi:DEBUG. Success so far.]
 // [fsi:val it : Request = {Name = "Scott";]
 // [fsi:                    EMail = "scott@chessie.com";}]
