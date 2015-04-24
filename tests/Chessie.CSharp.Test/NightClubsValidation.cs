@@ -63,11 +63,10 @@ namespace Chessie.CSharp.Test
   {
     public static Outcome<decimal,string> CostToEnter (Person p)
     {
-      return Outcome.PassWith<decimal,string>(0m);
-      //return from a in Club.CheckAge (p)
-      //       from b in Club.CheckClothes(a)
-      //       from c in Club.CheckSobriety (b)
-      //       select c.Gender == Gender.Female ? 0m : 5m;
+      return from a in Club.CheckAge (p)
+             from b in Club.CheckClothes(a)
+             from c in Club.CheckSobriety (b)
+             select c.Gender == Gender.Female ? 0m : 5m;
     }
   }
 

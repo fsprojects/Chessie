@@ -382,10 +382,9 @@ type OutcomeExtensions =
   static member SelectMany  (this     :Outcome<'Success,'Message>
                             ,withPass :Func<_,_>
                             ,selector :Func<_,_,_>) =
-    //TODO: this method is almost certainly wrong!
     match this with
     | Pass (v1,_)   ->  match withPass.Invoke v1 with
-                        | Pass (v2,_)   ->  selector.Invoke (v1,v2)
+                        | Pass (v2,_)   ->  pass <| selector.Invoke (v1,v2)
                         | Fail failure  ->  Fail failure
     | Fail failure  ->                      Fail failure
 
