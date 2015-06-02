@@ -61,10 +61,10 @@ let checkApplicant request =
 
 let processRequest request = 
   match checkApplicant request with
-  | Pass  _       ->  printfn "All Good!!!"
-  | Warn (_,log)  ->  printfn "Got some issues:"
-                      for msg in log do printfn "  %s" msg
-  | _             ->  printfn "Something went horribly wrong."
+  | Pass _    ->  printfn "All Good!!!"
+  | Warn log  ->  printfn "Got some issues:"
+                  for msg in log do printfn "  %s" msg
+  | _         ->  printfn "Something went horribly wrong."
 
             
 // good request
@@ -100,7 +100,7 @@ let recheckApplicant request =
 let reportMessages request =
   match recheckApplicant request with
   | Pass  _       ->  printfn "Nothing to report"
-  | Warn (_,log)  ->  printfn "Got some issues:"
+  | Warn log      ->  printfn "Got some issues:"
                       for msg in log do printfn "  %s" msg
   | Fail  errors  ->  printfn "Got errors:"
                       for msg in errors do printfn "  %s" msg
@@ -144,7 +144,7 @@ let ``processRequest (again)`` request =
   // turn any warning messages into failure messages
   let result =  request
                 |> ``checkApplicant (again)``
-                |> failOnWarnings
+                |> failOnWarnings id
   // now we only have 2 tracks on which the data may lay
   match result with
   | Fail errors ->  for x in errors do printfn "ERROR! %s" x

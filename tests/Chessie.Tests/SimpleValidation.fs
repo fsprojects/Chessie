@@ -11,19 +11,19 @@ type Request =
 let validateInput input = 
     if input.Name = "" then fail "Name must not be blank"
     elif input.EMail = "" then fail "Email must not be blank"
-    else ok input // happy path
+    else pass input // happy path
 
 let validate1 input = 
     if input.Name = "" then fail "Name must not be blank"
-    else ok input
+    else pass input
 
 let validate2 input = 
     if input.Name.Length > 50 then fail "Name must not be longer than 50 chars"
-    else ok input
+    else pass input
 
 let validate3 input = 
     if input.EMail = "" then fail "Email must not be blank"
-    else ok input
+    else pass input
 
 let combinedValidation = 
     // connect the two-tracks together
@@ -36,21 +36,21 @@ let ``should find empty name``() =
     { Name = ""
       EMail = "" }
     |> combinedValidation
-    |> shouldEqual (Bad [ "Name must not be blank" ])
+    |> shouldEqual (Fail [ "Name must not be blank" ])
 
 [<Test>]
 let ``should find empty mail``() = 
     { Name = "Scott"
       EMail = "" }
     |> combinedValidation
-    |> shouldEqual (Bad [ "Email must not be blank" ])
+    |> shouldEqual (Fail [ "Email must not be blank" ])
 
 [<Test>]
 let ``should find long name``() = 
     { Name = "ScottScottScottScottScottScottScottScottScottScottScottScottScottScottScottScottScottScottScott"
       EMail = "" }
     |> combinedValidation
-    |> shouldEqual (Bad [ "Name must not be longer than 50 chars" ])
+    |> shouldEqual (Fail [ "Name must not be longer than 50 chars" ])
 
 [<Test>]
 let ``should not complain on valid data``() = 
@@ -59,21 +59,21 @@ let ``should not complain on valid data``() =
           EMail = "scott@chessie.com" }
     scott
     |> combinedValidation
-    |> returnOrFail
+    |> returnOrRaise
     |> shouldEqual scott
 
 let canonicalizeEmail input = { input with EMail = input.EMail.Trim().ToLower() }
 
 let usecase = 
     combinedValidation
-    >> (lift canonicalizeEmail)
+    >> (map canonicalizeEmail)
 
 [<Test>]
 let ``should canonicalize valid data``() = 
     { Name = "Scott"
       EMail = "SCOTT@CHESSIE.com" }
     |> usecase
-    |> returnOrFail
+    |> returnOrRaise
     |> shouldEqual { Name = "Scott"
                      EMail = "scott@chessie.com" }
 
@@ -82,7 +82,7 @@ let ``should not canonicalize invalid data``() =
     { Name = ""
       EMail = "SCOTT@CHESSIE.com" }
     |> usecase
-    |> shouldEqual (Bad [ "Name must not be blank" ])
+    |> shouldEqual (Fail [ "Name must not be blank" ])
 
 // a dead-end function    
 let updateDatabase input =
@@ -96,7 +96,7 @@ let log logF twoTrackInput =
 
 let usecase2 logF = 
     usecase
-    >> (successTee updateDatabase)
+    >> (passTee updateDatabase)
     >> (log logF)
 
 [<Test>]
@@ -108,7 +108,7 @@ let ``should log valid data``() =
     { Name = "Scott"
       EMail = "SCOTT@CHESSIE.com" }
     |> usecase2 logF
-    |> returnOrFail
+    |> returnOrRaise
     |> shouldEqual { Name = "Scott"
                      EMail = "scott@chessie.com" }
 

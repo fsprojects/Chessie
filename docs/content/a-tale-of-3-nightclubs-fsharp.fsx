@@ -10,7 +10,7 @@ This C# tutorial is based on a [Scalaz tutorial](https://gist.github.com/oxbowla
 Additional resources:
 
 * Railway Oriented Programming by Scott Wlaschin - A functional approach to error handling
-	* [Blog post](http://fsharpforfunandprofit.com/posts/recipe-part2/)
+  * [Blog post](http://fsharpforfunandprofit.com/posts/recipe-part2/)
     * [Slide deck](http://www.slideshare.net/ScottWlaschin/railway-oriented-programming)
     * [Video](https://vimeo.com/97344498)
 
@@ -49,17 +49,17 @@ module Club =
     let checkAge (p : Person) = 
         if p.Age < 18 then fail "Too young!"
         elif p.Age > 40 then fail "Too old!"
-        else ok p
+        else pass p
     
     let checkClothes (p : Person) = 
         if p.Gender = Male && not (p.Clothes.Contains "Tie") then fail "Smarten up!"
         elif p.Gender = Female && p.Clothes.Contains "Trainers" then fail "Wear high heels"
-        else ok p
+        else pass p
     
     let checkSobriety (p : Person) = 
         match p.Sobriety with
         | Drunk | Paralytic | Unconscious -> fail "Sober up!"
-        | _ -> ok p
+        | _ -> pass p
 
 (**
 ## Part One : Clubbed to Death
