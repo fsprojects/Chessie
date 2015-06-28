@@ -8,13 +8,13 @@ type Result<'TSuccess, 'TMessage> =
     /// Represents the result of a successful computation.
     | Ok of 'TSuccess * 'TMessage list
     /// Represents the result of a failed computation.
-    | Fail of 'TMessage list
+    | Bad of 'TMessage list
 
     /// Creates a Failure result with the given messages.
-    static member FailWith(messages:'TMessage seq) : Result<'TSuccess, 'TMessage> = Result<'TSuccess, 'TMessage>.Fail(messages |> Seq.toList)
+    static member FailWith(messages:'TMessage seq) : Result<'TSuccess, 'TMessage> = Result<'TSuccess, 'TMessage>.Bad(messages |> Seq.toList)
 
     /// Creates a Failure result with the given message.
-    static member FailWith(message:'TMessage) : Result<'TSuccess, 'TMessage> = Result<'TSuccess, 'TMessage>.Fail([message])
+    static member FailWith(message:'TMessage) : Result<'TSuccess, 'TMessage> = Result<'TSuccess, 'TMessage>.Bad([message])
     
     /// Creates a Success result with the given value.
     static member Succeed(value:'TSuccess) : Result<'TSuccess, 'TMessage> = Result<'TSuccess, 'TMessage>.Ok(value,[])
@@ -30,13 +30,13 @@ type Result<'TSuccess, 'TMessage> =
         try
             Ok(func.Invoke(),[])
         with
-        | exn -> Fail[exn]
+        | exn -> Bad[exn]
 
     /// Converts the result into a string.
     override this.ToString() =
         match this with
         | Ok(v,msgs) -> sprintf "OK: %A - %s" v (String.Join(Environment.NewLine, msgs |> Seq.map (fun x -> x.ToString())))
-        | Fail(msgs) -> sprintf "Error: %s" (String.Join(Environment.NewLine, msgs |> Seq.map (fun x -> x.ToString())))    
+        | Bad(msgs) -> sprintf "Error: %s" (String.Join(Environment.NewLine, msgs |> Seq.map (fun x -> x.ToString())))    
 
 /// Basic combinators and operators for error handling.
 [<AutoOpen>]
@@ -51,19 +51,19 @@ module Trial =
     let inline warn<'TSuccess,'TMessage> (msg:'TMessage) (x:'TSuccess) : Result<'TSuccess,'TMessage> = Ok(x,[msg])
 
     /// Wraps a message in a Failure
-    let inline fail<'TSuccess,'Message> (msg:'Message) : Result<'TSuccess,'Message> = Fail([ msg ])
+    let inline fail<'TSuccess,'Message> (msg:'Message) : Result<'TSuccess,'Message> = Bad([ msg ])
 
     /// Returns true if the result was not successful.
     let inline failed result = 
         match result with
-        | Fail _ -> true
+        | Bad _ -> true
         | _ -> false
 
     /// Takes a Result and maps it with fSuccess if it is a Success otherwise it maps it with fFailure.
     let inline either fSuccess fFailure trialResult = 
         match trialResult with
         | Ok(x, msgs) -> fSuccess (x, msgs)
-        | Fail(msgs) -> fFailure (msgs)
+        | Bad(msgs) -> fFailure (msgs)
 
     /// If the given result is a Success the wrapped value will be returned. 
     ///Otherwise the function throws an exception with Failure message of the result.
@@ -78,14 +78,14 @@ module Trial =
     /// Appends the given messages with the messages in the given result.
     let inline mergeMessages msgs result = 
         let inline fSuccess (x, msgs2) = Ok(x, msgs @ msgs2)
-        let inline fFailure errs = Fail(errs @ msgs)
+        let inline fFailure errs = Bad(errs @ msgs)
         either fSuccess fFailure result
 
     /// If the result is a Success it executes the given function on the value.
     /// Otherwise the exisiting failure is propagated.
     let inline bind f result = 
         let inline fSuccess (x, msgs) = f x |> mergeMessages msgs
-        let inline fFailure (msgs) = Fail msgs
+        let inline fFailure (msgs) = Bad msgs
         either fSuccess fFailure result
 
    /// Flattens a nested result given the Failure types are equal
@@ -102,9 +102,9 @@ module Trial =
     let inline apply wrappedFunction result = 
         match wrappedFunction, result with
         | Ok(f, msgs1), Ok(x, msgs2) -> Ok(f x, msgs1 @ msgs2)
-        | Fail errs, Ok(_, msgs) -> Fail(errs)
-        | Ok(_, msgs), Fail errs -> Fail(errs)
-        | Fail errs1, Fail errs2 -> Fail(errs1)
+        | Bad errs, Ok(_, msgs) -> Bad(errs)
+        | Ok(_, msgs), Bad errs -> Bad(errs)
+        | Bad errs1, Bad errs2 -> Bad(errs1 @ errs2)
 
     /// If the wrapped function is a success and the given result is a success the function is applied on the value. 
     /// Otherwise the exisiting error messages are propagated.
@@ -144,8 +144,8 @@ module Trial =
         Seq.fold (fun result next -> 
             match result, next with
             | Ok(rs, m1), Ok(r, m2) -> Ok(r :: rs, m1 @ m2)
-            | Ok(_, m1), Fail(m2) | Fail(m1), Ok(_, m2) -> Fail(m1 @ m2)
-            | Fail(m1), Fail(m2) -> Fail(m1 @ m2)) (ok []) xs
+            | Ok(_, m1), Bad(m2) | Bad(m1), Ok(_, m2) -> Bad(m1 @ m2)
+            | Bad(m1), Bad(m2) -> Bad(m1 @ m2)) (ok []) xs
         |> lift List.rev
 
     /// Converts an option into a Result.
@@ -159,11 +159,11 @@ module Trial =
       match result with
       | Ok  (value, []  ) -> Pass  value
       | Ok  (value, msgs) -> Warn (value,msgs)
-      | Fail        msgs  -> Fail        msgs
+      | Bad        msgs  -> Fail        msgs
 
     let inline failOnWarnings result =
       match result with
-      | Warn (_,msgs) -> Fail msgs
+      | Warn (_,msgs) -> Bad msgs
       | _             -> result 
 
     /// Builder type for error handling computation expressions.
@@ -251,7 +251,7 @@ module AsyncTrial =
             
             let fFailure errs = 
                 errs
-                |> Fail
+                |> Bad
                 |> Async.singleton
             
             asyncResult
@@ -293,14 +293,14 @@ type ResultExtensions () =
     static member inline Match(this, ifSuccess:Action<'TSuccess , ('TMessage list)>, ifFailure:Action<'TMessage list>) =
         match this with
         | Result.Ok(x, msgs) -> ifSuccess.Invoke(x,msgs)
-        | Result.Fail(msgs) -> ifFailure.Invoke(msgs)
+        | Result.Bad(msgs) -> ifFailure.Invoke(msgs)
     
     /// Allows pattern matching on Results from C#.
     [<Extension>]
     static member inline Either(this, ifSuccess:Func<'TSuccess , ('TMessage list),'TResult>, ifFailure:Func<'TMessage list,'TResult>) =
         match this with
         | Result.Ok(x, msgs) -> ifSuccess.Invoke(x,msgs)
-        | Result.Fail(msgs) -> ifFailure.Invoke(msgs)
+        | Result.Bad(msgs) -> ifFailure.Invoke(msgs)
 
     /// Lifts a Func into a Result and applies it on the given result.
     [<Extension>]
@@ -321,8 +321,8 @@ type ResultExtensions () =
         | Result.Ok(values:Result<'TSuccess,'TMessage> seq, msgs:'TMessage list) -> 
             match collect values with
             | Result.Ok(values,msgs) -> Ok(values |> List.toSeq,msgs)
-            | Result.Fail(msgs:'TMessage list) -> Fail msgs
-        | Result.Fail(msgs:'TMessage list) -> Fail msgs
+            | Result.Bad(msgs:'TMessage list) -> Bad msgs
+        | Result.Bad(msgs:'TMessage list) -> Bad msgs
 
     /// If the result is a Success it executes the given Func on the value.
     /// Otherwise the exisiting failure is propagated.
@@ -348,11 +348,11 @@ type ResultExtensions () =
     static member inline FailedWith(this:Result<'TSuccess, 'TMessage>) = 
         match this with
         | Result.Ok(v,msgs) -> failwithf "Result was a success: %A - %s" v (String.Join(Environment.NewLine, msgs |> Seq.map (fun x -> x.ToString())))
-        | Result.Fail(msgs) -> msgs
+        | Result.Bad(msgs) -> msgs
 
     /// Returns the result or fails if the result was an error.
     [<Extension>]
     static member inline SucceededWith(this:Result<'TSuccess, 'TMessage>) : 'TSuccess = 
         match this with
         | Result.Ok(v,msgs) -> v
-        | Result.Fail(msgs) -> failwithf "Result was an error: %s" (String.Join(Environment.NewLine, msgs |> Seq.map (fun x -> x.ToString())))
+        | Result.Bad(msgs) -> failwithf "Result was an error: %s" (String.Join(Environment.NewLine, msgs |> Seq.map (fun x -> x.ToString())))
