@@ -357,7 +357,9 @@ type ResultExtensions () =
         | Result.Ok(v,msgs) -> v
         | Result.Bad(msgs) -> failwithf "Result was an error: %s" (String.Join(Environment.NewLine, msgs |> Seq.map (fun x -> x.ToString())))
 
-    /// ToDo: comment
+    /// Joins two results. 
+    /// If both are a success the resultSelector Func is applied to the values and the existing success messages are propagated.
+    /// Otherwise the exisiting error messages are propagated.
     [<Extension>]
     static member inline Join (this: Result<'TOuter, 'TMessage>, inner: Result<'TInner, 'TMessage>, outerKeySelector: Func<'TOuter,'TKey>, innerKeySelector: Func<'TInner, 'TKey>, resultSelector: Func<'TOuter, 'TInner, 'TResult>) =
         let curry func = fun a -> fun b -> func (a, b)
