@@ -114,5 +114,46 @@ namespace Chessie.CSharp.Test
                 });
         }
     }
-}
 
+    class ClubTropicana
+    {
+        public static Result<decimal, string> CostToEnter(Person p)
+        {
+            return from c in Club.CheckAge(p)
+                   join x in Club.CheckClothes(p) on 1 equals 1
+                   join y in Club.CheckSobriety(p) on 1 equals 1
+                   select c.Gender == Gender.Female ? 0m : 7.5m;
+        }
+    }
+
+    [TestFixture]
+    class Test2
+    {
+        [Test]
+        public void Part2()
+        {
+            var daveParalytic = new Person(
+                age: 41,
+                clothes: new List<string> { "Tie", "Shirt" }, 
+                gender: Gender.Male,
+                sobriety: Sobriety.Paralytic);
+            
+            var costDaveParalytic = ClubTropicana.CostToEnter(daveParalytic);
+
+            costDaveParalytic.Match(
+                ifSuccess: (x, msgs) => Assert.Fail(),
+                ifFailure: errs => Assert.That(errs.ToList(), Is.EquivalentTo(new[] { "Too old!", "Sober up!" })));
+            
+            var ruby = new Person(Gender.Female, 25, new List<string> { "High heels" }, Sobriety.Tipsy);
+            var costRuby = ClubTropicana.CostToEnter(ruby);
+            
+            costRuby.Match(
+                ifSuccess: (x, msgs) =>
+                {
+                    Assert.AreEqual(0m, x);
+                    Assert.That(msgs, Is.EquivalentTo(new List<string>()));
+                },
+                ifFailure: errs => Assert.Fail());
+        }
+    }
+}
