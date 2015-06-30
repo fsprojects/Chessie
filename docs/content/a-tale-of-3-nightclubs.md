@@ -83,7 +83,7 @@ Now let's compose some validation checks via syntactic sugar and LINQ:
                    select c.Gender == Gender.Female ? 0m : 5m;
         }
     }
-	
+
 Let's see how the validation works in action:
 
     [lang=csharp]
@@ -109,3 +109,40 @@ We can even use pattern matching on the result:
 
 The thing to note here is how the Validations can be composed together in a computation expression.
 The type system is making sure that failures flow through your computation in a safe manner.
+
+## Part Two : Club Tropicana
+
+Part One showed monadic composition, which from the perspective of Validation is *fail-fast*. That is, any failed check shortcircuits subsequent checks. This nicely models nightclubs in the real world, as anyone who has dashed home for a pair of smart shoes and returned, only to be told that your tie does not pass muster, will attest.
+
+But what about an ideal nightclub? One that tells you *everything* that is wrong with you.
+
+Applicative functors to the rescue!
+
+Let's compose some validation checks that accumulate failures using LINQ sugar:
+
+    [lang=csharp]
+    class ClubTropicana
+    {
+        public static Result<decimal, string> CostToEnter(Person p)
+        {
+            return from c in Club.CheckAge(p)
+                    join x in Club.CheckClothes(p) on 1 equals 1
+                    join y in Club.CheckSobriety(p) on 1 equals 1
+                    select c.Gender == Gender.Female ? 0m : 7.5m;
+        }
+    }
+
+And the use? Dave tried the second nightclub after a few more drinks in the pub:
+
+    [lang=csharp]
+    var daveParalytic = new Person(
+        age: 41,
+        clothes: new List<string> { "Tie", "Shirt" }, 
+        gender: Gender.Male,
+        sobriety: Sobriety.Paralytic);
+                
+    var costDaveParalytic = ClubTropicana.CostToEnter(daveParalytic);
+    
+    costDaveParalytic.Match(
+        ifSuccess: (x, msgs) => Assert.Fail(),
+        ifFailure: errs => Assert.That(errs.ToList(), Is.EquivalentTo(new[] { "Too old!", "Sober up!" })));
