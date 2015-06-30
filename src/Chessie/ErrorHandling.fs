@@ -356,3 +356,11 @@ type ResultExtensions () =
         match this with
         | Result.Ok(v,msgs) -> v
         | Result.Bad(msgs) -> failwithf "Result was an error: %s" (String.Join(Environment.NewLine, msgs |> Seq.map (fun x -> x.ToString())))
+
+    /// ToDo: comment
+    [<Extension>]
+    static member inline Join (this: Result<'TOuter, 'TMessage>, inner: Result<'TInner, 'TMessage>, outerKeySelector: Func<'TOuter,'TKey>, innerKeySelector: Func<'TInner, 'TKey>, resultSelector: Func<'TOuter, 'TInner, 'TResult>) =
+        let curry func = fun a -> fun b -> func (a, b)
+        Result.Succeed (curry resultSelector.Invoke) 
+        <*> this 
+        <*> inner
