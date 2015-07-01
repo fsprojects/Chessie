@@ -130,6 +130,20 @@ Let's compose some validation checks that accumulate failures using LINQ sugar:
                     join y in Club.CheckSobriety(p) on 1 equals 1
                     select c.Gender == Gender.Female ? 0m : 7.5m;
         }
+
+		public static decimal CostByGender(Person p, Person x, Person y)
+        {
+            return p.Gender == Gender.Female ? 0m : 7.5m;
+        }
+
+        public static Result<decimal, string> CostToEnter2(Person p)
+        {
+            return new Func<Person, Person, Person, decimal>(CostByGender)
+                .Curry().ReturnValidation()
+                .ApValidation(Club.CheckAge(p))
+                .ApValidation(Club.CheckClothes(p))
+                .ApValidation(Club.CheckSobriety(p));
+        }
     }
 
 And the use? Dave tried the second nightclub after a few more drinks in the pub:
@@ -146,3 +160,17 @@ And the use? Dave tried the second nightclub after a few more drinks in the pub:
     costDaveParalytic.Match(
         ifSuccess: (x, msgs) => Assert.Fail(),
         ifFailure: errs => Assert.That(errs.ToList(), Is.EquivalentTo(new[] { "Too old!", "Sober up!" })));
+
+Or using regular functions:
+
+	[lang=csharp]
+    var ruby = new Person(Gender.Female, 25, new List<string> { "High heels" }, Sobriety.Tipsy);
+    var costRuby = ClubTropicana.CostToEnter2(ruby);
+            
+    costRuby.Match(
+        ifSuccess: (x, msgs) =>
+        {
+            Assert.AreEqual(0m, x);
+            Assert.That(msgs, Is.EquivalentTo(new List<string>()));
+        },
+        ifFailure: errs => Assert.Fail());
