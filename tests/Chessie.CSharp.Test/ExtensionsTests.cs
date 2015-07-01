@@ -25,6 +25,29 @@ namespace Chessie.CSharp.Test
                 ifFailure: errs => Assert.Fail());
         }
 
+        enum Error { Error1, Error2 }
+
+        [Test]
+        public void WithMsgTypeSucceed_ShouldInferTypeCorrectly()
+        {
+            var f = new Func<int, int, int>((s1, s2) => s1 + s2);
+            var result = WithMsgType<Error>.Return(f.Curry());
+            Assert.That(result.GetType(), Is.EqualTo(typeof(Result<Func<int, Func<int,int>>,Error>.Ok)));
+        }
+
+        [Test]
+        public void ApValidation_ShouldApplyInnerFunctionCorrectly()
+        {
+            var f = new Func<int, int, int>((s1, s2) => s1 + s2);
+            var result = WithMsgType<Error>.Return(f.Curry())
+                .ApValidation(Result<int, Error>.Succeed(1))
+                .ApValidation(Result<int, Error>.Succeed(2));
+
+            result.Match(
+                ifSuccess: (x, msgs) => Assert.AreEqual(3,x),
+                ifFailure: errs => Assert.Fail());
+        }
+
         [Test]
         public void CurryTest()
         {

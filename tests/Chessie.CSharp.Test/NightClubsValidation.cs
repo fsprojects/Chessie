@@ -124,6 +124,20 @@ namespace Chessie.CSharp.Test
                    join y in Club.CheckSobriety(p) on 1 equals 1
                    select c.Gender == Gender.Female ? 0m : 7.5m;
         }
+
+        public static decimal CostByGender(Person p, Person x, Person y)
+        {
+            return p.Gender == Gender.Female ? 0m : 7.5m;
+        }
+
+        public static Result<decimal, string> CostToEnter2(Person p)
+        {
+            return new Func<Person, Person, Person, decimal>(CostByGender)
+                .Curry().ReturnValidation()
+                .ApValidation(Club.CheckAge(p))
+                .ApValidation(Club.CheckClothes(p))
+                .ApValidation(Club.CheckSobriety(p));
+        }
     }
 
     [TestFixture]
@@ -145,7 +159,7 @@ namespace Chessie.CSharp.Test
                 ifFailure: errs => Assert.That(errs.ToList(), Is.EquivalentTo(new[] { "Too old!", "Sober up!" })));
             
             var ruby = new Person(Gender.Female, 25, new List<string> { "High heels" }, Sobriety.Tipsy);
-            var costRuby = ClubTropicana.CostToEnter(ruby);
+            var costRuby = ClubTropicana.CostToEnter2(ruby);
             
             costRuby.Match(
                 ifSuccess: (x, msgs) =>
