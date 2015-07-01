@@ -158,8 +158,8 @@ And the use? Dave tried the second nightclub after a few more drinks in the pub:
     var costDaveParalytic = ClubTropicana.CostToEnter(daveParalytic);
     
     costDaveParalytic.Match(
-        ifSuccess: (x, msgs) => Assert.Fail(),
-        ifFailure: errs => Assert.That(errs.ToList(), Is.EquivalentTo(new[] { "Too old!", "Sober up!" })));
+        ifSuccess: (x, msgs) => Console.WriteLine("Cost for Dave: {0}", x),
+        ifFailure: errs => Console.WriteLine("Dave is not allowed to enter:\n{0}", String.Join("\n", errs)));
 
 Or using regular functions:
 
@@ -168,9 +168,5 @@ Or using regular functions:
     var costRuby = ClubTropicana.CostToEnter2(ruby);
             
     costRuby.Match(
-        ifSuccess: (x, msgs) =>
-        {
-            Assert.AreEqual(0m, x);
-            Assert.That(msgs, Is.EquivalentTo(new List<string>()));
-        },
-        ifFailure: errs => Assert.Fail());
+        ifSuccess: (x, msgs) => Console.WriteLine("Cost for Ruby: {0}", x),
+        ifFailure: errs => Console.WriteLine("Ruby is not allowed to enter:\n{0}", String.Join("\n", errs)));
