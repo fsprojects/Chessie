@@ -366,3 +366,39 @@ type ResultExtensions () =
         Result.Succeed (curry resultSelector.Invoke) 
         <*> this 
         <*> inner
+
+    /// Converts an uncurried function to a curried function
+    [<Extension>]
+    static member Curry (f: Func<_,_,_>) =
+        Func<_,Func<_,_>>(fun x1 -> Func<_,_>(fun x2 -> f.Invoke(x1,x2)))
+
+    /// Converts an uncurried function to a curried function
+    [<Extension>]
+    static member Curry (f: Func<_,_,_,_>) =
+        Func<_,Func<_,Func<_,_>>>(fun x1 -> Func<_,Func<_,_>>(fun x2 -> Func<_,_>(fun x3 -> f.Invoke(x1,x2,x3))))
+
+    /// Converts an uncurried function to a curried function
+    [<Extension>]
+    static member Curry (f: Func<_,_,_,_,_>) =
+        Func<_,Func<_,Func<_,Func<_,_>>>>(fun x1 -> Func<_,Func<_,Func<_,_>>>(fun x2 -> Func<_,Func<_,_>>(fun x3 -> Func<_,_>(fun x4 -> f.Invoke(x1,x2,x3,x4)))))
+
+    /// Converts an uncurried function to a curried function
+    [<Extension>]
+    static member Curry (f: Func<_,_,_,_,_,_>) =
+        Func<_,Func<_,Func<_,Func<_,Func<_,_>>>>>(fun x1 -> Func<_,Func<_,Func<_,Func<_,_>>>>(fun x2 -> Func<_,Func<_,Func<_,_>>>(fun x3 -> Func<_,Func<_,_>>(fun x4 -> Func<_,_>(fun x5 -> f.Invoke(x1,x2,x3,x4,x5))))))
+
+    /// Converts an uncurried function to a curried function
+    [<Extension>]
+    static member Curry (f: Func<_,_,_,_,_,_,_>) =
+        Func<_,Func<_,Func<_,Func<_,Func<_,Func<_,_>>>>>>(fun x1 -> Func<_,Func<_,Func<_,Func<_,Func<_,_>>>>>(fun x2 -> Func<_,Func<_,Func<_,Func<_,_>>>>(fun x3 -> Func<_,Func<_,Func<_,_>>>(fun x4 -> Func<_,Func<_,_>>(fun x5 -> Func<_,_>(fun x6 -> f.Invoke(x1,x2,x3,x4,x5,x6)))))))
+
+    /// Converts an uncurried function to a curried function
+    [<Extension>]
+    static member Curry (f: Func<_,_,_,_,_,_,_,_>) =
+        Func<_,Func<_,Func<_,Func<_,Func<_,Func<_,Func<_,_>>>>>>>(fun x1 -> Func<_,Func<_,Func<_,Func<_,Func<_,Func<_,_>>>>>>(fun x2 -> Func<_,Func<_,Func<_,Func<_,Func<_,_>>>>>(fun x3 -> Func<_,Func<_,Func<_,Func<_,_>>>>(fun d -> Func<_,Func<_,Func<_,_>>>(fun x4-> Func<_,Func<_,_>>(fun x5 -> Func<_,_>(fun  x6 -> f.Invoke(x1,x2,x3,d,x4,x5,x6))))))))
+
+    /// Converts an uncurried function to a curried function
+    [<Extension>]
+    static member Curry (f: Func<_,_,_,_,_,_,_,_,_>) =
+        Func<_,Func<_,Func<_,Func<_,Func<_,Func<_,Func<_,Func<_,_>>>>>>>>(fun x1 -> Func<_,Func<_,Func<_,Func<_,Func<_,Func<_,Func<_,_>>>>>>>(fun x2 -> Func<_,Func<_,Func<_,Func<_,Func<_,Func<_,_>>>>>>(fun x3 -> Func<_,Func<_,Func<_,Func<_,Func<_,_>>>>>(fun x4 -> Func<_,Func<_,Func<_,Func<_,_>>>>(fun x5 -> Func<_,Func<_,Func<_,_>>>(fun x6 -> Func<_,Func<_,_>>(fun x7 -> Func<_,_>(fun x8 -> f.Invoke(x1,x2,x3,x4,x5,x6,x7,x8)))))))))
+
