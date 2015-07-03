@@ -370,14 +370,21 @@ type ResultExtensions () =
     /// If the wrapped function is a success and the given result is a success the function is applied on the value. 
     /// Otherwise the exisiting error messages are propagated.
     [<Extension>]
-    static member Apply (wrappedFunction: Result<Func<_,_>, _>, result) =
+    static member inline Apply (wrappedFunction: Result<Func<_,_>, _>, result) =
         (fun (a: Func<_,_>) -> a.Invoke)
         <!> wrappedFunction
         <*> result
 
+    /// Applies the function to each of the elements and accumulates all their values.
+    /// If the values contain an error all errors will be accumulated.
+    [<Extension>]
+    static member SelectMValidation (xs, func: Func<_,_>) =
+        Seq.map func.Invoke xs
+        |> collect
+
     /// Creates a Success result with the given value or function with error message type string.
     [<Extension>]
-    static member ReturnValidation (x : 'TSuccess) : Result<'TSuccess, string> = Ok (x, [])
+    static member ReturnValidation x : Result<_, string> = ok x
         
     /// Converts an uncurried function to a curried function.
     [<Extension>]

@@ -170,4 +170,39 @@ namespace Chessie.CSharp.Test
                 ifFailure: errs => Assert.Fail());
         }
     }
+
+    class GayBar
+    {
+        public static Result<Person, string> CheckGender (Person p)
+        {
+            if (p.Gender == Gender.Male)
+                return Result<Person, string>.Succeed(p);
+            return Result<Person, string>.FailWith("Men only");
+        }
+
+        public static Result<decimal, string> CostToEnter(Person p)
+        {
+            return new List<Func<Person, Result<Person, string>>> { CheckGender, Club.CheckAge, Club.CheckClothes, Club.CheckSobriety }
+                .SelectMValidation(check => check(p))
+                .Select(x => x[0].Age + 1.5m);
+        }
+    }
+
+    [TestFixture]
+    class Test3
+    {
+        [Test]
+        public void Part3()
+        {
+            var person = new Person(
+                gender: Gender.Male,
+                age: 59,
+                clothes: new List<string> { "Jeans" },
+                sobriety: Sobriety.Paralytic);
+            var cost = GayBar.CostToEnter(person);
+            cost.Match(
+                ifSuccess: (x, msgs) => Assert.Fail(),
+                ifFailure: errs => Assert.That(errs, Is.EquivalentTo(new[] { "Too old!", "Smarten up!", "Sober up!" })));
+        }
+    }
 }
