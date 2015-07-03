@@ -170,3 +170,46 @@ Or using regular functions:
     costRuby.Match(
         ifSuccess: (x, msgs) => Console.WriteLine("Cost for Ruby: {0}", x),
         ifFailure: errs => Console.WriteLine("Ruby is not allowed to enter:\n{0}", String.Join("\n", errs)));
+
+So, what have we done? Well, with a *tiny change* (and no changes to the individual checks themselves), we have completely changed the behaviour to accumulate all errors, rather than halting at the first sign of trouble. Imagine trying to do this using exceptions, with ten checks.
+
+## Part Three : Gay bar
+
+And for those wondering how to do this with a *very long list* of checks.
+
+	[lang=csharp]
+	class GayBar
+	{
+		public static Result<Person, string> CheckGender (Person p)
+		{
+			if (p.Gender == Gender.Male)
+				return Result<Person, string>.Succeed(p);
+			return Result<Person, string>.FailWith("Men only");
+		}
+
+		public static Result<decimal, string> CostToEnter(Person p)
+		{
+			return new List<Func<Person, Result<Person, string>>>
+            {
+                CheckGender, 
+                Club.CheckAge, 
+                Club.CheckClothes, 
+                Club.CheckSobriety
+            }
+				.SelectMValidation(check => check(p))
+				.Select(x => x[0].Age + 1.5m);
+		}
+	}
+
+And here is the usage:
+
+    [lang=csharp]
+    var person = new Person(
+        gender: Gender.Male,
+        age: 59,
+        clothes: new List<string> { "Jeans" },
+        sobriety: Sobriety.Paralytic);
+    var cost = GayBar.CostToEnter(person);
+    cost.Match(
+        ifSuccess: (x, msgs) => Console.WriteLine("Cost for person: {0}", x),
+        ifFailure: errs => Console.WriteLine("Person is not allowed to enter:\n{0}", String.Join("\n", errs)));
