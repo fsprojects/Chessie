@@ -363,8 +363,8 @@ type ResultExtensions () =
     [<Extension>]
     static member inline Join (this: Result<'TOuter, 'TMessage>, inner: Result<'TInner, 'TMessage>, outerKeySelector: Func<'TOuter,'TKey>, innerKeySelector: Func<'TInner, 'TKey>, resultSelector: Func<'TOuter, 'TInner, 'TResult>) =
         let curry func = fun a -> fun b -> func (a, b)
-        curry resultSelector.Invoke |> ok
-        <*> this 
+        curry resultSelector.Invoke
+        <!> this 
         <*> inner
     
     /// If the wrapped function is a success and the given result is a success the function is applied on the value. 
