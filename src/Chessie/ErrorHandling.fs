@@ -363,21 +363,16 @@ type ResultExtensions () =
     [<Extension>]
     static member inline Join (this: Result<'TOuter, 'TMessage>, inner: Result<'TInner, 'TMessage>, outerKeySelector: Func<'TOuter,'TKey>, innerKeySelector: Func<'TInner, 'TKey>, resultSelector: Func<'TOuter, 'TInner, 'TResult>) =
         let curry func = fun a -> fun b -> func (a, b)
-        Result.Succeed (curry resultSelector.Invoke) 
+        curry resultSelector.Invoke |> ok
         <*> this 
         <*> inner
     
     /// If the wrapped function is a success and the given result is a success the function is applied on the value. 
     /// Otherwise the exisiting error messages are propagated.
     [<Extension>]
-    static member ApValidation (wrappedFunction: Result<Func<_,_>, _>, result) =
-        let map f =
-            function
-            | Ok (x,msgs) -> Ok (f x, msgs)
-            | Bad (errs) -> Bad (errs)
-
-        wrappedFunction
-        |> map (fun a -> a.Invoke)
+    static member Apply (wrappedFunction: Result<Func<_,_>, _>, result) =
+        (fun (a: Func<_,_>) -> a.Invoke)
+        <!> wrappedFunction
         <*> result
 
     /// Creates a Success result with the given value or function with error message type string.
@@ -422,4 +417,4 @@ type ResultExtensions () =
 /// Helper class to provide type inference for easier C# usage.
 type WithMsgType<'TMessage>() =
     /// Creates a Success result with the given value or function with type inference and custom error type.
-    static member Return<'TSuccess> (x: 'TSuccess) : Result<'TSuccess,'TMessage> = ok x
+    static member Succeed<'TSuccess> (x: 'TSuccess) : Result<'TSuccess,'TMessage> = ok x

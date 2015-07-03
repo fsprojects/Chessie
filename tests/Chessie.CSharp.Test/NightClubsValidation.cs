@@ -134,9 +134,9 @@ namespace Chessie.CSharp.Test
         {
             return new Func<Person, Person, Person, decimal>(CostByGender)
                 .Curry().ReturnValidation()
-                .ApValidation(Club.CheckAge(p))
-                .ApValidation(Club.CheckClothes(p))
-                .ApValidation(Club.CheckSobriety(p));
+                .Apply(Club.CheckAge(p))
+                .Apply(Club.CheckClothes(p))
+                .Apply(Club.CheckSobriety(p));
         }
     }
 
