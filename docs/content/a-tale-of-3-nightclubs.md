@@ -140,9 +140,9 @@ Let's compose some validation checks that accumulate failures using LINQ sugar:
         {
             return new Func<Person, Person, Person, decimal>(CostByGender)
                 .Curry().ReturnValidation()
-                .ApValidation(Club.CheckAge(p))
-                .ApValidation(Club.CheckClothes(p))
-                .ApValidation(Club.CheckSobriety(p));
+                .Apply(Club.CheckAge(p))
+                .Apply(Club.CheckClothes(p))
+                .Apply(Club.CheckSobriety(p));
         }
     }
 
@@ -196,8 +196,9 @@ And for those wondering how to do this with a *very long list* of checks.
                 Club.CheckClothes, 
                 Club.CheckSobriety
             }
-				.SelectMValidation(check => check(p))
-				.Select(x => x[0].Age + 1.5m);
+                .Select(check => check(p))
+                .Collect()
+                .Select(x => x[0].Age + 1.5m);
 		}
 	}
 

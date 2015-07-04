@@ -183,7 +183,8 @@ namespace Chessie.CSharp.Test
         public static Result<decimal, string> CostToEnter(Person p)
         {
             return new List<Func<Person, Result<Person, string>>> { CheckGender, Club.CheckAge, Club.CheckClothes, Club.CheckSobriety }
-                .SelectMValidation(check => check(p))
+                .Select(check => check(p))
+                .Collect()
                 .Select(x => x[0].Age + 1.5m);
         }
     }
