@@ -112,7 +112,7 @@ The type system is making sure that failures flow through your computation in a 
 
 ## Part Two : Club Tropicana
 
-Part One showed monadic composition, which from the perspective of Validation is *fail-fast*. That is, any failed check shortcircuits subsequent checks. This nicely models nightclubs in the real world, as anyone who has dashed home for a pair of smart shoes and returned, only to be told that your tie does not pass muster, will attest.
+Part One showed monadic composition, which from the perspective of Validation is *fail-fast*. That is, any failed check short-circuits subsequent checks. This nicely models nightclubs in the real world, as anyone who has dashed home for a pair of smart shoes and returned, only to be told that your tie does not pass muster, will attest.
 
 But what about an ideal nightclub? One that tells you *everything* that is wrong with you.
 
@@ -130,20 +130,6 @@ Let's compose some validation checks that accumulate failures using LINQ sugar:
                     join y in Club.CheckSobriety(p) on 1 equals 1
                     select c.Gender == Gender.Female ? 0m : 7.5m;
         }
-
-		public static decimal CostByGender(Person p, Person x, Person y)
-        {
-            return p.Gender == Gender.Female ? 0m : 7.5m;
-        }
-
-        public static Result<decimal, string> CostToEnter2(Person p)
-        {
-            return new Func<Person, Person, Person, decimal>(CostByGender)
-                .Curry().ReturnValidation()
-                .Apply(Club.CheckAge(p))
-                .Apply(Club.CheckClothes(p))
-                .Apply(Club.CheckSobriety(p));
-        }
     }
 
 And the use? Dave tried the second nightclub after a few more drinks in the pub:
@@ -151,58 +137,49 @@ And the use? Dave tried the second nightclub after a few more drinks in the pub:
     [lang=csharp]
     var daveParalytic = new Person(
         age: 41,
-        clothes: new List<string> { "Tie", "Shirt" }, 
+        clothes: new List<string> { "Tie", "Shirt" },
         gender: Gender.Male,
         sobriety: Sobriety.Paralytic);
-                
+
     var costDaveParalytic = ClubTropicana.CostToEnter(daveParalytic);
-    
+
     costDaveParalytic.Match(
         ifSuccess: (x, msgs) => Console.WriteLine("Cost for Dave: {0}", x),
         ifFailure: errs => Console.WriteLine("Dave is not allowed to enter:\n{0}", String.Join("\n", errs)));
 
-Or using regular functions:
+This is the result:
 
-	[lang=csharp]
-    var ruby = new Person(Gender.Female, 25, new List<string> { "High heels" }, Sobriety.Tipsy);
-    var costRuby = ClubTropicana.CostToEnter2(ruby);
-            
-    costRuby.Match(
-        ifSuccess: (x, msgs) => Console.WriteLine("Cost for Ruby: {0}", x),
-        ifFailure: errs => Console.WriteLine("Ruby is not allowed to enter:\n{0}", String.Join("\n", errs)));
+    Dave is not allowed to enter:
+    Too old!
+    Sober up!
 
 So, what have we done? Well, with a *tiny change* (and no changes to the individual checks themselves), we have completely changed the behaviour to accumulate all errors, rather than halting at the first sign of trouble. Imagine trying to do this using exceptions, with ten checks.
 
 ## Part Three : Gay bar
 
-And for those wondering how to do this with a *very long list* of checks.
+And for those wondering how to do this with a *very long list* of checks here is a solution:
 
-	[lang=csharp]
-	class GayBar
-	{
-		public static Result<Person, string> CheckGender (Person p)
-		{
-			if (p.Gender == Gender.Male)
-				return Result<Person, string>.Succeed(p);
-			return Result<Person, string>.FailWith("Men only");
-		}
+    [lang=csharp]
+    class GayBar
+    {
+        public static Result<Person, string> CheckGender (Person p)
+        {
+            if (p.Gender == Gender.Male)
+                return Result<Person, string>.Succeed(p);
+            return Result<Person, string>.FailWith("Men only");
+        }
 
-		public static Result<decimal, string> CostToEnter(Person p)
-		{
-			return new List<Func<Person, Result<Person, string>>>
-            {
-                CheckGender, 
-                Club.CheckAge, 
-                Club.CheckClothes, 
-                Club.CheckSobriety
-            }
+        public static Result<decimal, string> CostToEnter(Person p)
+        {
+            return new List<Func<Person, Result<Person, string>>> { CheckGender, Club.CheckAge, Club.CheckClothes, Club.CheckSobriety }
                 .Select(check => check(p))
                 .Collect()
                 .Select(x => x[0].Age + 1.5m);
-		}
-	}
+        }
+    }
 
-And here is the usage:
+
+The usage is the same as above:
 
     [lang=csharp]
     var person = new Person(
