@@ -130,14 +130,14 @@ namespace Chessie.CSharp.Test
             return p.Gender == Gender.Female ? 0m : 7.5m;
         }
 
-        public static Result<decimal, string> CostToEnter2(Person p)
-        {
-            return new Func<Person, Person, Person, decimal>(CostByGender)
-                .Curry().ReturnValidation()
-                .Apply(Club.CheckAge(p))
-                .Apply(Club.CheckClothes(p))
-                .Apply(Club.CheckSobriety(p));
-        }
+        //public static Result<decimal, string> CostToEnter2(Person p)
+        //{
+        //    return new Func<Person, Person, Person, decimal>(CostByGender)
+        //        .Curry().ReturnValidation()
+        //        .Apply(Club.CheckAge(p))
+        //        .Apply(Club.CheckClothes(p))
+        //        .Apply(Club.CheckSobriety(p));
+        //}
     }
 
     [TestFixture]
@@ -158,16 +158,16 @@ namespace Chessie.CSharp.Test
                 ifSuccess: (x, msgs) => Assert.Fail(),
                 ifFailure: errs => Assert.That(errs.ToList(), Is.EquivalentTo(new[] { "Too old!", "Sober up!" })));
             
-            var ruby = new Person(Gender.Female, 25, new List<string> { "High heels" }, Sobriety.Tipsy);
-            var costRuby = ClubTropicana.CostToEnter2(ruby);
+            //var ruby = new Person(Gender.Female, 25, new List<string> { "High heels" }, Sobriety.Tipsy);
+            //var costRuby = ClubTropicana.CostToEnter2(ruby);
             
-            costRuby.Match(
-                ifSuccess: (x, msgs) =>
-                {
-                    Assert.AreEqual(0m, x);
-                    Assert.That(msgs, Is.EquivalentTo(new List<string>()));
-                },
-                ifFailure: errs => Assert.Fail());
+            //costRuby.Match(
+            //    ifSuccess: (x, msgs) =>
+            //    {
+            //        Assert.AreEqual(0m, x);
+            //        Assert.That(msgs, Is.EquivalentTo(new List<string>()));
+            //    },
+            //    ifFailure: errs => Assert.Fail());
         }
     }
 
