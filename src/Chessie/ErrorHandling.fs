@@ -331,7 +331,7 @@ type ResultExtensions () =
         bind func.Invoke this
 
     /// If the result is a Success it executes the given Func on the value.
-    /// If the result of the Func is a Succes it maps it using the given Func.
+    /// If the result of the Func is a Success it maps it using the given Func.
     /// Otherwise the exisiting failure is propagated.
     [<Extension>]
     static member inline SelectMany (this:Result<'TSuccess, 'TMessage>, func: Func<_,_>, mapper: Func<_,_,_>) =
