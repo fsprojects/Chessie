@@ -331,7 +331,7 @@ type ResultExtensions () =
         bind func.Invoke this
 
     /// If the result is a Success it executes the given Func on the value.
-    /// If the result of the Func is a Succes it maps it using the given Func.
+    /// If the result of the Func is a Success it maps it using the given Func.
     /// Otherwise the exisiting failure is propagated.
     [<Extension>]
     static member inline SelectMany (this:Result<'TSuccess, 'TMessage>, func: Func<_,_>, mapper: Func<_,_,_>) =
@@ -356,3 +356,13 @@ type ResultExtensions () =
         match this with
         | Result.Ok(v,msgs) -> v
         | Result.Bad(msgs) -> failwithf "Result was an error: %s" (String.Join(Environment.NewLine, msgs |> Seq.map (fun x -> x.ToString())))
+
+    /// Joins two results. 
+    /// If both are a success the resultSelector Func is applied to the values and the existing success messages are propagated.
+    /// Otherwise the exisiting error messages are propagated.
+    [<Extension>]
+    static member inline Join (this: Result<'TOuter, 'TMessage>, inner: Result<'TInner, 'TMessage>, outerKeySelector: Func<'TOuter,'TKey>, innerKeySelector: Func<'TInner, 'TKey>, resultSelector: Func<'TOuter, 'TInner, 'TResult>) =
+        let curry func = fun a -> fun b -> func (a, b)
+        curry resultSelector.Invoke
+        <!> this 
+        <*> inner

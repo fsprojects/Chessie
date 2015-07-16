@@ -83,7 +83,7 @@ Now let's compose some validation checks via syntactic sugar and LINQ:
                    select c.Gender == Gender.Female ? 0m : 5m;
         }
     }
-	
+
 Let's see how the validation works in action:
 
     [lang=csharp]
@@ -109,3 +109,87 @@ We can even use pattern matching on the result:
 
 The thing to note here is how the Validations can be composed together in a computation expression.
 The type system is making sure that failures flow through your computation in a safe manner.
+
+## Part Two : Club Tropicana
+
+Part One showed monadic composition, which from the perspective of Validation is *fail-fast*. That is, any failed check short-circuits subsequent checks. This nicely models nightclubs in the real world, as anyone who has dashed home for a pair of smart shoes and returned, only to be told that your tie does not pass muster, will attest.
+
+But what about an ideal nightclub? One that tells you *everything* that is wrong with you.
+
+Applicative functors to the rescue!
+
+Let's compose some validation checks that accumulate failures using LINQ sugar:
+
+    [lang=csharp]
+    class ClubTropicana
+    {
+        public static Result<decimal, string> CostToEnter(Person p)
+        {
+            return from c in Club.CheckAge(p)
+                   join x in Club.CheckClothes(p) on 1 equals 1
+                   join y in Club.CheckSobriety(p) on 1 equals 1
+                   select c.Gender == Gender.Female ? 0m : 7.5m;
+        }
+    }
+
+The usage is the same as above except that as a result we will get either a success or a list of accumulated error messages from all the checks. 
+
+Dave tried the second nightclub after a few more drinks in the pub:
+
+    [lang=csharp]
+    var daveParalytic = new Person(
+        age: 41,
+        clothes: new List<string> { "Tie", "Shirt" },
+        gender: Gender.Male,
+        sobriety: Sobriety.Paralytic);
+
+    var costDaveParalytic = ClubTropicana.CostToEnter(daveParalytic);
+
+    costDaveParalytic.Match(
+        ifSuccess: (x, msgs) => Console.WriteLine("Cost for Dave: {0}", x),
+        ifFailure: errs => Console.WriteLine("Dave is not allowed to enter:\n{0}", String.Join("\n", errs)));
+
+This is the result:
+
+    Dave is not allowed to enter:
+    Too old!
+    Sober up!
+
+So, what have we done? Well, with a *tiny change* (and no changes to the individual checks themselves), we have completely changed the behaviour to accumulate all errors, rather than halting at the first sign of trouble. Imagine trying to do this using exceptions, with ten checks.
+
+## Part Three : Gay bar
+
+And for those wondering how to do this with a *very long list* of checks here is a solution:
+
+    [lang=csharp]
+    class GayBar
+    {
+        public static Result<Person, string> CheckGender (Person p)
+        {
+            if (p.Gender == Gender.Male)
+                return Result<Person, string>.Succeed(p);
+            return Result<Person, string>.FailWith("Men only");
+        }
+
+        public static Result<decimal, string> CostToEnter(Person p)
+        {
+            return new List<Func<Person, Result<Person, string>>> { CheckGender, Club.CheckAge, Club.CheckClothes, Club.CheckSobriety }
+                .Select(check => check(p))
+                .Collect()
+                .Select(x => x[0].Age + 1.5m);
+        }
+    }
+
+
+The usage is the same as above:
+
+    [lang=csharp]
+    var person = new Person(
+        gender: Gender.Male,
+        age: 59,
+        clothes: new List<string> { "Jeans" },
+        sobriety: Sobriety.Paralytic);
+    var cost = GayBar.CostToEnter(person);
+    cost.Match(
+        ifSuccess: (x, msgs) => Console.WriteLine("Cost for person: {0}", x),
+        ifFailure: errs => Console.WriteLine("Person is not allowed to enter:\n{0}", String.Join("\n", errs)));
