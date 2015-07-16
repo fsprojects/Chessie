@@ -1,3 +1,6 @@
+#### 0.2.1 - 16.07.2015
+* Adding small helpers to make tutorial easier - https://github.com/fsprojects/Chessie/pull/23
+
 #### 0.2.0 - 23.03.2015
 * BREAKING: Fixed conflicts reported in https://github.com/fsprojects/Chessie/issues/17
 
