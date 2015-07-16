@@ -49,25 +49,20 @@
 
 <p>We start by referencing Chessie and opening the ErrorHandling module:</p>
 
-<table class="pre"><tr><td class="lines"><pre class="fssnip">
-<span class="l">1: </span>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
 <span class="l">3: </span>
-</pre>
-</td>
-<td class="snippet"><pre class="fssnip">
-<span class="prep">#r</span> <span class="s">&quot;Chessie.dll&quot;</span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="prep">#r</span> <span class="s">&quot;Chessie.dll&quot;</span>
 
 <span class="k">open</span> <span onmouseout="hideTip(event, 'fs1', 1)" onmouseover="showTip(event, 'fs1', 1)" class="i">Chessie</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs2', 2)" onmouseover="showTip(event, 'fs2', 2)" class="i">ErrorHandling</span>
-</pre>
-</td>
+</code></pre></td>
 </tr>
 </table>
 
 <p>Now we define some simple validation functions:</p>
 
-<table class="pre"><tr><td class="lines"><pre class="fssnip">
-<span class="l"> 1: </span>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
 <span class="l"> 3: </span>
 <span class="l"> 4: </span>
@@ -93,10 +88,8 @@
 <span class="l">24: </span>
 <span class="l">25: </span>
 <span class="l">26: </span>
-</pre>
-</td>
-<td class="snippet"><pre class="fssnip">
-<span class="k">type</span> <span onmouseout="hideTip(event, 'fs3', 3)" onmouseover="showTip(event, 'fs3', 3)" class="t">Request</span> <span class="o">=</span> 
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">type</span> <span onmouseout="hideTip(event, 'fs3', 3)" onmouseover="showTip(event, 'fs3', 3)" class="t">Request</span> <span class="o">=</span> 
     { <span onmouseout="hideTip(event, 'fs4', 4)" onmouseover="showTip(event, 'fs4', 4)" class="i">Name</span> <span class="o">:</span> <span onmouseout="hideTip(event, 'fs5', 5)" onmouseover="showTip(event, 'fs5', 5)" class="t">string</span>
       <span onmouseout="hideTip(event, 'fs6', 6)" onmouseover="showTip(event, 'fs6', 6)" class="i">EMail</span> <span class="o">:</span> <span onmouseout="hideTip(event, 'fs5', 7)" onmouseover="showTip(event, 'fs5', 7)" class="t">string</span> }
 
@@ -122,15 +115,13 @@
     <span onmouseout="hideTip(event, 'fs11', 41)" onmouseover="showTip(event, 'fs11', 41)" class="f">validate1</span>
     <span class="o">&gt;</span><span class="o">&gt;</span> <span onmouseout="hideTip(event, 'fs16', 42)" onmouseover="showTip(event, 'fs16', 42)" class="f">bind</span> <span onmouseout="hideTip(event, 'fs12', 43)" onmouseover="showTip(event, 'fs12', 43)" class="f">validate2</span>
     <span class="o">&gt;</span><span class="o">&gt;</span> <span onmouseout="hideTip(event, 'fs16', 44)" onmouseover="showTip(event, 'fs16', 44)" class="f">bind</span> <span onmouseout="hideTip(event, 'fs14', 45)" onmouseover="showTip(event, 'fs14', 45)" class="f">validate3</span>
-</pre>
-</td>
+</code></pre></td>
 </tr>
 </table>
 
 <p>Let's use these with some basic combinators:</p>
 
-<table class="pre"><tr><td class="lines"><pre class="fssnip">
-<span class="l"> 1: </span>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
 <span class="l"> 3: </span>
 <span class="l"> 4: </span>
@@ -189,24 +180,22 @@
 <span class="l">57: </span>
 <span class="l">58: </span>
 <span class="l">59: </span>
-</pre>
-</td>
-<td class="snippet"><pre class="fssnip">
-{ <span class="i">Name</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>; <span class="i">EMail</span> <span class="o">=</span> <span class="s">&quot;&quot;</span> }
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp">{ <span class="i">Name</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>; <span class="i">EMail</span> <span class="o">=</span> <span class="s">&quot;&quot;</span> }
 <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs15', 46)" onmouseover="showTip(event, 'fs15', 46)" class="f">combinedValidation</span>
 <span class="fsi">val it : Chessie.ErrorHandling.Result&lt;Request,string&gt; =</span>
-<span class="fsi">  Fail [&quot;Name must not be blank&quot;]</span>
+<span class="fsi">  Bad [&quot;Name must not be blank&quot;]</span>
     
 { <span class="i">Name</span> <span class="o">=</span> <span class="s">&quot;Scott&quot;</span>; <span class="i">EMail</span> <span class="o">=</span> <span class="s">&quot;&quot;</span> }
 <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs15', 47)" onmouseover="showTip(event, 'fs15', 47)" class="f">combinedValidation</span>
 <span class="fsi">val it : Chessie.ErrorHandling.Result&lt;Request,string&gt; =</span>
-<span class="fsi">  Fail [&quot;Email must not be blank&quot;]</span>
+<span class="fsi">  bad [&quot;Email must not be blank&quot;]</span>
 
 { <span class="i">Name</span> <span class="o">=</span> <span class="s">&quot;ScottScottScottScottScottScottScottScottScottScottScottScottScottScottScottScottScottScottScott&quot;</span>
   <span class="i">EMail</span> <span class="o">=</span> <span class="s">&quot;&quot;</span> }
 <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs15', 48)" onmouseover="showTip(event, 'fs15', 48)" class="f">combinedValidation</span>
 <span class="fsi">val it : Chessie.ErrorHandling.Result&lt;Request,string&gt; =</span>
-<span class="fsi">  Fail [&quot;Name must not be longer than 50 chars&quot; ]</span>
+<span class="fsi">  Bad [&quot;Name must not be longer than 50 chars&quot; ]</span>
 
 { <span class="i">Name</span> <span class="o">=</span> <span class="s">&quot;Scott&quot;</span>; <span class="i">EMail</span> <span class="o">=</span> <span class="s">&quot;scott@chessie.com&quot;</span> }
 <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs15', 49)" onmouseover="showTip(event, 'fs15', 49)" class="f">combinedValidation</span>
@@ -227,7 +216,7 @@
 
 { <span class="i">Name</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>; <span class="i">EMail</span> <span class="o">=</span> <span class="s">&quot;SCOTT@CHESSIE.com&quot;</span> }
 <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs20', 63)" onmouseover="showTip(event, 'fs20', 63)" class="f">usecase</span>
-<span class="fsi">val it : Result&lt;Request,string&gt; = Fail [&quot;Name must not be blank&quot;]</span>
+<span class="fsi">val it : Result&lt;Request,string&gt; = Bad [&quot;Name must not be blank&quot;]</span>
 
 <span class="c">// a dead-end function    </span>
 <span class="k">let</span> <span onmouseout="hideTip(event, 'fs22', 64)" onmouseover="showTip(event, 'fs22', 64)" class="f">updateDatabase</span> <span onmouseout="hideTip(event, 'fs23', 65)" onmouseover="showTip(event, 'fs23', 65)" class="i">input</span> <span class="o">=</span>
@@ -251,8 +240,7 @@
 <span class="fsi">DEBUG. Success so far.</span>
 <span class="fsi">val it : Request = {Name = &quot;Scott&quot;;</span>
 <span class="fsi">                    EMail = &quot;scott@chessie.com&quot;;}</span>
-</pre>
-</td>
+</code></pre></td>
 </tr>
 </table>
 

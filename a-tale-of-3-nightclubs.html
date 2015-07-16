@@ -52,7 +52,30 @@
 
 <p>We start by referencing Chessie and opening the ErrorHandling module and define a simple domain for nightclubs:</p>
 
-<table class="pre"><tr><td><pre lang="csharp"><span class="k">using</span> Chessie.ErrorHandling;
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
+<span class="l"> 2: </span>
+<span class="l"> 3: </span>
+<span class="l"> 4: </span>
+<span class="l"> 5: </span>
+<span class="l"> 6: </span>
+<span class="l"> 7: </span>
+<span class="l"> 8: </span>
+<span class="l"> 9: </span>
+<span class="l">10: </span>
+<span class="l">11: </span>
+<span class="l">12: </span>
+<span class="l">13: </span>
+<span class="l">14: </span>
+<span class="l">15: </span>
+<span class="l">16: </span>
+<span class="l">17: </span>
+<span class="l">18: </span>
+<span class="l">19: </span>
+<span class="l">20: </span>
+<span class="l">21: </span>
+<span class="l">22: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="csharp"><span class="k">using</span> Chessie.ErrorHandling;
 <span class="k">using</span> Chessie.ErrorHandling.CSharp;
 
 
@@ -74,11 +97,39 @@
         <span class="k">this</span>.Sobriety <span class="o">=</span> sobriety;
     }
 }
-</pre></td></tr></table>
+</code></pre></td></tr></table>
 
 <p>Now we define some validation methods that all nightclubs will perform:</p>
 
-<table class="pre"><tr><td><pre lang="csharp"><span class="k">class</span> Club
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
+<span class="l"> 2: </span>
+<span class="l"> 3: </span>
+<span class="l"> 4: </span>
+<span class="l"> 5: </span>
+<span class="l"> 6: </span>
+<span class="l"> 7: </span>
+<span class="l"> 8: </span>
+<span class="l"> 9: </span>
+<span class="l">10: </span>
+<span class="l">11: </span>
+<span class="l">12: </span>
+<span class="l">13: </span>
+<span class="l">14: </span>
+<span class="l">15: </span>
+<span class="l">16: </span>
+<span class="l">17: </span>
+<span class="l">18: </span>
+<span class="l">19: </span>
+<span class="l">20: </span>
+<span class="l">21: </span>
+<span class="l">22: </span>
+<span class="l">23: </span>
+<span class="l">24: </span>
+<span class="l">25: </span>
+<span class="l">26: </span>
+<span class="l">27: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="csharp"><span class="k">class</span> Club
 {
     <span class="k">public</span> <span class="k">static</span> Result&lt;Person, <span class="k">string</span>&gt; CheckAge(Person p)
     {
@@ -105,13 +156,24 @@
         <span class="k">return</span> Result&lt;Person, <span class="k">string</span>&gt;.Succeed(p);
     }
 }
-</pre></td></tr></table>
+</code></pre></td></tr></table>
 
 <h2><a name="Part-One-Clubbed-to-Death" class="anchor" href="#Part-One-Clubbed-to-Death">Part One : Clubbed to Death</a></h2>
 
 <p>Now let's compose some validation checks via syntactic sugar and LINQ:</p>
 
-<table class="pre"><tr><td><pre lang="csharp"><span class="k">class</span> ClubbedToDeath
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
+<span class="l"> 2: </span>
+<span class="l"> 3: </span>
+<span class="l"> 4: </span>
+<span class="l"> 5: </span>
+<span class="l"> 6: </span>
+<span class="l"> 7: </span>
+<span class="l"> 8: </span>
+<span class="l"> 9: </span>
+<span class="l">10: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="csharp"><span class="k">class</span> ClubbedToDeath
 {
     <span class="k">public</span> <span class="k">static</span> Result&lt;<span class="k">decimal</span>, <span class="k">string</span>&gt; CostToEnter(Person p)
     {
@@ -121,20 +183,36 @@
                <span class="k">select</span> c.Gender <span class="o">=</span><span class="o">=</span> Gender.Female <span class="o">?</span> 0m <span class="o">:</span> 5m;
     }
 }
-</pre></td></tr></table>
+</code></pre></td></tr></table>
 
 <p>Let's see how the validation works in action:</p>
 
-<table class="pre"><tr><td><pre lang="csharp"><span class="k">var</span> Dave <span class="o">=</span> <span class="k">new</span> Person(Gender.Male, 41, <span class="k">new</span> List&lt;<span class="k">string</span>&gt; { <span class="s">"Tie"</span>, <span class="s">"Jeans"</span> }, Sobriety.Sober);
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+<span class="l">5: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="csharp"><span class="k">var</span> Dave <span class="o">=</span> <span class="k">new</span> Person(Gender.Male, 41, <span class="k">new</span> List&lt;<span class="k">string</span>&gt; { <span class="s">"Tie"</span>, <span class="s">"Jeans"</span> }, Sobriety.Sober);
 <span class="k">var</span> costDave <span class="o">=</span> ClubbedToDeath.CostToEnter(Dave); <span class="c">// Error "Too old!"</span>
 
 <span class="k">var</span> Ken <span class="o">=</span> <span class="k">new</span> Person(Gender.Male, 28, <span class="k">new</span> List&lt;<span class="k">string</span>&gt; { <span class="s">"Tie"</span>, <span class="s">"Shirt"</span> }, Sobriety.Tipsy);
 <span class="k">var</span> costKen <span class="o">=</span> ClubbedToDeath.CostToEnter(Ken);  <span class="c">// Success 5</span>
-</pre></td></tr></table>
+</code></pre></td></tr></table>
 
 <p>We can even use pattern matching on the result:</p>
 
-<table class="pre"><tr><td><pre lang="csharp"><span class="k">var</span> Ruby <span class="o">=</span> <span class="k">new</span> Person(Gender.Female, 25, <span class="k">new</span> List&lt;<span class="k">string</span>&gt; { <span class="s">"High heels"</span> }, Sobriety.Tipsy);
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+<span class="l">5: </span>
+<span class="l">6: </span>
+<span class="l">7: </span>
+<span class="l">8: </span>
+<span class="l">9: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="csharp"><span class="k">var</span> Ruby <span class="o">=</span> <span class="k">new</span> Person(Gender.Female, 25, <span class="k">new</span> List&lt;<span class="k">string</span>&gt; { <span class="s">"High heels"</span> }, Sobriety.Tipsy);
 <span class="k">var</span> costRuby <span class="o">=</span> ClubbedToDeath.CostToEnter(Ruby);
 costRuby.Match(
     (x, msgs) <span class="o">=</span><span class="o">&gt;</span> {
@@ -143,11 +221,152 @@ costRuby.Match(
     msgs <span class="o">=</span><span class="o">&gt;</span> {
         Console.WriteLine(<span class="s">"Ruby is not allowed to enter: {0}"</span>, msgs);
     });
-</pre></td></tr></table>
+</code></pre></td></tr></table>
 
 <p>The thing to note here is how the Validations can be composed together in a computation expression.
 The type system is making sure that failures flow through your computation in a safe manner.</p>
 
+<h2><a name="Part-Two-Club-Tropicana" class="anchor" href="#Part-Two-Club-Tropicana">Part Two : Club Tropicana</a></h2>
+
+<p>Part One showed monadic composition, which from the perspective of Validation is <em>fail-fast</em>. That is, any failed check short-circuits subsequent checks. This nicely models nightclubs in the real world, as anyone who has dashed home for a pair of smart shoes and returned, only to be told that your tie does not pass muster, will attest.</p>
+
+<p>But what about an ideal nightclub? One that tells you <em>everything</em> that is wrong with you.</p>
+
+<p>Applicative functors to the rescue!</p>
+
+<p>Let's compose some validation checks that accumulate failures using LINQ sugar:</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
+<span class="l"> 2: </span>
+<span class="l"> 3: </span>
+<span class="l"> 4: </span>
+<span class="l"> 5: </span>
+<span class="l"> 6: </span>
+<span class="l"> 7: </span>
+<span class="l"> 8: </span>
+<span class="l"> 9: </span>
+<span class="l">10: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="csharp"><span class="k">class</span> ClubTropicana
+{
+    <span class="k">public</span> <span class="k">static</span> Result&lt;<span class="k">decimal</span>, <span class="k">string</span>&gt; CostToEnter(Person p)
+    {
+        <span class="k">return</span> <span class="k">from</span> c <span class="k">in</span> Club.CheckAge(p)
+               <span class="k">join</span> x <span class="k">in</span> Club.CheckClothes(p) <span class="k">on</span> 1 <span class="k">equals</span> 1
+               <span class="k">join</span> y <span class="k">in</span> Club.CheckSobriety(p) <span class="k">on</span> 1 <span class="k">equals</span> 1
+               <span class="k">select</span> c.Gender <span class="o">=</span><span class="o">=</span> Gender.Female <span class="o">?</span> 0m <span class="o">:</span> 7.5m;
+    }
+}
+</code></pre></td></tr></table>
+
+<p>The usage is the same as above except that as a result we will get either a success or a list of accumulated error messages from all the checks.</p>
+
+<p>Dave tried the second nightclub after a few more drinks in the pub:</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
+<span class="l"> 2: </span>
+<span class="l"> 3: </span>
+<span class="l"> 4: </span>
+<span class="l"> 5: </span>
+<span class="l"> 6: </span>
+<span class="l"> 7: </span>
+<span class="l"> 8: </span>
+<span class="l"> 9: </span>
+<span class="l">10: </span>
+<span class="l">11: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="csharp"><span class="k">var</span> daveParalytic <span class="o">=</span> <span class="k">new</span> Person(
+    age: 41,
+    clothes: <span class="k">new</span> List&lt;<span class="k">string</span>&gt; { <span class="s">"Tie"</span>, <span class="s">"Shirt"</span> },
+    gender: Gender.Male,
+    sobriety: Sobriety.Paralytic);
+
+<span class="k">var</span> costDaveParalytic <span class="o">=</span> ClubTropicana.CostToEnter(daveParalytic);
+
+costDaveParalytic.Match(
+    ifSuccess: (x, msgs) <span class="o">=</span><span class="o">&gt;</span> Console.WriteLine(<span class="s">"Cost for Dave: {0}"</span>, x),
+    ifFailure: errs <span class="o">=</span><span class="o">&gt;</span> Console.WriteLine(<span class="s">"Dave is not allowed to enter:\n{0}"</span>, String.Join(<span class="s">"\n"</span>, errs)));
+</code></pre></td></tr></table>
+
+<p>This is the result:</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="i">Dave</span> <span class="i">is</span> <span onmouseout="hideTip(event, 'fs1', 1)" onmouseover="showTip(event, 'fs1', 1)" class="i">not</span> <span class="i">allowed</span> <span class="k">to</span> <span class="i">enter</span><span class="o">:</span>
+<span class="i">Too</span> <span class="i">old!</span>
+<span class="i">Sober</span> <span class="i">up!</span>
+</code></pre></td>
+</tr>
+</table>
+
+<p>So, what have we done? Well, with a <em>tiny change</em> (and no changes to the individual checks themselves), we have completely changed the behaviour to accumulate all errors, rather than halting at the first sign of trouble. Imagine trying to do this using exceptions, with ten checks.</p>
+
+<h2><a name="Part-Three-Gay-bar" class="anchor" href="#Part-Three-Gay-bar">Part Three : Gay bar</a></h2>
+
+<p>And for those wondering how to do this with a <em>very long list</em> of checks here is a solution:</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
+<span class="l"> 2: </span>
+<span class="l"> 3: </span>
+<span class="l"> 4: </span>
+<span class="l"> 5: </span>
+<span class="l"> 6: </span>
+<span class="l"> 7: </span>
+<span class="l"> 8: </span>
+<span class="l"> 9: </span>
+<span class="l">10: </span>
+<span class="l">11: </span>
+<span class="l">12: </span>
+<span class="l">13: </span>
+<span class="l">14: </span>
+<span class="l">15: </span>
+<span class="l">16: </span>
+<span class="l">17: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="csharp"><span class="k">class</span> GayBar
+{
+    <span class="k">public</span> <span class="k">static</span> Result&lt;Person, <span class="k">string</span>&gt; CheckGender (Person p)
+    {
+        <span class="k">if</span> (p.Gender <span class="o">=</span><span class="o">=</span> Gender.Male)
+            <span class="k">return</span> Result&lt;Person, <span class="k">string</span>&gt;.Succeed(p);
+        <span class="k">return</span> Result&lt;Person, <span class="k">string</span>&gt;.FailWith(<span class="s">"Men only"</span>);
+    }
+
+    <span class="k">public</span> <span class="k">static</span> Result&lt;<span class="k">decimal</span>, <span class="k">string</span>&gt; CostToEnter(Person p)
+    {
+        <span class="k">return</span> <span class="k">new</span> List&lt;Func&lt;Person, Result&lt;Person, <span class="k">string</span>&gt;<span class="o">&gt;</span><span class="o">&gt;</span> { CheckGender, Club.CheckAge, Club.CheckClothes, Club.CheckSobriety }
+            .Select(check <span class="o">=</span><span class="o">&gt;</span> check(p))
+            .Collect()
+            .Select(x <span class="o">=</span><span class="o">&gt;</span> x[0].Age <span class="o">+</span> 1.5m);
+    }
+}
+</code></pre></td></tr></table>
+
+<p>The usage is the same as above:</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+<span class="l">5: </span>
+<span class="l">6: </span>
+<span class="l">7: </span>
+<span class="l">8: </span>
+<span class="l">9: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="csharp"><span class="k">var</span> person <span class="o">=</span> <span class="k">new</span> Person(
+    gender: Gender.Male,
+    age: 59,
+    clothes: <span class="k">new</span> List&lt;<span class="k">string</span>&gt; { <span class="s">"Jeans"</span> },
+    sobriety: Sobriety.Paralytic);
+<span class="k">var</span> cost <span class="o">=</span> GayBar.CostToEnter(person);
+cost.Match(
+    ifSuccess: (x, msgs) <span class="o">=</span><span class="o">&gt;</span> Console.WriteLine(<span class="s">"Cost for person: {0}"</span>, x),
+    ifFailure: errs <span class="o">=</span><span class="o">&gt;</span> Console.WriteLine(<span class="s">"Person is not allowed to enter:\n{0}"</span>, String.Join(<span class="s">"\n"</span>, errs)));</code></pre></td></tr></table>
+
+<div class="tip" id="fs1">val not : value:bool -&gt; bool<br /><br />Full name: Microsoft.FSharp.Core.Operators.not</div>
 
         </div>
         <div class="span3">

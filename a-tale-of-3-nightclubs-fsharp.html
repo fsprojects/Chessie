@@ -52,8 +52,7 @@
 
 <p>We start by referencing Chessie and opening the ErrorHandling module and define a simple domain for nightclubs:</p>
 
-<table class="pre"><tr><td class="lines"><pre class="fssnip">
-<span class="l"> 1: </span>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
 <span class="l"> 3: </span>
 <span class="l"> 4: </span>
@@ -73,10 +72,8 @@
 <span class="l">18: </span>
 <span class="l">19: </span>
 <span class="l">20: </span>
-</pre>
-</td>
-<td class="snippet"><pre class="fssnip">
-<span class="prep">#r</span> <span class="s">&quot;Chessie.dll&quot;</span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="prep">#r</span> <span class="s">&quot;Chessie.dll&quot;</span>
 
 <span class="k">open</span> <span onmouseout="hideTip(event, 'fs1', 1)" onmouseover="showTip(event, 'fs1', 1)" class="i">Chessie</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs2', 2)" onmouseover="showTip(event, 'fs2', 2)" class="i">ErrorHandling</span>
 
@@ -96,15 +93,13 @@
       <span onmouseout="hideTip(event, 'fs14', 15)" onmouseover="showTip(event, 'fs14', 15)" class="i">Age</span> <span class="o">:</span> <span onmouseout="hideTip(event, 'fs15', 16)" onmouseover="showTip(event, 'fs15', 16)" class="t">int</span>
       <span onmouseout="hideTip(event, 'fs16', 17)" onmouseover="showTip(event, 'fs16', 17)" class="i">Clothes</span> <span class="o">:</span> <span onmouseout="hideTip(event, 'fs17', 18)" onmouseover="showTip(event, 'fs17', 18)" class="t">string</span> <span onmouseout="hideTip(event, 'fs18', 19)" onmouseover="showTip(event, 'fs18', 19)" class="t">Set</span>
       <span onmouseout="hideTip(event, 'fs19', 20)" onmouseover="showTip(event, 'fs19', 20)" class="i">Sobriety</span> <span class="o">:</span> <span onmouseout="hideTip(event, 'fs19', 21)" onmouseover="showTip(event, 'fs19', 21)" class="t">Sobriety</span> }
-</pre>
-</td>
+</code></pre></td>
 </tr>
 </table>
 
 <p>Now we define some validation methods that all nightclubs will perform:</p>
 
-<table class="pre"><tr><td class="lines"><pre class="fssnip">
-<span class="l"> 1: </span>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
 <span class="l"> 3: </span>
 <span class="l"> 4: </span>
@@ -119,10 +114,8 @@
 <span class="l">13: </span>
 <span class="l">14: </span>
 <span class="l">15: </span>
-</pre>
-</td>
-<td class="snippet"><pre class="fssnip">
-<span class="k">module</span> <span class="t">Club</span> <span class="o">=</span> 
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">module</span> <span class="t">Club</span> <span class="o">=</span> 
     <span class="k">let</span> <span onmouseout="hideTip(event, 'fs20', 22)" onmouseover="showTip(event, 'fs20', 22)" class="f">checkAge</span> (<span onmouseout="hideTip(event, 'fs21', 23)" onmouseover="showTip(event, 'fs21', 23)" class="i">p</span> <span class="o">:</span> <span onmouseout="hideTip(event, 'fs12', 24)" onmouseover="showTip(event, 'fs12', 24)" class="t">Person</span>) <span class="o">=</span> 
         <span class="k">if</span> <span onmouseout="hideTip(event, 'fs21', 25)" onmouseover="showTip(event, 'fs21', 25)" class="i">p</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs14', 26)" onmouseover="showTip(event, 'fs14', 26)" class="i">Age</span> <span class="o">&lt;</span> <span class="n">18</span> <span class="k">then</span> <span onmouseout="hideTip(event, 'fs22', 27)" onmouseover="showTip(event, 'fs22', 27)" class="f">fail</span> <span class="s">&quot;Too young!&quot;</span>
         <span class="k">elif</span> <span onmouseout="hideTip(event, 'fs21', 28)" onmouseover="showTip(event, 'fs21', 28)" class="i">p</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs14', 29)" onmouseover="showTip(event, 'fs14', 29)" class="i">Age</span> <span class="o">&gt;</span> <span class="n">40</span> <span class="k">then</span> <span onmouseout="hideTip(event, 'fs22', 30)" onmouseover="showTip(event, 'fs22', 30)" class="f">fail</span> <span class="s">&quot;Too old!&quot;</span>
@@ -137,8 +130,7 @@
         <span class="k">match</span> <span onmouseout="hideTip(event, 'fs21', 56)" onmouseover="showTip(event, 'fs21', 56)" class="i">p</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs29', 57)" onmouseover="showTip(event, 'fs29', 57)" class="i">Sobriety</span> <span class="k">with</span>
         | <span onmouseout="hideTip(event, 'fs6', 58)" onmouseover="showTip(event, 'fs6', 58)" class="p">Drunk</span> | <span onmouseout="hideTip(event, 'fs7', 59)" onmouseover="showTip(event, 'fs7', 59)" class="p">Paralytic</span> | <span onmouseout="hideTip(event, 'fs8', 60)" onmouseover="showTip(event, 'fs8', 60)" class="p">Unconscious</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs22', 61)" onmouseover="showTip(event, 'fs22', 61)" class="f">fail</span> <span class="s">&quot;Sober up!&quot;</span>
         | _ <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs23', 62)" onmouseover="showTip(event, 'fs23', 62)" class="f">ok</span> <span onmouseout="hideTip(event, 'fs21', 63)" onmouseover="showTip(event, 'fs21', 63)" class="i">p</span>
-</pre>
-</td>
+</code></pre></td>
 </tr>
 </table>
 
@@ -146,8 +138,7 @@
 
 <p>Now let's compose some validation checks via syntactic sugar:</p>
 
-<table class="pre"><tr><td class="lines"><pre class="fssnip">
-<span class="l"> 1: </span>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
 <span class="l"> 3: </span>
 <span class="l"> 4: </span>
@@ -160,10 +151,8 @@
 <span class="l">11: </span>
 <span class="l">12: </span>
 <span class="l">13: </span>
-</pre>
-</td>
-<td class="snippet"><pre class="fssnip">
-<span class="k">module</span> <span class="t">ClubbedToDeath</span> <span class="o">=</span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">module</span> <span class="t">ClubbedToDeath</span> <span class="o">=</span>
     <span class="k">open</span> <span onmouseout="hideTip(event, 'fs30', 64)" onmouseover="showTip(event, 'fs30', 64)" class="i">Club</span>
     
     <span class="k">let</span> <span onmouseout="hideTip(event, 'fs31', 65)" onmouseover="showTip(event, 'fs31', 65)" class="f">costToEnter</span> <span onmouseout="hideTip(event, 'fs21', 66)" onmouseover="showTip(event, 'fs21', 66)" class="i">p</span> <span class="o">=</span>
@@ -176,15 +165,13 @@
                 | <span onmouseout="hideTip(event, 'fs11', 79)" onmouseover="showTip(event, 'fs11', 79)" class="p">Female</span> <span class="k">-&gt;</span> <span class="n">0m</span>
                 | <span onmouseout="hideTip(event, 'fs10', 80)" onmouseover="showTip(event, 'fs10', 80)" class="p">Male</span> <span class="k">-&gt;</span> <span class="n">5m</span>
         }
-</pre>
-</td>
+</code></pre></td>
 </tr>
 </table>
 
 <p>Let's see how the validation works in action:</p>
 
-<table class="pre"><tr><td class="lines"><pre class="fssnip">
-<span class="l"> 1: </span>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
 <span class="l"> 3: </span>
 <span class="l"> 4: </span>
@@ -199,15 +186,13 @@
 <span class="l">13: </span>
 <span class="l">14: </span>
 <span class="l">15: </span>
-</pre>
-</td>
-<td class="snippet"><pre class="fssnip">
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs36', 81)" onmouseover="showTip(event, 'fs36', 81)" class="i">Ken</span> <span class="o">=</span> { <span onmouseout="hideTip(event, 'fs12', 82)" onmouseover="showTip(event, 'fs12', 82)" class="t">Person</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs9', 83)" onmouseover="showTip(event, 'fs9', 83)" class="i">Gender</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs10', 84)" onmouseover="showTip(event, 'fs10', 84)" class="p">Male</span>; <span class="i">Age</span> <span class="o">=</span> <span class="n">28</span>; <span class="i">Clothes</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs37', 85)" onmouseover="showTip(event, 'fs37', 85)" class="f">set</span> [<span class="s">&quot;Tie&quot;</span>; <span class="s">&quot;Shirt&quot;</span>]; <span onmouseout="hideTip(event, 'fs3', 86)" onmouseover="showTip(event, 'fs3', 86)" class="i">Sobriety</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs5', 87)" onmouseover="showTip(event, 'fs5', 87)" class="p">Tipsy</span> }
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs36', 81)" onmouseover="showTip(event, 'fs36', 81)" class="i">Ken</span> <span class="o">=</span> { <span onmouseout="hideTip(event, 'fs12', 82)" onmouseover="showTip(event, 'fs12', 82)" class="t">Person</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs9', 83)" onmouseover="showTip(event, 'fs9', 83)" class="i">Gender</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs10', 84)" onmouseover="showTip(event, 'fs10', 84)" class="p">Male</span>; <span class="i">Age</span> <span class="o">=</span> <span class="n">28</span>; <span class="i">Clothes</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs37', 85)" onmouseover="showTip(event, 'fs37', 85)" class="f">set</span> [<span class="s">&quot;Tie&quot;</span>; <span class="s">&quot;Shirt&quot;</span>]; <span onmouseout="hideTip(event, 'fs3', 86)" onmouseover="showTip(event, 'fs3', 86)" class="i">Sobriety</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs5', 87)" onmouseover="showTip(event, 'fs5', 87)" class="p">Tipsy</span> }
 <span class="k">let</span> <span onmouseout="hideTip(event, 'fs38', 88)" onmouseover="showTip(event, 'fs38', 88)" class="i">Dave</span> <span class="o">=</span> { <span onmouseout="hideTip(event, 'fs12', 89)" onmouseover="showTip(event, 'fs12', 89)" class="t">Person</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs9', 90)" onmouseover="showTip(event, 'fs9', 90)" class="i">Gender</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs10', 91)" onmouseover="showTip(event, 'fs10', 91)" class="p">Male</span>; <span class="i">Age</span> <span class="o">=</span> <span class="n">41</span>; <span class="i">Clothes</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs37', 92)" onmouseover="showTip(event, 'fs37', 92)" class="f">set</span> [<span class="s">&quot;Tie&quot;</span>; <span class="s">&quot;Jeans&quot;</span>]; <span onmouseout="hideTip(event, 'fs3', 93)" onmouseover="showTip(event, 'fs3', 93)" class="i">Sobriety</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs4', 94)" onmouseover="showTip(event, 'fs4', 94)" class="p">Sober</span> }
 <span class="k">let</span> <span onmouseout="hideTip(event, 'fs39', 95)" onmouseover="showTip(event, 'fs39', 95)" class="i">Ruby</span> <span class="o">=</span> { <span onmouseout="hideTip(event, 'fs12', 96)" onmouseover="showTip(event, 'fs12', 96)" class="t">Person</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs9', 97)" onmouseover="showTip(event, 'fs9', 97)" class="i">Gender</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs11', 98)" onmouseover="showTip(event, 'fs11', 98)" class="p">Female</span>; <span class="i">Age</span> <span class="o">=</span> <span class="n">25</span>; <span class="i">Clothes</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs37', 99)" onmouseover="showTip(event, 'fs37', 99)" class="f">set</span> [<span class="s">&quot;High heels&quot;</span>]; <span onmouseout="hideTip(event, 'fs3', 100)" onmouseover="showTip(event, 'fs3', 100)" class="i">Sobriety</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs5', 101)" onmouseover="showTip(event, 'fs5', 101)" class="p">Tipsy</span> }
 
 <span onmouseout="hideTip(event, 'fs40', 102)" onmouseover="showTip(event, 'fs40', 102)" class="t">ClubbedToDeath</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs31', 103)" onmouseover="showTip(event, 'fs31', 103)" class="f">costToEnter</span> <span onmouseout="hideTip(event, 'fs38', 104)" onmouseover="showTip(event, 'fs38', 104)" class="i">Dave</span> 
-<span class="fsi">val it : Chessie.ErrorHandling.Result&lt;decimal,string&gt; = Fail [&quot;Too old!&quot;]</span>
+<span class="fsi">val it : Chessie.ErrorHandling.Result&lt;decimal,string&gt; = Bad [&quot;Too old!&quot;]</span>
 
 <span onmouseout="hideTip(event, 'fs40', 105)" onmouseover="showTip(event, 'fs40', 105)" class="t">ClubbedToDeath</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs31', 106)" onmouseover="showTip(event, 'fs31', 106)" class="f">costToEnter</span> <span onmouseout="hideTip(event, 'fs36', 107)" onmouseover="showTip(event, 'fs36', 107)" class="i">Ken</span>
 <span class="fsi">val it : Result&lt;decimal,string&gt; = Ok (5M,[])</span>
@@ -216,9 +201,8 @@
 <span class="fsi">val it : Result&lt;decimal,string&gt; = Ok (0M,[])</span>
 
 <span onmouseout="hideTip(event, 'fs40', 111)" onmouseover="showTip(event, 'fs40', 111)" class="t">ClubbedToDeath</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs31', 112)" onmouseover="showTip(event, 'fs31', 112)" class="f">costToEnter</span> { <span onmouseout="hideTip(event, 'fs39', 113)" onmouseover="showTip(event, 'fs39', 113)" class="i">Ruby</span> <span class="k">with</span> <span class="i">Age</span> <span class="o">=</span> <span class="n">17</span> } 
-<span class="fsi">val it : Chessie.ErrorHandling.Result&lt;decimal,string&gt; = Fail [&quot;Too young!&quot;]</span>
-</pre>
-</td>
+<span class="fsi">val it : Chessie.ErrorHandling.Result&lt;decimal,string&gt; = Bad [&quot;Too young!&quot;]</span>
+</code></pre></td>
 </tr>
 </table>
 
