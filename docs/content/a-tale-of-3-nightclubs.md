@@ -126,13 +126,15 @@ Let's compose some validation checks that accumulate failures using LINQ sugar:
         public static Result<decimal, string> CostToEnter(Person p)
         {
             return from c in Club.CheckAge(p)
-                    join x in Club.CheckClothes(p) on 1 equals 1
-                    join y in Club.CheckSobriety(p) on 1 equals 1
-                    select c.Gender == Gender.Female ? 0m : 7.5m;
+                   join x in Club.CheckClothes(p) on 1 equals 1
+                   join y in Club.CheckSobriety(p) on 1 equals 1
+                   select c.Gender == Gender.Female ? 0m : 7.5m;
         }
     }
 
-And the use? Dave tried the second nightclub after a few more drinks in the pub:
+The usage is the same as above except that as a result we will get either a success or a list of accumulated error messages from all the checks. 
+
+Dave tried the second nightclub after a few more drinks in the pub:
 
     [lang=csharp]
     var daveParalytic = new Person(
