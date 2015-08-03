@@ -335,9 +335,7 @@ type ResultExtensions () =
     /// Otherwise the exisiting failure is propagated.
     [<Extension>]
     static member inline SelectMany (this:Result<'TSuccess, 'TMessage>, func: Func<_,_>, mapper: Func<_,_,_>) =
-        let mapper = lift2 (fun a b -> mapper.Invoke(a,b))
-        let v = bind func.Invoke this
-        mapper this v
+        bind (fun s -> s |> func.Invoke |> lift (fun v -> mapper.Invoke(s,v))) this
 
     /// Lifts a Func into a Result and applies it on the given result.
     [<Extension>]
