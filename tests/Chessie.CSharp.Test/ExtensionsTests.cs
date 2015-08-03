@@ -20,9 +20,43 @@ namespace Chessie.CSharp.Test
                 ifSuccess: (x, msgs) =>
                 {
                     Assert.AreEqual(3, x);
-                    Assert.That(msgs, Is.EquivalentTo(new[] {"added one", "added two"}));
+                    Assert.That(msgs, Is.EquivalentTo(new[] { "added one", "added two" }));
                 },
                 ifFailure: errs => Assert.Fail());
+        }
+
+        [Test]
+        public void Test()
+        {
+            Func<Result<string, string>, Result<string, string>, Result<string, string>, Result<string, string>> f = (r1, r2, r3) =>
+                from a in r1
+                from b in r2
+                from c in r3
+                select a + b + c;
+
+            f(Result<string, string>.Succeed("1"), Result<string, string>.Succeed("2"), Result<string, string>.Succeed("3")).Match(
+                ifSuccess: (s, _) => Assert.That(s, Is.EqualTo("123")),
+                ifFailure: _ => Assert.Fail("should not fail"));
+
+            f(Result<string, string>.Succeed("1", "msg1"), Result<string, string>.Succeed("2", "msg2"), Result<string, string>.Succeed("3", "msg3")).Match(
+                ifSuccess: (s, list) =>
+                {
+                    Assert.That(s, Is.EqualTo("123"));
+                    Assert.That(list, Is.EquivalentTo(new[] {"msg1", "msg2", "msg3"}));
+                },
+                ifFailure: list => Assert.Fail("should not fail"));
+
+            f(Result<string, string>.FailWith("fail"), Result<string, string>.Succeed("2"), Result<string, string>.Succeed("3")).Match(
+                ifSuccess: (s, _) => Assert.Fail("should fail"),
+                ifFailure: list => Assert.That(list, Is.EquivalentTo(new[] { "fail" })));
+
+            f(Result<string, string>.Succeed("1"), Result<string, string>.FailWith("fail"), Result<string, string>.Succeed("3")).Match(
+                ifSuccess: (s, _) => Assert.Fail("should fail"),
+                ifFailure: list => Assert.That(list, Is.EquivalentTo(new[] { "fail" })));
+
+            f(Result<string, string>.Succeed("1"), Result<string, string>.FailWith("fail1"), Result<string, string>.FailWith("fail2")).Match(
+                ifSuccess: (s, _) => Assert.Fail("should fail"),
+                ifFailure: list => Assert.That(list, Is.EquivalentTo(new[] { "fail1" })));
         }
     }
 }
