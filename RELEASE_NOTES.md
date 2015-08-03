@@ -1,3 +1,6 @@
+#### 0.2.2 - 03.08.2015
+* BUGFIX: SelectMany implementation changed - https://github.com/fsprojects/Chessie/pull/27
+
 #### 0.2.1 - 16.07.2015
 * Adding small helpers to make tutorial easier - https://github.com/fsprojects/Chessie/pull/23
 
