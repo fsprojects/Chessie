@@ -102,8 +102,8 @@ module Trial =
     let inline apply wrappedFunction result = 
         match wrappedFunction, result with
         | Ok(f, msgs1), Ok(x, msgs2) -> Ok(f x, msgs1 @ msgs2)
-        | Bad errs, Ok(_, msgs) -> Bad(errs)
-        | Ok(_, msgs), Bad errs -> Bad(errs)
+        | Bad errs, Ok(_, _msgs) -> Bad(errs)
+        | Ok(_, _msgs), Bad errs -> Bad(errs)
         | Bad errs1, Bad errs2 -> Bad(errs1 @ errs2)
 
     /// If the wrapped function is a success and the given result is a success the function is applied on the value. 
@@ -205,6 +205,7 @@ module Trial =
     let trial = TrialBuilder()
 
 /// Represents the result of an async computation
+[<NoComparison;NoEquality>]
 type AsyncResult<'a, 'b> = 
     | AR of Async<Result<'a, 'b>>
 
@@ -318,7 +319,7 @@ type ResultExtensions () =
     [<Extension>]
     static member inline Flatten(this) : Result<seq<'TSuccess>,'TMessage>=
         match this with
-        | Result.Ok(values:Result<'TSuccess,'TMessage> seq, msgs:'TMessage list) -> 
+        | Result.Ok(values:Result<'TSuccess,'TMessage> seq, _msgs:'TMessage list) -> 
             match collect values with
             | Result.Ok(values,msgs) -> Ok(values |> List.toSeq,msgs)
             | Result.Bad(msgs:'TMessage list) -> Bad msgs
@@ -352,14 +353,14 @@ type ResultExtensions () =
     [<Extension>]
     static member inline SucceededWith(this:Result<'TSuccess, 'TMessage>) : 'TSuccess = 
         match this with
-        | Result.Ok(v,msgs) -> v
+        | Result.Ok(v,_msgs) -> v
         | Result.Bad(msgs) -> failwithf "Result was an error: %s" (String.Join(Environment.NewLine, msgs |> Seq.map (fun x -> x.ToString())))
 
     /// Joins two results. 
     /// If both are a success the resultSelector Func is applied to the values and the existing success messages are propagated.
     /// Otherwise the exisiting error messages are propagated.
     [<Extension>]
-    static member inline Join (this: Result<'TOuter, 'TMessage>, inner: Result<'TInner, 'TMessage>, outerKeySelector: Func<'TOuter,'TKey>, innerKeySelector: Func<'TInner, 'TKey>, resultSelector: Func<'TOuter, 'TInner, 'TResult>) =
+    static member inline Join (this: Result<'TOuter, 'TMessage>, inner: Result<'TInner, 'TMessage>, _outerKeySelector: Func<'TOuter,'TKey>, _innerKeySelector: Func<'TInner, 'TKey>, resultSelector: Func<'TOuter, 'TInner, 'TResult>) =
         let curry func = fun a -> fun b -> func (a, b)
         curry resultSelector.Invoke
         <!> this 
