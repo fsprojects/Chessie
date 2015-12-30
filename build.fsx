@@ -2,7 +2,7 @@
 // FAKE build script
 // --------------------------------------------------------------------------------------
 
-#r @"packages/FAKE/tools/FakeLib.dll"
+#r @"packages/build/FAKE/tools/FakeLib.dll"
 
 open Fake
 open Fake.Git
@@ -12,7 +12,7 @@ open System
 open System.IO
 #if MONO
 #else
-#load "packages/SourceLink.Fake/tools/Fake.fsx"
+#load "packages/build/SourceLink.Fake/tools/Fake.fsx"
 open SourceLink
 #endif
 
@@ -304,7 +304,7 @@ Target "ReleaseDocs" (fun _ ->
     Branches.push tempDocsDir
 )
 
-#load "paket-files/fsharp/FAKE/modules/Octokit/Octokit.fsx"
+#load "paket-files/build/fsharp/FAKE/modules/Octokit/Octokit.fsx"
 open Octokit
 
 Target "Release" (fun _ ->
