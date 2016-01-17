@@ -82,6 +82,6 @@ namespace Chessie.CSharp.Test
             result.Match(
                 ifSuccess: (x, _) => Assert.Fail(),
                 ifFailure: errs => Assert.That(errs, Is.EquivalentTo(new[] {"error"})));
-
+        }
     }
 }
