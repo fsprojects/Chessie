@@ -362,7 +362,12 @@ type ResultExtensions () =
     /// Otherwise the exisiting error messages are propagated.
     [<Extension>]
     static member inline Join (this: Result<'TOuter, 'TMessage>, inner: Result<'TInner, 'TMessage>, outerKeySelector: Func<'TOuter,'TKey>, innerKeySelector: Func<'TInner, 'TKey>, resultSelector: Func<'TOuter, 'TInner, 'TResult>) =
-        let curry func = fun a -> fun b -> func (a, b)
+        let curry func = fun a b -> func (a, b)
         curry resultSelector.Invoke
         <!> this 
         <*> inner
+       
+    /// Converts an option into a Result.
+    [<Extension>]
+    static member ToResult(this, msg) =
+        this |> failIfNone msg
