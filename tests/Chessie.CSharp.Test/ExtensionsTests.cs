@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Chessie.ErrorHandling;
 using Chessie.ErrorHandling.CSharp;
 using NUnit.Framework;
@@ -57,6 +59,49 @@ namespace Chessie.CSharp.Test
             f(Result<string, string>.Succeed("1"), Result<string, string>.FailWith("fail1"), Result<string, string>.FailWith("fail2")).Match(
                 ifSuccess: (s, _) => Assert.Fail("should fail"),
                 ifFailure: list => Assert.That(list, Is.EquivalentTo(new[] { "fail1" })));
+        }
+
+
+        [Test]
+        public void MapFailureOnSuccessShouldReturnSuccess()
+        {
+            Result<int, string>.Succeed(42, "warn1")
+                .MapFailure(list => new[] { 42 })
+                .Match(
+                    ifSuccess: (v, msgs) =>
+                    {
+                        Assert.AreEqual(42, v);
+                        Assert.That(msgs, Is.Empty);
+                    },
+                    ifFailure: errs => Assert.Fail());
+        }
+
+        [Test]
+        public void MapFailureOnFailureShouldMapOverError()
+        {
+            Result<int, string>.FailWith(new[] { "err1", "err2" })
+                .MapFailure(_ => new[] { 42 })
+                .Match(
+                    ifSuccess: (v, msgs) => Assert.Fail(),
+                    ifFailure: errs => Assert.That(errs, Is.EquivalentTo(new[] { 42 })));
+        }
+
+        [Test]
+        public void MapFailureOnFailureShouldMapOverListOfErrors()
+        {
+            Result<int, string>.FailWith(new[] { "err1", "err2" })
+                .MapFailure(errs => errs.Select(err =>
+                {
+                    switch (err)
+                    {
+                        case "err1": return 42;
+                        case "err2": return 43;
+                        default: return 0;
+                    }
+                }))
+                .Match(
+                    ifSuccess: (v, msgs) => Assert.Fail(),
+                    ifFailure: errs => Assert.That(errs, Is.EquivalentTo(new[] { 42, 43 })));
         }
     }
 }
