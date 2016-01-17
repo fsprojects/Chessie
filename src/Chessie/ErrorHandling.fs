@@ -102,8 +102,8 @@ module Trial =
     let inline apply wrappedFunction result = 
         match wrappedFunction, result with
         | Ok(f, msgs1), Ok(x, msgs2) -> Ok(f x, msgs1 @ msgs2)
-        | Bad errs, Ok(_, msgs) -> Bad(errs)
-        | Ok(_, msgs), Bad errs -> Bad(errs)
+        | Bad errs, Ok(_, _msgs) -> Bad(errs)
+        | Ok(_, _msgs), Bad errs -> Bad(errs)
         | Bad errs1, Bad errs2 -> Bad(errs1 @ errs2)
 
     /// If the wrapped function is a success and the given result is a success the function is applied on the value. 
@@ -113,6 +113,12 @@ module Trial =
 
     /// Lifts a function into a Result container and applies it on the given result.
     let inline lift f result = apply (ok f) result
+
+    /// Maps a function over the existing error messages in case of failure. In case of success, the message type will be changed and warnings will be discarded.
+    let inline mapFailure f result =
+        match result with
+        | Ok (v,_) -> ok v
+        | Bad errs -> Bad (f errs)
 
     /// Lifts a function into a Result and applies it on the given result.
     /// This is the infix operator version of ErrorHandling.lift
@@ -153,6 +159,12 @@ module Trial =
         match result with
         | Some x -> ok x
         | None -> fail message
+
+    /// Converts a Choice into a Result.
+    let inline ofChoice choice =
+        match choice with
+        | Choice1Of2 v -> ok v
+        | Choice2Of2 v -> fail v
 
     /// Categorizes a result based on its state and the presence of extra messages
     let inline (|Pass|Warn|Fail|) result =
@@ -205,6 +217,7 @@ module Trial =
     let trial = TrialBuilder()
 
 /// Represents the result of an async computation
+[<NoComparison;NoEquality>]
 type AsyncResult<'a, 'b> = 
     | AR of Async<Result<'a, 'b>>
 
@@ -318,7 +331,7 @@ type ResultExtensions () =
     [<Extension>]
     static member inline Flatten(this) : Result<seq<'TSuccess>,'TMessage>=
         match this with
-        | Result.Ok(values:Result<'TSuccess,'TMessage> seq, msgs:'TMessage list) -> 
+        | Result.Ok(values:Result<'TSuccess,'TMessage> seq, _msgs:'TMessage list) -> 
             match collect values with
             | Result.Ok(values,msgs) -> Ok(values |> List.toSeq,msgs)
             | Result.Bad(msgs:'TMessage list) -> Bad msgs
@@ -352,15 +365,20 @@ type ResultExtensions () =
     [<Extension>]
     static member inline SucceededWith(this:Result<'TSuccess, 'TMessage>) : 'TSuccess = 
         match this with
-        | Result.Ok(v,msgs) -> v
+        | Result.Ok(v,_msgs) -> v
         | Result.Bad(msgs) -> failwithf "Result was an error: %s" (String.Join(Environment.NewLine, msgs |> Seq.map (fun x -> x.ToString())))
 
     /// Joins two results. 
     /// If both are a success the resultSelector Func is applied to the values and the existing success messages are propagated.
     /// Otherwise the exisiting error messages are propagated.
     [<Extension>]
-    static member inline Join (this: Result<'TOuter, 'TMessage>, inner: Result<'TInner, 'TMessage>, outerKeySelector: Func<'TOuter,'TKey>, innerKeySelector: Func<'TInner, 'TKey>, resultSelector: Func<'TOuter, 'TInner, 'TResult>) =
+    static member inline Join (this: Result<'TOuter, 'TMessage>, inner: Result<'TInner, 'TMessage>, _outerKeySelector: Func<'TOuter,'TKey>, _innerKeySelector: Func<'TInner, 'TKey>, resultSelector: Func<'TOuter, 'TInner, 'TResult>) =
         let curry func = fun a -> fun b -> func (a, b)
         curry resultSelector.Invoke
         <!> this 
         <*> inner
+
+    /// Maps a function over the existing error messages in case of failure. In case of success, the message type will be changed and warnings will be discarded.
+    [<Extension>]
+    static member inline MapFailure (this: Result<'TSuccess, 'TMessage>, f: Func<'TMessage list, 'TMessage2 seq>) =
+        this |> Trial.mapFailure (f.Invoke >> Seq.toList)
