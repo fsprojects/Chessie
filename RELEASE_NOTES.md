@@ -1,8 +1,7 @@
-#### 0.2.2 - 03.08.2015
-* BUGFIX: SelectMany implementation changed - https://github.com/fsprojects/Chessie/pull/27
-
-#### 0.2.1 - 16.07.2015
+#### 0.3.0 - 17.01.2016
+* New C# helpers - https://github.com/fsprojects/Chessie/pull/34 https://github.com/fsprojects/Chessie/pull/35 https://github.com/fsprojects/Chessie/pull/36
 * Adding small helpers to make tutorial easier - https://github.com/fsprojects/Chessie/pull/23
+* BUGFIX: SelectMany implementation changed - https://github.com/fsprojects/Chessie/pull/27
 
 #### 0.2.0 - 23.03.2015
 * BREAKING: Fixed conflicts reported in https://github.com/fsprojects/Chessie/issues/17

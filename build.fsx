@@ -149,7 +149,7 @@ Target "SourceLink" (fun _ ->
         let files = proj.Compiles -- "**/AssemblyInfo.fs"
         repo.VerifyChecksums files
         proj.VerifyPdbChecksums files
-        proj.CreateSrcSrv baseUrl repo.Revision (repo.Paths files)
+        proj.CreateSrcSrv baseUrl repo.Commit (repo.Paths files)
         Pdbstr.exec proj.OutputFilePdb proj.OutputFilePdbSrcSrv
     )
     //C# projects
@@ -160,7 +160,7 @@ Target "SourceLink" (fun _ ->
         let files = proj.Compiles -- "**/AssemblyInfo.cs"
         repo.VerifyChecksums files
         proj.VerifyPdbChecksums files
-        proj.CreateSrcSrv baseUrl repo.Revision (repo.Paths files)
+        proj.CreateSrcSrv baseUrl repo.Commit (repo.Paths files)
         Pdbstr.exec proj.OutputFilePdb proj.OutputFilePdbSrcSrv
     )
 )
@@ -318,7 +318,7 @@ Target "Release" (fun _ ->
     // release on github
     createClient (getBuildParamOrDefault "github-user" "") (getBuildParamOrDefault "github-pw" "")
     |> createDraft gitOwner gitName release.NugetVersion (release.SemVer.PreRelease <> None) release.Notes 
-    // TODO: |> uploadFile "PATH_TO_FILE"    
+
     |> releaseDraft
     |> Async.RunSynchronously
 )
