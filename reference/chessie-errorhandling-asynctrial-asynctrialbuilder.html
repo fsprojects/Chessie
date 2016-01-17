@@ -43,7 +43,6 @@
 <div class="xmldoc">
 <p>Builder type for error handling in async computation expressions.</p>
 
-
 </div>
   <h3>Constructors</h3>
   <table class="table table-bordered member-list">
@@ -54,19 +53,20 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '30', 30)" onmouseover="showTip(event, '30', 30)">
+          <code onmouseout="hideTip(event, '32', 32)" onmouseover="showTip(event, '32', 32)">
             new()
           </code>
-          <div class="tip" id="30">
+          <div class="tip" id="32">
             <strong>Signature:</strong> unit -&gt; AsyncTrialBuilder<br />
                       </div>
         </td>
         <td class="xmldoc">
-            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L234-234" class="github-link">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L247-247" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
           
+              <p>CompiledName: <code>.ctor</code></p>
         </td>
       </tr>
     </tbody>
@@ -80,51 +80,15 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '31', 31)" onmouseover="showTip(event, '31', 31)">
+          <code onmouseout="hideTip(event, '33', 33)" onmouseover="showTip(event, '33', 33)">
             Bind(async, binder)
           </code>
-          <div class="tip" id="31">
+          <div class="tip" id="33">
             <strong>Signature:</strong> (async:Async&lt;&#39;a&gt; * binder:(&#39;a -&gt; AsyncResult&lt;&#39;b,&#39;c&gt;)) -&gt; AsyncResult&lt;&#39;b,&#39;c&gt;<br />
                           <strong>Type parameters:</strong> 'a, 'b, 'c          </div>
         </td>
         <td class="xmldoc">
-            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L267-267" class="github-link">
-              <img src="../content/img/github.png" class="normal" />
-              <img src="../content/img/github-blue.png" class="hover" />
-            </a>
-          
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '32', 32)" onmouseover="showTip(event, '32', 32)">
-            Bind(result, binder)
-          </code>
-          <div class="tip" id="32">
-            <strong>Signature:</strong> (result:Result&lt;&#39;a,&#39;c&gt; * binder:(&#39;a -&gt; AsyncResult&lt;&#39;b,&#39;c&gt;)) -&gt; AsyncResult&lt;&#39;b,&#39;c&gt;<br />
-                          <strong>Type parameters:</strong> 'a, 'c, 'b          </div>
-        </td>
-        <td class="xmldoc">
-            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L262-262" class="github-link">
-              <img src="../content/img/github.png" class="normal" />
-              <img src="../content/img/github-blue.png" class="hover" />
-            </a>
-          
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '33', 33)" onmouseover="showTip(event, '33', 33)">
-            Bind(asyncResult, binder)
-          </code>
-          <div class="tip" id="33">
-            <strong>Signature:</strong> (asyncResult:AsyncResult&lt;&#39;a,&#39;c&gt; * binder:(&#39;a -&gt; AsyncResult&lt;&#39;b,&#39;c&gt;)) -&gt; AsyncResult&lt;&#39;b,&#39;c&gt;<br />
-                          <strong>Type parameters:</strong> 'a, 'c, 'b          </div>
-        </td>
-        <td class="xmldoc">
-            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L246-246" class="github-link">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L280-280" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
@@ -135,14 +99,14 @@
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '34', 34)" onmouseover="showTip(event, '34', 34)">
-            Delay(generator)
+            Bind(result, binder)
           </code>
           <div class="tip" id="34">
-            <strong>Signature:</strong> (generator:(unit -&gt; AsyncResult&lt;&#39;a,&#39;b&gt;)) -&gt; AsyncResult&lt;&#39;a,&#39;b&gt;<br />
-                          <strong>Type parameters:</strong> 'a, 'b          </div>
+            <strong>Signature:</strong> (result:Result&lt;&#39;a,&#39;c&gt; * binder:(&#39;a -&gt; AsyncResult&lt;&#39;b,&#39;c&gt;)) -&gt; AsyncResult&lt;&#39;b,&#39;c&gt;<br />
+                          <strong>Type parameters:</strong> 'a, 'c, 'b          </div>
         </td>
         <td class="xmldoc">
-            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L243-243" class="github-link">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L275-275" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
@@ -153,14 +117,14 @@
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '35', 35)" onmouseover="showTip(event, '35', 35)">
-            Return(value)
+            Bind(asyncResult, binder)
           </code>
           <div class="tip" id="35">
-            <strong>Signature:</strong> value:&#39;a -&gt; AsyncResult&lt;&#39;a,&#39;b&gt;<br />
-                          <strong>Type parameters:</strong> 'a, 'b          </div>
+            <strong>Signature:</strong> (asyncResult:AsyncResult&lt;&#39;a,&#39;c&gt; * binder:(&#39;a -&gt; AsyncResult&lt;&#39;b,&#39;c&gt;)) -&gt; AsyncResult&lt;&#39;b,&#39;c&gt;<br />
+                          <strong>Type parameters:</strong> 'a, 'c, 'b          </div>
         </td>
         <td class="xmldoc">
-            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L235-235" class="github-link">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L259-259" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
@@ -171,14 +135,14 @@
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '36', 36)" onmouseover="showTip(event, '36', 36)">
-            ReturnFrom(asyncResult)
+            Delay(generator)
           </code>
           <div class="tip" id="36">
-            <strong>Signature:</strong> asyncResult:AsyncResult&lt;&#39;a,&#39;b&gt; -&gt; AsyncResult&lt;&#39;a,&#39;b&gt;<br />
+            <strong>Signature:</strong> (generator:(unit -&gt; AsyncResult&lt;&#39;a,&#39;b&gt;)) -&gt; AsyncResult&lt;&#39;a,&#39;b&gt;<br />
                           <strong>Type parameters:</strong> 'a, 'b          </div>
         </td>
         <td class="xmldoc">
-            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L241-241" class="github-link">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L256-256" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
@@ -189,14 +153,14 @@
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '37', 37)" onmouseover="showTip(event, '37', 37)">
-            TryFinally(asyncResult, compensation)
+            Return(value)
           </code>
           <div class="tip" id="37">
-            <strong>Signature:</strong> (asyncResult:AsyncResult&lt;&#39;a,&#39;b&gt; * compensation:(unit -&gt; unit)) -&gt; AsyncResult&lt;&#39;a,&#39;b&gt;<br />
+            <strong>Signature:</strong> value:&#39;a -&gt; AsyncResult&lt;&#39;a,&#39;b&gt;<br />
                           <strong>Type parameters:</strong> 'a, 'b          </div>
         </td>
         <td class="xmldoc">
-            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L274-274" class="github-link">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L248-248" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
@@ -207,14 +171,14 @@
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '38', 38)" onmouseover="showTip(event, '38', 38)">
-            TryWith(asyncResult, catchHandler)
+            ReturnFrom(asyncResult)
           </code>
           <div class="tip" id="38">
-            <strong>Signature:</strong> (asyncResult:AsyncResult&lt;&#39;a,&#39;b&gt; * catchHandler:(exn -&gt; AsyncResult&lt;&#39;a,&#39;b&gt;)) -&gt; AsyncResult&lt;&#39;a,&#39;b&gt;<br />
+            <strong>Signature:</strong> asyncResult:AsyncResult&lt;&#39;a,&#39;b&gt; -&gt; AsyncResult&lt;&#39;a,&#39;b&gt;<br />
                           <strong>Type parameters:</strong> 'a, 'b          </div>
         </td>
         <td class="xmldoc">
-            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L272-272" class="github-link">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L254-254" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
@@ -225,14 +189,14 @@
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '39', 39)" onmouseover="showTip(event, '39', 39)">
-            Using(resource, binder)
+            TryFinally(asyncResult, compensation)
           </code>
           <div class="tip" id="39">
-            <strong>Signature:</strong> (resource:&#39;T * binder:(&#39;T -&gt; AsyncResult&lt;&#39;a,&#39;b&gt;)) -&gt; AsyncResult&lt;&#39;a,&#39;b&gt;<br />
-                          <strong>Type parameters:</strong> 'T, 'a, 'b          </div>
+            <strong>Signature:</strong> (asyncResult:AsyncResult&lt;&#39;a,&#39;b&gt; * compensation:(unit -&gt; unit)) -&gt; AsyncResult&lt;&#39;a,&#39;b&gt;<br />
+                          <strong>Type parameters:</strong> 'a, 'b          </div>
         </td>
         <td class="xmldoc">
-            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L276-276" class="github-link">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L287-287" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
@@ -243,14 +207,50 @@
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '40', 40)" onmouseover="showTip(event, '40', 40)">
-            Zero()
+            TryWith(asyncResult, catchHandler)
           </code>
           <div class="tip" id="40">
+            <strong>Signature:</strong> (asyncResult:AsyncResult&lt;&#39;a,&#39;b&gt; * catchHandler:(exn -&gt; AsyncResult&lt;&#39;a,&#39;b&gt;)) -&gt; AsyncResult&lt;&#39;a,&#39;b&gt;<br />
+                          <strong>Type parameters:</strong> 'a, 'b          </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L285-285" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '41', 41)" onmouseover="showTip(event, '41', 41)">
+            Using(resource, binder)
+          </code>
+          <div class="tip" id="41">
+            <strong>Signature:</strong> (resource:&#39;T * binder:(&#39;T -&gt; AsyncResult&lt;&#39;a,&#39;b&gt;)) -&gt; AsyncResult&lt;&#39;a,&#39;b&gt;<br />
+                          <strong>Type parameters:</strong> 'T, 'a, 'b          </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L289-289" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '42', 42)" onmouseover="showTip(event, '42', 42)">
+            Zero()
+          </code>
+          <div class="tip" id="42">
             <strong>Signature:</strong> unit -&gt; AsyncResult&lt;unit,&#39;b&gt;<br />
                           <strong>Type parameters:</strong> 'b          </div>
         </td>
         <td class="xmldoc">
-            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L242-242" class="github-link">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L255-255" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>

@@ -34,24 +34,24 @@
         <div class="span9" id="main">
           
 <h1><a name="A-Tale-of-3-Nightclubs" class="anchor" href="#A-Tale-of-3-Nightclubs">A Tale of 3 Nightclubs</a></h1>
-
 <p>This C# tutorial is based on a <a href="https://gist.github.com/oxbowlakes/970717">Scalaz tutorial</a> by Chris Marshall and was originally ported to <a href="https://github.com/fsprojects/fsharpx/blob/master/tests/FSharpx.CSharpTests/ValidationExample.cs">fsharpx</a> by Mauricio Scheffer.</p>
-
 <p>Additional resources:</p>
-
 <ul>
-<li>Railway Oriented Programming by Scott Wlaschin - A functional approach to error handling
+<li>
+Railway Oriented Programming by Scott Wlaschin - A functional approach to error handling
 <ul>
-<li><a href="http://fsharpforfunandprofit.com/posts/recipe-part2/">Blog post</a></li>
+<li>
+<a href="http://fsharpforfunandprofit.com/posts/recipe-part2/">Blog post</a>
+<ul>
 <li><a href="http://www.slideshare.net/ScottWlaschin/railway-oriented-programming">Slide deck</a></li>
 <li><a href="https://vimeo.com/97344498">Video</a></li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
+</li>
+</ul>
 <h2><a name="Part-Zero-10-15-Saturday-Night" class="anchor" href="#Part-Zero-10-15-Saturday-Night">Part Zero : 10:15 Saturday Night</a></h2>
-
 <p>We start by referencing Chessie and opening the ErrorHandling module and define a simple domain for nightclubs:</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
 <span class="l"> 3: </span>
@@ -96,9 +96,7 @@
 </code></pre></td>
 </tr>
 </table>
-
 <p>Now we define some validation methods that all nightclubs will perform:</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
 <span class="l"> 3: </span>
@@ -133,11 +131,8 @@
 </code></pre></td>
 </tr>
 </table>
-
 <h2><a name="Part-One-Clubbed-to-Death" class="anchor" href="#Part-One-Clubbed-to-Death">Part One : Clubbed to Death</a></h2>
-
 <p>Now let's compose some validation checks via syntactic sugar:</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
 <span class="l"> 3: </span>
@@ -168,9 +163,7 @@
 </code></pre></td>
 </tr>
 </table>
-
 <p>Let's see how the validation works in action:</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
 <span class="l"> 3: </span>
@@ -205,7 +198,6 @@
 </code></pre></td>
 </tr>
 </table>
-
 <p>The thing to note here is how the Validations can be composed together in a computation expression.
 The type system is making sure that failures flow through your computation in a safe manner.</p>
 

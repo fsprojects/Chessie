@@ -34,14 +34,12 @@
         <div class="span9" id="main">
           
 <h1><a name="Combining-terminal-and-non-terminal-errors" class="anchor" href="#Combining-terminal-and-non-terminal-errors">Combining terminal and non-terminal errors</a></h1>
-
-<p>One feature of programming with "two-track" data is that once a value is on the <em>failure track</em> 
-operations against it may be skipped if they expect a value on the <em>passing track</em>. However, this 
-is not always the desired behavior. In many cases, we will want to perform mulitple operations on a 
-value and record any unusual or interesting results, but still keep thing on the <em>passing track</em>. 
-One obvious scenario is when we want to validate multiple pieces of input (such as might be 
+<p>One feature of programming with "two-track" data is that once a value is on the <em>failure track</em>
+operations against it may be skipped if they expect a value on the <em>passing track</em>. However, this
+is not always the desired behavior. In many cases, we will want to perform mulitple operations on a
+value and record any unusual or interesting results, but still keep thing on the <em>passing track</em>.
+One obvious scenario is when we want to validate multiple pieces of input (such as might be
 received from an HTTP request).</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
 <span class="l">3: </span>
@@ -54,9 +52,7 @@ received from an HTTP request).</p>
 </code></pre></td>
 </tr>
 </table>
-
 <p>Given some aggregate user-supplied data, we want to check each datum.</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
 <span class="l"> 3: </span>
@@ -99,9 +95,7 @@ received from an HTTP request).</p>
 </code></pre></td>
 </tr>
 </table>
-
 <p>Now we can combine our individual checks, returning the original value along-side any issues.</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
 <span class="l"> 3: </span>
@@ -150,15 +144,9 @@ received from an HTTP request).</p>
 </code></pre></td>
 </tr>
 </table>
-
-<table class="pre"><tr><td><pre><code>All Good!!!
-Got some issues:
-  DateOfBirth is too recent
-  Last name is missing</code></pre></td></tr></table>
-
-<p>We can also mixed warnings in with operations that are terminal. In other words, we can still build 
+<table class="pre"><tr><td><pre><code>No output has been produced.</code></pre></td></tr></table>
+<p>We can also mixed warnings in with operations that are terminal. In other words, we can still build
 workflows where certain operations switch the data over to the <em>failure track</em>.</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
 <span class="l"> 3: </span>
@@ -231,17 +219,10 @@ workflows where certain operations switch the data over to the <em>failure track
 </code></pre></td>
 </tr>
 </table>
-
-<table class="pre"><tr><td><pre><code>Got errors:
-  Get outta here with that color!
-Got some issues:
-  First name is missing
-Nothing to report</code></pre></td></tr></table>
-
-<p>In effect, we've turned "two-track" data into "three-track" data. But we can also flip this around. 
-That's is, run operations over the data accumlating warnings. Then at the end, if we have any 
+<table class="pre"><tr><td><pre><code>No output has been produced.</code></pre></td></tr></table>
+<p>In effect, we've turned "two-track" data into "three-track" data. But we can also flip this around.
+That's is, run operations over the data accumlating warnings. Then at the end, if we have any
 messages at all, switch to the <em>failure track</em>.</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
 <span class="l"> 3: </span>
@@ -298,11 +279,7 @@ messages at all, switch to the <em>failure track</em>.</p>
 </code></pre></td>
 </tr>
 </table>
-
-<table class="pre"><tr><td><pre><code>ERROR! DateOfBirth is too recent
-ERROR! First name is missing
-ERROR! Last name is missing
-ERROR! No color provided</code></pre></td></tr></table>
+<table class="pre"><tr><td><pre><code>No output has been produced.</code></pre></td></tr></table>
 
 <div class="tip" id="fs1">namespace Chessie</div>
 <div class="tip" id="fs2">namespace Chessie.ErrorHandling</div>

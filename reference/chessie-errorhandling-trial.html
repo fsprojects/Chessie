@@ -42,7 +42,6 @@
 <div class="xmldoc">
 <p>Basic combinators and operators for error handling.</p>
 
-
 </div>
 
 <!-- Render nested types and modules, if there are any -->
@@ -58,7 +57,6 @@
             <a href="chessie-errorhandling-trial-trialbuilder.html">TrialBuilder</a>
           </td>
           <td class="xmldoc"><p>Builder type for error handling computation expressions.</p>
-
 
 </td>
         </tr>
@@ -80,11 +78,11 @@
             ( &lt;!&gt; ) f result
           </code>
           <div class="tip" id="6">
-            <strong>Signature:</strong> f:(&#39;?6978 -&gt; &#39;?6979) -&gt; result:Result&lt;&#39;?6978,&#39;?6980&gt; -&gt; Result&lt;&#39;?6979,&#39;?6980&gt;<br />
-                          <strong>Type parameters:</strong> '?6978, '?6979, '?6980          </div>
+            <strong>Signature:</strong> f:(&#39;?7263 -&gt; &#39;?7264) -&gt; result:Result&lt;&#39;?7263,&#39;?7265&gt; -&gt; Result&lt;&#39;?7264,&#39;?7265&gt;<br />
+                          <strong>Type parameters:</strong> '?7263, '?7264, '?7265          </div>
         </td>
         <td class="xmldoc">
-            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L119-119" class="github-link">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L125-125" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
@@ -92,7 +90,7 @@
 This is the infix operator version of ErrorHandling.lift</p>
 
 
-
+              <p>CompiledName: <code>op_LessBangGreater</code></p>
         </td>
       </tr>
       <tr>
@@ -102,20 +100,20 @@ This is the infix operator version of ErrorHandling.lift</p>
             ( &lt;*&gt; ) wrappedFunction result
           </code>
           <div class="tip" id="7">
-            <strong>Signature:</strong> wrappedFunction:Result&lt;(&#39;?6970 -&gt; &#39;?6971),&#39;?6972&gt; -&gt; result:Result&lt;&#39;?6970,&#39;?6972&gt; -&gt; Result&lt;&#39;?6971,&#39;?6972&gt;<br />
-                          <strong>Type parameters:</strong> '?6970, '?6971, '?6972          </div>
+            <strong>Signature:</strong> wrappedFunction:Result&lt;(&#39;?7251 -&gt; &#39;?7252),&#39;?7253&gt; -&gt; result:Result&lt;&#39;?7251,&#39;?7253&gt; -&gt; Result&lt;&#39;?7252,&#39;?7253&gt;<br />
+                          <strong>Type parameters:</strong> '?7251, '?7252, '?7253          </div>
         </td>
         <td class="xmldoc">
             <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L112-112" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
-          <p>If the wrapped function is a success and the given result is a success the function is applied on the value. 
+          <p>If the wrapped function is a success and the given result is a success the function is applied on the value.
 Otherwise the exisiting error messages are propagated.
 This is the infix operator version of ErrorHandling.apply</p>
 
 
-
+              <p>CompiledName: <code>op_LessMultiplyGreater</code></p>
         </td>
       </tr>
       <tr>
@@ -125,20 +123,20 @@ This is the infix operator version of ErrorHandling.apply</p>
             ( &gt;&gt;= ) result f
           </code>
           <div class="tip" id="8">
-            <strong>Signature:</strong> result:Result&lt;&#39;?6962,&#39;?6963&gt; -&gt; f:(&#39;?6962 -&gt; Result&lt;&#39;?6964,&#39;?6963&gt;) -&gt; Result&lt;&#39;?6964,&#39;?6963&gt;<br />
-                          <strong>Type parameters:</strong> '?6962, '?6963, '?6964          </div>
+            <strong>Signature:</strong> result:Result&lt;&#39;?7243,&#39;?7244&gt; -&gt; f:(&#39;?7243 -&gt; Result&lt;&#39;?7245,&#39;?7244&gt;) -&gt; Result&lt;&#39;?7245,&#39;?7244&gt;<br />
+                          <strong>Type parameters:</strong> '?7243, '?7244, '?7245          </div>
         </td>
         <td class="xmldoc">
             <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L98-98" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
-          <p>If the result is a Success it executes the given function on the value. 
+          <p>If the result is a Success it executes the given function on the value.
 Otherwise the exisiting failure is propagated.
 This is the infix operator version of ErrorHandling.bind</p>
 
 
-
+              <p>CompiledName: <code>op_GreaterGreaterEquals</code></p>
         </td>
       </tr>
       <tr>
@@ -148,17 +146,16 @@ This is the infix operator version of ErrorHandling.bind</p>
             apply wrappedFunction result
           </code>
           <div class="tip" id="9">
-            <strong>Signature:</strong> wrappedFunction:Result&lt;(&#39;?6966 -&gt; &#39;?6967),&#39;?6968&gt; -&gt; result:Result&lt;&#39;?6966,&#39;?6968&gt; -&gt; Result&lt;&#39;?6967,&#39;?6968&gt;<br />
-                          <strong>Type parameters:</strong> '?6966, '?6967, '?6968          </div>
+            <strong>Signature:</strong> wrappedFunction:Result&lt;(&#39;?7247 -&gt; &#39;?7248),&#39;?7249&gt; -&gt; result:Result&lt;&#39;?7247,&#39;?7249&gt; -&gt; Result&lt;&#39;?7248,&#39;?7249&gt;<br />
+                          <strong>Type parameters:</strong> '?7247, '?7248, '?7249          </div>
         </td>
         <td class="xmldoc">
             <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L102-102" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
-          <p>If the wrapped function is a success and the given result is a success the function is applied on the value. 
+          <p>If the wrapped function is a success and the given result is a success the function is applied on the value.
 Otherwise the exisiting error messages are propagated.</p>
-
 
 
         </td>
@@ -170,8 +167,8 @@ Otherwise the exisiting error messages are propagated.</p>
             bind f result
           </code>
           <div class="tip" id="10">
-            <strong>Signature:</strong> f:(&#39;?6955 -&gt; Result&lt;&#39;?6956,&#39;?6957&gt;) -&gt; result:Result&lt;&#39;?6955,&#39;?6957&gt; -&gt; Result&lt;&#39;?6956,&#39;?6957&gt;<br />
-                          <strong>Type parameters:</strong> '?6955, '?6956, '?6957          </div>
+            <strong>Signature:</strong> f:(&#39;?7236 -&gt; Result&lt;&#39;?7237,&#39;?7238&gt;) -&gt; result:Result&lt;&#39;?7236,&#39;?7238&gt; -&gt; Result&lt;&#39;?7237,&#39;?7238&gt;<br />
+                          <strong>Type parameters:</strong> '?7236, '?7237, '?7238          </div>
         </td>
         <td class="xmldoc">
             <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L86-86" class="github-link">
@@ -180,7 +177,6 @@ Otherwise the exisiting error messages are propagated.</p>
             </a>
           <p>If the result is a Success it executes the given function on the value.
 Otherwise the exisiting failure is propagated.</p>
-
 
 
         </td>
@@ -192,17 +188,16 @@ Otherwise the exisiting failure is propagated.</p>
             collect xs
           </code>
           <div class="tip" id="11">
-            <strong>Signature:</strong> xs:seq&lt;Result&lt;&#39;?6996,&#39;?6997&gt;&gt; -&gt; Result&lt;&#39;?6996 list,&#39;?6997&gt;<br />
-                          <strong>Type parameters:</strong> '?6996, '?6997          </div>
+            <strong>Signature:</strong> xs:seq&lt;Result&lt;&#39;?7281,&#39;?7282&gt;&gt; -&gt; Result&lt;&#39;?7281 list,&#39;?7282&gt;<br />
+                          <strong>Type parameters:</strong> '?7281, '?7282          </div>
         </td>
         <td class="xmldoc">
-            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L143-143" class="github-link">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L149-149" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
           <p>Collects a sequence of Results and accumulates their values.
 If the sequence contains an error the error will be propagated.</p>
-
 
 
         </td>
@@ -214,8 +209,8 @@ If the sequence contains an error the error will be propagated.</p>
             either fSuccess fFailure trialResult
           </code>
           <div class="tip" id="12">
-            <strong>Signature:</strong> fSuccess:(&#39;?6945 * &#39;?6946 list -&gt; &#39;?6947) -&gt; fFailure:(&#39;?6946 list -&gt; &#39;?6947) -&gt; trialResult:Result&lt;&#39;?6945,&#39;?6946&gt; -&gt; &#39;?6947<br />
-                          <strong>Type parameters:</strong> '?6945, '?6946, '?6947          </div>
+            <strong>Signature:</strong> fSuccess:(&#39;?7226 * &#39;?7227 list -&gt; &#39;?7228) -&gt; fFailure:(&#39;?7227 list -&gt; &#39;?7228) -&gt; trialResult:Result&lt;&#39;?7226,&#39;?7227&gt; -&gt; &#39;?7228<br />
+                          <strong>Type parameters:</strong> '?7226, '?7227, '?7228          </div>
         </td>
         <td class="xmldoc">
             <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L63-63" class="github-link">
@@ -223,7 +218,6 @@ If the sequence contains an error the error will be propagated.</p>
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
           <p>Takes a Result and maps it with fSuccess if it is a Success otherwise it maps it with fFailure.</p>
-
 
 
         </td>
@@ -235,18 +229,17 @@ If the sequence contains an error the error will be propagated.</p>
             eitherTee fSuccess fFailure result
           </code>
           <div class="tip" id="13">
-            <strong>Signature:</strong> fSuccess:(&#39;?6987 * &#39;?6988 list -&gt; unit) -&gt; fFailure:(&#39;?6988 list -&gt; unit) -&gt; result:Result&lt;&#39;?6987,&#39;?6988&gt; -&gt; Result&lt;&#39;?6987,&#39;?6988&gt;<br />
-                          <strong>Type parameters:</strong> '?6987, '?6988          </div>
+            <strong>Signature:</strong> fSuccess:(&#39;?7272 * &#39;?7273 list -&gt; unit) -&gt; fFailure:(&#39;?7273 list -&gt; unit) -&gt; result:Result&lt;&#39;?7272,&#39;?7273&gt; -&gt; Result&lt;&#39;?7272,&#39;?7273&gt;<br />
+                          <strong>Type parameters:</strong> '?7272, '?7273          </div>
         </td>
         <td class="xmldoc">
-            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L127-127" class="github-link">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L133-133" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
           <p>If the result is a Success it executes the given success function on the value and the messages.
 If the result is a Failure it executes the given failure function on the messages.
 Result is propagated unchanged.</p>
-
 
 
         </td>
@@ -269,7 +262,6 @@ Result is propagated unchanged.</p>
           <p>Wraps a message in a Failure</p>
 
 
-
         </td>
       </tr>
       <tr>
@@ -279,8 +271,8 @@ Result is propagated unchanged.</p>
             failed result
           </code>
           <div class="tip" id="15">
-            <strong>Signature:</strong> result:Result&lt;&#39;?6942,&#39;?6943&gt; -&gt; bool<br />
-                          <strong>Type parameters:</strong> '?6942, '?6943          </div>
+            <strong>Signature:</strong> result:Result&lt;&#39;?7223,&#39;?7224&gt; -&gt; bool<br />
+                          <strong>Type parameters:</strong> '?7223, '?7224          </div>
         </td>
         <td class="xmldoc">
             <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L57-57" class="github-link">
@@ -288,7 +280,6 @@ Result is propagated unchanged.</p>
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
           <p>Returns true if the result was not successful.</p>
-
 
 
         </td>
@@ -300,16 +291,15 @@ Result is propagated unchanged.</p>
             failIfNone message result
           </code>
           <div class="tip" id="16">
-            <strong>Signature:</strong> message:&#39;?6999 -&gt; result:&#39;?7000 option -&gt; Result&lt;&#39;?7000,&#39;?6999&gt;<br />
-                          <strong>Type parameters:</strong> '?6999, '?7000          </div>
+            <strong>Signature:</strong> message:&#39;?7284 -&gt; result:&#39;?7285 option -&gt; Result&lt;&#39;?7285,&#39;?7284&gt;<br />
+                          <strong>Type parameters:</strong> '?7284, '?7285          </div>
         </td>
         <td class="xmldoc">
-            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L152-152" class="github-link">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L158-158" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
           <p>Converts an option into a Result.</p>
-
 
 
         </td>
@@ -321,11 +311,11 @@ Result is propagated unchanged.</p>
             failOnWarnings result
           </code>
           <div class="tip" id="17">
-            <strong>Signature:</strong> result:Result&lt;&#39;?7005,&#39;?7006&gt; -&gt; Result&lt;&#39;?7005,&#39;?7006&gt;<br />
-                          <strong>Type parameters:</strong> '?7005, '?7006          </div>
+            <strong>Signature:</strong> result:Result&lt;&#39;?7293,&#39;?7294&gt; -&gt; Result&lt;&#39;?7293,&#39;?7294&gt;<br />
+                          <strong>Type parameters:</strong> '?7293, '?7294          </div>
         </td>
         <td class="xmldoc">
-            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L164-164" class="github-link">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L176-176" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
@@ -339,17 +329,16 @@ Result is propagated unchanged.</p>
             failureTee f result
           </code>
           <div class="tip" id="18">
-            <strong>Signature:</strong> f:(&#39;?6993 list -&gt; unit) -&gt; result:Result&lt;&#39;?6994,&#39;?6993&gt; -&gt; Result&lt;&#39;?6994,&#39;?6993&gt;<br />
-                          <strong>Type parameters:</strong> '?6993, '?6994          </div>
+            <strong>Signature:</strong> f:(&#39;?7278 list -&gt; unit) -&gt; result:Result&lt;&#39;?7279,&#39;?7278&gt; -&gt; Result&lt;&#39;?7279,&#39;?7278&gt;<br />
+                          <strong>Type parameters:</strong> '?7278, '?7279          </div>
         </td>
         <td class="xmldoc">
-            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L138-138" class="github-link">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L144-144" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
           <p>If the result is a Failure it executes the given function on the messages.
 Result is propagated unchanged.</p>
-
 
 
         </td>
@@ -361,8 +350,8 @@ Result is propagated unchanged.</p>
             flatten result
           </code>
           <div class="tip" id="19">
-            <strong>Signature:</strong> result:Result&lt;Result&lt;&#39;?6959,&#39;?6960&gt;,&#39;?6960&gt; -&gt; Result&lt;&#39;?6959,&#39;?6960&gt;<br />
-                          <strong>Type parameters:</strong> '?6959, '?6960          </div>
+            <strong>Signature:</strong> result:Result&lt;Result&lt;&#39;?7240,&#39;?7241&gt;,&#39;?7241&gt; -&gt; Result&lt;&#39;?7240,&#39;?7241&gt;<br />
+                          <strong>Type parameters:</strong> '?7240, '?7241          </div>
         </td>
         <td class="xmldoc">
             <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L92-92" class="github-link">
@@ -370,7 +359,6 @@ Result is propagated unchanged.</p>
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
           <p>Flattens a nested result given the Failure types are equal</p>
-
 
 
         </td>
@@ -382,8 +370,8 @@ Result is propagated unchanged.</p>
             lift f result
           </code>
           <div class="tip" id="20">
-            <strong>Signature:</strong> f:(&#39;?6974 -&gt; &#39;?6975) -&gt; result:Result&lt;&#39;?6974,&#39;?6976&gt; -&gt; Result&lt;&#39;?6975,&#39;?6976&gt;<br />
-                          <strong>Type parameters:</strong> '?6974, '?6975, '?6976          </div>
+            <strong>Signature:</strong> f:(&#39;?7255 -&gt; &#39;?7256) -&gt; result:Result&lt;&#39;?7255,&#39;?7257&gt; -&gt; Result&lt;&#39;?7256,&#39;?7257&gt;<br />
+                          <strong>Type parameters:</strong> '?7255, '?7256, '?7257          </div>
         </td>
         <td class="xmldoc">
             <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L115-115" class="github-link">
@@ -391,7 +379,6 @@ Result is propagated unchanged.</p>
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
           <p>Lifts a function into a Result container and applies it on the given result.</p>
-
 
 
         </td>
@@ -403,16 +390,15 @@ Result is propagated unchanged.</p>
             lift2 f a b
           </code>
           <div class="tip" id="21">
-            <strong>Signature:</strong> f:(&#39;?6982 -&gt; &#39;?6983 -&gt; &#39;?6984) -&gt; a:Result&lt;&#39;?6982,&#39;?6985&gt; -&gt; b:Result&lt;&#39;?6983,&#39;?6985&gt; -&gt; Result&lt;&#39;?6984,&#39;?6985&gt;<br />
-                          <strong>Type parameters:</strong> '?6982, '?6983, '?6984, '?6985          </div>
+            <strong>Signature:</strong> f:(&#39;?7267 -&gt; &#39;?7268 -&gt; &#39;?7269) -&gt; a:Result&lt;&#39;?7267,&#39;?7270&gt; -&gt; b:Result&lt;&#39;?7268,&#39;?7270&gt; -&gt; Result&lt;&#39;?7269,&#39;?7270&gt;<br />
+                          <strong>Type parameters:</strong> '?7267, '?7268, '?7269, '?7270          </div>
         </td>
         <td class="xmldoc">
-            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L122-122" class="github-link">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L128-128" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
           <p>Promote a function to a monad/applicative, scanning the monadic/applicative arguments from left to right.</p>
-
 
 
         </td>
@@ -421,11 +407,31 @@ Result is propagated unchanged.</p>
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '22', 22)" onmouseover="showTip(event, '22', 22)">
-            mergeMessages msgs result
+            mapFailure f result
           </code>
           <div class="tip" id="22">
-            <strong>Signature:</strong> msgs:&#39;?6952 list -&gt; result:Result&lt;&#39;?6953,&#39;?6952&gt; -&gt; Result&lt;&#39;?6953,&#39;?6952&gt;<br />
-                          <strong>Type parameters:</strong> '?6952, '?6953          </div>
+            <strong>Signature:</strong> f:(&#39;?7259 list -&gt; &#39;?7260 list) -&gt; result:Result&lt;&#39;?7261,&#39;?7259&gt; -&gt; Result&lt;&#39;?7261,&#39;?7260&gt;<br />
+                          <strong>Type parameters:</strong> '?7259, '?7260, '?7261          </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L118-118" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          <p>Maps a function over the existing error messages in case of failure. In case of success, the message type will be changed and warnings will be discarded.</p>
+
+
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '23', 23)" onmouseover="showTip(event, '23', 23)">
+            mergeMessages msgs result
+          </code>
+          <div class="tip" id="23">
+            <strong>Signature:</strong> msgs:&#39;?7233 list -&gt; result:Result&lt;&#39;?7234,&#39;?7233&gt; -&gt; Result&lt;&#39;?7234,&#39;?7233&gt;<br />
+                          <strong>Type parameters:</strong> '?7233, '?7234          </div>
         </td>
         <td class="xmldoc">
             <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L79-79" class="github-link">
@@ -435,16 +441,35 @@ Result is propagated unchanged.</p>
           <p>Appends the given messages with the messages in the given result.</p>
 
 
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '24', 24)" onmouseover="showTip(event, '24', 24)">
+            ofChoice choice
+          </code>
+          <div class="tip" id="24">
+            <strong>Signature:</strong> choice:Choice&lt;&#39;?7287,&#39;?7288&gt; -&gt; Result&lt;&#39;?7287,&#39;?7288&gt;<br />
+                          <strong>Type parameters:</strong> '?7287, '?7288          </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L164-164" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          <p>Converts a Choice into a Result.</p>
+
 
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '23', 23)" onmouseover="showTip(event, '23', 23)">
+          <code onmouseout="hideTip(event, '25', 25)" onmouseover="showTip(event, '25', 25)">
             ok x
           </code>
-          <div class="tip" id="23">
+          <div class="tip" id="25">
             <strong>Signature:</strong> x:&#39;TSuccess -&gt; Result&lt;&#39;TSuccess,&#39;TMessage&gt;<br />
                           <strong>Type parameters:</strong> 'TSuccess, 'TMessage          </div>
         </td>
@@ -456,16 +481,15 @@ Result is propagated unchanged.</p>
           <p>Wraps a value in a Success</p>
 
 
-
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '24', 24)" onmouseover="showTip(event, '24', 24)">
+          <code onmouseout="hideTip(event, '26', 26)" onmouseover="showTip(event, '26', 26)">
             pass x
           </code>
-          <div class="tip" id="24">
+          <div class="tip" id="26">
             <strong>Signature:</strong> x:&#39;TSuccess -&gt; Result&lt;&#39;TSuccess,&#39;TMessage&gt;<br />
                           <strong>Type parameters:</strong> 'TSuccess, 'TMessage          </div>
         </td>
@@ -477,70 +501,25 @@ Result is propagated unchanged.</p>
           <p>Wraps a value in a Success</p>
 
 
-
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '25', 25)" onmouseover="showTip(event, '25', 25)">
-            returnOrFail result
-          </code>
-          <div class="tip" id="25">
-            <strong>Signature:</strong> result:Result&lt;&#39;?6949,&#39;?6950&gt; -&gt; &#39;?6949<br />
-                          <strong>Type parameters:</strong> '?6949, '?6950          </div>
-        </td>
-        <td class="xmldoc">
-            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L70-70" class="github-link">
-              <img src="../content/img/github.png" class="normal" />
-              <img src="../content/img/github-blue.png" class="hover" />
-            </a>
-          <p>If the given result is a Success the wrapped value will be returned. 
-Otherwise the function throws an exception with Failure message of the result.</p>
-
-
-
-        </td>
-      </tr>
-      <tr>
-        <td class="member-name">
-
-          <code onmouseout="hideTip(event, '26', 26)" onmouseover="showTip(event, '26', 26)">
-            successTee f result
-          </code>
-          <div class="tip" id="26">
-            <strong>Signature:</strong> f:(&#39;?6990 * &#39;?6991 list -&gt; unit) -&gt; result:Result&lt;&#39;?6990,&#39;?6991&gt; -&gt; Result&lt;&#39;?6990,&#39;?6991&gt;<br />
-                          <strong>Type parameters:</strong> '?6990, '?6991          </div>
-        </td>
-        <td class="xmldoc">
-            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L133-133" class="github-link">
-              <img src="../content/img/github.png" class="normal" />
-              <img src="../content/img/github-blue.png" class="hover" />
-            </a>
-          <p>If the result is a Success it executes the given function on the value and the messages.
-Result is propagated unchanged.</p>
-
-
-
         </td>
       </tr>
       <tr>
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '27', 27)" onmouseover="showTip(event, '27', 27)">
-            trial 
+            returnOrFail result
           </code>
           <div class="tip" id="27">
-            <strong>Signature:</strong> TrialBuilder<br />
-                      </div>
+            <strong>Signature:</strong> result:Result&lt;&#39;?7230,&#39;?7231&gt; -&gt; &#39;?7230<br />
+                          <strong>Type parameters:</strong> '?7230, '?7231          </div>
         </td>
         <td class="xmldoc">
-            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L205-205" class="github-link">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L70-70" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
-          <p>Wraps computations in an error handling computation expression.</p>
-
+          <p>If the given result is a Success the wrapped value will be returned.
+Otherwise the function throws an exception with Failure message of the result.</p>
 
 
         </td>
@@ -549,9 +528,50 @@ Result is propagated unchanged.</p>
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '28', 28)" onmouseover="showTip(event, '28', 28)">
-            warn msg x
+            successTee f result
           </code>
           <div class="tip" id="28">
+            <strong>Signature:</strong> f:(&#39;?7275 * &#39;?7276 list -&gt; unit) -&gt; result:Result&lt;&#39;?7275,&#39;?7276&gt; -&gt; Result&lt;&#39;?7275,&#39;?7276&gt;<br />
+                          <strong>Type parameters:</strong> '?7275, '?7276          </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L139-139" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          <p>If the result is a Success it executes the given function on the value and the messages.
+Result is propagated unchanged.</p>
+
+
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '29', 29)" onmouseover="showTip(event, '29', 29)">
+            trial 
+          </code>
+          <div class="tip" id="29">
+            <strong>Signature:</strong> TrialBuilder<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L217-217" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          <p>Wraps computations in an error handling computation expression.</p>
+
+
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '30', 30)" onmouseover="showTip(event, '30', 30)">
+            warn msg x
+          </code>
+          <div class="tip" id="30">
             <strong>Signature:</strong> msg:&#39;TMessage -&gt; x:&#39;TSuccess -&gt; Result&lt;&#39;TSuccess,&#39;TMessage&gt;<br />
                           <strong>Type parameters:</strong> 'TSuccess, 'TMessage          </div>
         </td>
@@ -561,7 +581,6 @@ Result is propagated unchanged.</p>
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
           <p>Wraps a value in a Success and adds a message</p>
-
 
 
         </td>
@@ -577,22 +596,22 @@ Result is propagated unchanged.</p>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '29', 29)" onmouseover="showTip(event, '29', 29)">
+          <code onmouseout="hideTip(event, '31', 31)" onmouseover="showTip(event, '31', 31)">
             ( |Pass|Warn|Fail| ) result
           </code>
-          <div class="tip" id="29">
-            <strong>Signature:</strong> result:Result&lt;&#39;?7002,&#39;?7003&gt; -&gt; Choice&lt;&#39;?7002,(&#39;?7002 * &#39;?7003 list),&#39;?7003 list&gt;<br />
-                          <strong>Type parameters:</strong> '?7002, '?7003          </div>
+          <div class="tip" id="31">
+            <strong>Signature:</strong> result:Result&lt;&#39;?7290,&#39;?7291&gt; -&gt; Choice&lt;&#39;?7290,(&#39;?7290 * &#39;?7291 list),&#39;?7291 list&gt;<br />
+                          <strong>Type parameters:</strong> '?7290, '?7291          </div>
         </td>
         <td class="xmldoc">
-            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L158-158" class="github-link">
+            <a href="http://github.com/fsprojects/Chessie/tree/master/src/Chessie/ErrorHandling.fs#L170-170" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
           <p>Categorizes a result based on its state and the presence of extra messages</p>
 
 
-
+              <p>CompiledName: <code>|Pass|Warn|Fail|</code></p>
         </td>
       </tr>
     </tbody>

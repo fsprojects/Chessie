@@ -34,24 +34,24 @@
         <div class="span9" id="main">
           
 <h1><a name="A-Tale-of-3-Nightclubs" class="anchor" href="#A-Tale-of-3-Nightclubs">A Tale of 3 Nightclubs</a></h1>
-
 <p>This C# tutorial is based on a <a href="https://gist.github.com/oxbowlakes/970717">Scalaz tutorial</a> by Chris Marshall and was originally ported to <a href="https://github.com/fsprojects/fsharpx/blob/master/tests/FSharpx.CSharpTests/ValidationExample.cs">fsharpx</a> by Mauricio Scheffer.</p>
-
 <p>Additional resources:</p>
-
 <ul>
-<li>Railway Oriented Programming by Scott Wlaschin - A functional approach to error handling
+<li>
+Railway Oriented Programming by Scott Wlaschin - A functional approach to error handling
 <ul>
-<li><a href="http://fsharpforfunandprofit.com/posts/recipe-part2/">Blog post</a></li>
+<li>
+<a href="http://fsharpforfunandprofit.com/posts/recipe-part2/">Blog post</a>
+<ul>
 <li><a href="http://www.slideshare.net/ScottWlaschin/railway-oriented-programming">Slide deck</a></li>
 <li><a href="https://vimeo.com/97344498">Video</a></li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
+</li>
+</ul>
 <h2><a name="Part-Zero-10-15-Saturday-Night" class="anchor" href="#Part-Zero-10-15-Saturday-Night">Part Zero : 10:15 Saturday Night</a></h2>
-
 <p>We start by referencing Chessie and opening the ErrorHandling module and define a simple domain for nightclubs:</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
 <span class="l"> 3: </span>
@@ -98,9 +98,7 @@
     }
 }
 </code></pre></td></tr></table>
-
 <p>Now we define some validation methods that all nightclubs will perform:</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
 <span class="l"> 3: </span>
@@ -157,11 +155,8 @@
     }
 }
 </code></pre></td></tr></table>
-
 <h2><a name="Part-One-Clubbed-to-Death" class="anchor" href="#Part-One-Clubbed-to-Death">Part One : Clubbed to Death</a></h2>
-
 <p>Now let's compose some validation checks via syntactic sugar and LINQ:</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
 <span class="l"> 3: </span>
@@ -184,9 +179,7 @@
     }
 }
 </code></pre></td></tr></table>
-
 <p>Let's see how the validation works in action:</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
 <span class="l">3: </span>
@@ -199,9 +192,7 @@
 <span class="k">var</span> Ken <span class="o">=</span> <span class="k">new</span> Person(Gender.Male, 28, <span class="k">new</span> List&lt;<span class="k">string</span>&gt; { <span class="s">"Tie"</span>, <span class="s">"Shirt"</span> }, Sobriety.Tipsy);
 <span class="k">var</span> costKen <span class="o">=</span> ClubbedToDeath.CostToEnter(Ken);  <span class="c">// Success 5</span>
 </code></pre></td></tr></table>
-
 <p>We can even use pattern matching on the result:</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
 <span class="l">3: </span>
@@ -222,20 +213,13 @@ costRuby.Match(
         Console.WriteLine(<span class="s">"Ruby is not allowed to enter: {0}"</span>, msgs);
     });
 </code></pre></td></tr></table>
-
 <p>The thing to note here is how the Validations can be composed together in a computation expression.
 The type system is making sure that failures flow through your computation in a safe manner.</p>
-
 <h2><a name="Part-Two-Club-Tropicana" class="anchor" href="#Part-Two-Club-Tropicana">Part Two : Club Tropicana</a></h2>
-
 <p>Part One showed monadic composition, which from the perspective of Validation is <em>fail-fast</em>. That is, any failed check short-circuits subsequent checks. This nicely models nightclubs in the real world, as anyone who has dashed home for a pair of smart shoes and returned, only to be told that your tie does not pass muster, will attest.</p>
-
 <p>But what about an ideal nightclub? One that tells you <em>everything</em> that is wrong with you.</p>
-
 <p>Applicative functors to the rescue!</p>
-
 <p>Let's compose some validation checks that accumulate failures using LINQ sugar:</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
 <span class="l"> 3: </span>
@@ -258,11 +242,8 @@ The type system is making sure that failures flow through your computation in a 
     }
 }
 </code></pre></td></tr></table>
-
 <p>The usage is the same as above except that as a result we will get either a success or a list of accumulated error messages from all the checks.</p>
-
 <p>Dave tried the second nightclub after a few more drinks in the pub:</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
 <span class="l"> 3: </span>
@@ -287,9 +268,7 @@ costDaveParalytic.Match(
     ifSuccess: (x, msgs) <span class="o">=</span><span class="o">&gt;</span> Console.WriteLine(<span class="s">"Cost for Dave: {0}"</span>, x),
     ifFailure: errs <span class="o">=</span><span class="o">&gt;</span> Console.WriteLine(<span class="s">"Dave is not allowed to enter:\n{0}"</span>, String.Join(<span class="s">"\n"</span>, errs)));
 </code></pre></td></tr></table>
-
 <p>This is the result:</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
 <span class="l">3: </span>
@@ -300,13 +279,9 @@ costDaveParalytic.Match(
 </code></pre></td>
 </tr>
 </table>
-
 <p>So, what have we done? Well, with a <em>tiny change</em> (and no changes to the individual checks themselves), we have completely changed the behaviour to accumulate all errors, rather than halting at the first sign of trouble. Imagine trying to do this using exceptions, with ten checks.</p>
-
 <h2><a name="Part-Three-Gay-bar" class="anchor" href="#Part-Three-Gay-bar">Part Three : Gay bar</a></h2>
-
 <p>And for those wondering how to do this with a <em>very long list</em> of checks here is a solution:</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
 <span class="l"> 3: </span>
@@ -343,9 +318,7 @@ costDaveParalytic.Match(
     }
 }
 </code></pre></td></tr></table>
-
 <p>The usage is the same as above:</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
 <span class="l">3: </span>
@@ -364,7 +337,8 @@ costDaveParalytic.Match(
 <span class="k">var</span> cost <span class="o">=</span> GayBar.CostToEnter(person);
 cost.Match(
     ifSuccess: (x, msgs) <span class="o">=</span><span class="o">&gt;</span> Console.WriteLine(<span class="s">"Cost for person: {0}"</span>, x),
-    ifFailure: errs <span class="o">=</span><span class="o">&gt;</span> Console.WriteLine(<span class="s">"Person is not allowed to enter:\n{0}"</span>, String.Join(<span class="s">"\n"</span>, errs)));</code></pre></td></tr></table>
+    ifFailure: errs <span class="o">=</span><span class="o">&gt;</span> Console.WriteLine(<span class="s">"Person is not allowed to enter:\n{0}"</span>, String.Join(<span class="s">"\n"</span>, errs)));
+</code></pre></td></tr></table>
 
 <div class="tip" id="fs1">val not : value:bool -&gt; bool<br /><br />Full name: Microsoft.FSharp.Core.Operators.not</div>
 

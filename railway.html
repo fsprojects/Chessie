@@ -34,21 +34,18 @@
         <div class="span9" id="main">
           
 <h1><a name="Using-Chessie-for-Railway-oriented-programming-ROP" class="anchor" href="#Using-Chessie-for-Railway-oriented-programming-ROP">Using Chessie for Railway-oriented programming (ROP)</a></h1>
-
 <p>This tutorial is based on an article about <a href="http://fsharpforfunandprofit.com/posts/recipe-part2/">Railway-oriented programming</a> by Scott Wlaschin.</p>
-
 <p>Additional resources:</p>
-
 <ul>
-<li>Railway Oriented Programming by Scott Wlaschin - A functional approach to error handling
+<li>
+Railway Oriented Programming by Scott Wlaschin - A functional approach to error handling
 <ul>
 <li><a href="http://www.slideshare.net/ScottWlaschin/railway-oriented-programming">Slide deck</a></li>
 <li><a href="https://vimeo.com/97344498">Video</a></li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <p>We start by referencing Chessie and opening the ErrorHandling module:</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
 <span class="l">3: </span>
@@ -59,9 +56,7 @@
 </code></pre></td>
 </tr>
 </table>
-
 <p>Now we define some simple validation functions:</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
 <span class="l"> 3: </span>
@@ -118,9 +113,7 @@
 </code></pre></td>
 </tr>
 </table>
-
 <p>Let's use these with some basic combinators:</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
 <span class="l"> 3: </span>
@@ -262,7 +255,7 @@
 <div class="tip" id="fs16">val bind : f:(&#39;a -&gt; Result&lt;&#39;b,&#39;c&gt;) -&gt; result:Result&lt;&#39;a,&#39;c&gt; -&gt; Result&lt;&#39;b,&#39;c&gt;<br /><br />Full name: Chessie.ErrorHandling.Trial.bind</div>
 <div class="tip" id="fs17">val returnOrFail : result:Result&lt;&#39;a,&#39;b&gt; -&gt; &#39;a<br /><br />Full name: Chessie.ErrorHandling.Trial.returnOrFail</div>
 <div class="tip" id="fs18">val canonicalizeEmail : input:Request -&gt; Request<br /><br />Full name: Railway.canonicalizeEmail</div>
-<div class="tip" id="fs19">System.String.Trim() : string<br />System.String.Trim(params trimChars: char []) : string</div>
+<div class="tip" id="fs19">System.String.Trim() : string<br />System.String.Trim([&lt;System.ParamArray&gt;] trimChars: char []) : string</div>
 <div class="tip" id="fs20">val usecase : (Request -&gt; Result&lt;Request,string&gt;)<br /><br />Full name: Railway.usecase</div>
 <div class="tip" id="fs21">val lift : f:(&#39;a -&gt; &#39;b) -&gt; result:Result&lt;&#39;a,&#39;c&gt; -&gt; Result&lt;&#39;b,&#39;c&gt;<br /><br />Full name: Chessie.ErrorHandling.Trial.lift</div>
 <div class="tip" id="fs22">val updateDatabase : input:&#39;a -&gt; unit<br /><br />Full name: Railway.updateDatabase</div>
@@ -276,7 +269,7 @@
 <div class="tip" id="fs30">val failure : (&#39;c -&gt; unit)</div>
 <div class="tip" id="fs31">val msgs : &#39;c</div>
 <div class="tip" id="fs32">val printf : format:Printf.TextWriterFormat&lt;&#39;T&gt; -&gt; &#39;T<br /><br />Full name: Microsoft.FSharp.Core.ExtraTopLevelOperators.printf</div>
-<div class="tip" id="fs33">val eitherTee : fSuccess:(&#39;a * &#39;b list -&gt; unit) -&gt; fFailure:(&#39;b list -&gt; unit) -&gt; result:Result&lt;&#39;a,&#39;b&gt; -&gt; Result&lt;&#39;a,&#39;b&gt;<br /><br />Full name: Chessie.ErrorHandling.Trial.eitherTee</div>
+<div class="tip" id="fs33">val eitherTee : fSuccess:(&#39;c * &#39;d list -&gt; unit) -&gt; fFailure:(&#39;d list -&gt; unit) -&gt; result:Result&lt;&#39;c,&#39;d&gt; -&gt; Result&lt;&#39;c,&#39;d&gt;<br /><br />Full name: Chessie.ErrorHandling.Trial.eitherTee</div>
 <div class="tip" id="fs34">val usecase2 : (Request -&gt; Result&lt;Request,string&gt;)<br /><br />Full name: Railway.usecase2</div>
 <div class="tip" id="fs35">val successTee : f:(&#39;a * &#39;b list -&gt; unit) -&gt; result:Result&lt;&#39;a,&#39;b&gt; -&gt; Result&lt;&#39;a,&#39;b&gt;<br /><br />Full name: Chessie.ErrorHandling.Trial.successTee</div>
 
