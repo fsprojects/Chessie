@@ -73,6 +73,7 @@
       <Paket>True</Paket>
       <Link>FsUnit.fs</Link>
     </Compile>
+    <Compile Include="TrialTests.fs" />
     <Compile Include="BuilderTests.fs" />
     <Compile Include="SimpleValidation.fs" />
     <Compile Include="NightClubs.fs" />

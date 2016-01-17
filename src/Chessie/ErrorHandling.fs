@@ -154,6 +154,12 @@ module Trial =
         | Some x -> ok x
         | None -> fail message
 
+    /// Converts a Choice into a Result.
+    let inline ofChoice choice =
+        match choice with
+        | Choice1Of2 v -> ok v
+        | Choice2Of2 v -> fail v
+
     /// Categorizes a result based on its state and the presence of extra messages
     let inline (|Pass|Warn|Fail|) result =
       match result with
