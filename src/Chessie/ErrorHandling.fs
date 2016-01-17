@@ -114,6 +114,12 @@ module Trial =
     /// Lifts a function into a Result container and applies it on the given result.
     let inline lift f result = apply (ok f) result
 
+    /// Maps a function over the existing error messages in case of failure. In case of success, the message type will be changed and warnings will be discarded.
+    let inline mapFailure f result =
+        match result with
+        | Ok (v,_) -> ok v
+        | Bad errs -> Bad (f errs)
+
     /// Lifts a function into a Result and applies it on the given result.
     /// This is the infix operator version of ErrorHandling.lift
     let inline (<!>) f result = lift f result
@@ -371,3 +377,8 @@ type ResultExtensions () =
         curry resultSelector.Invoke
         <!> this 
         <*> inner
+
+    /// Maps a function over the existing error messages in case of failure. In case of success, the message type will be changed and warnings will be discarded.
+    [<Extension>]
+    static member inline MapFailure (this: Result<'TSuccess, 'TMessage>, f: Func<'TMessage list, 'TMessage2 seq>) =
+        this |> Trial.mapFailure (f.Invoke >> Seq.toList)
