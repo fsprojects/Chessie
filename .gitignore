@@ -184,3 +184,5 @@ paket-files
 docs/content/license.md
 docs/content/release-notes.md
 *.bak
+docs/tools/FSharp.Formatting.svclog
+.fake
