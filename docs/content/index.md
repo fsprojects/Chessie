@@ -46,9 +46,9 @@ The library is available under Apache 2.0 license, which allows modification and
 redistribution for both commercial and non-commercial purposes. For more information see the 
 [License file][license] in the GitHub repository. 
 
-  [content]: https://github.com/fsprojects/FSharpx.Async/tree/master/docs/content
-  [gh]: https://github.com/fsprojects/FSharpx.Async
-  [issues]: https://github.com/fsprojects/FSharpx.Async/issues
-  [readme]: https://github.com/fsprojects/FSharpx.Async/blob/master/README.md
-  [license]: https://github.com/fsprojects/FSharpx.Async/blob/master/LICENSE.txt
+  [content]: https://github.com/fsprojects/Chessie/tree/master/docs/content
+  [gh]: https://github.com/fsprojects/Chessie
+  [issues]: https://github.com/fsprojects/Chessie/issues
+  [readme]: https://github.com/fsprojects/Chessie/blob/master/README.md
+  [license]: https://github.com/fsprojects/Chessie/blob/master/LICENSE.txt
   [deps]: https://fsprojects.github.io/Paket/github-dependencies.html
