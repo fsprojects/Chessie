@@ -78,7 +78,8 @@ let genFSAssemblyInfo (projectPath) =
         Attribute.Product project
         Attribute.Description summary
         Attribute.Version release.AssemblyVersion
-        Attribute.FileVersion release.AssemblyVersion ]
+        Attribute.FileVersion release.AssemblyVersion
+        Fake.AssemblyInfoFile.Attribute("Extension", "", "System.Runtime.CompilerServices") ]
 
 let genCSAssemblyInfo (projectPath) =
     let projectName = System.IO.Path.GetFileNameWithoutExtension(projectPath)
