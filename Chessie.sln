@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".paket", ".paket", "{63297B98-5CED-492C-A5B7-A5B4F73CF142}"
 	ProjectSection(SolutionItems) = preProject
@@ -22,11 +22,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "content", "content", "{8E6D
 		docs\content\a-tale-of-3-nightclubs-fsharp.fsx = docs\content\a-tale-of-3-nightclubs-fsharp.fsx
 		docs\content\a-tale-of-3-nightclubs.md = docs\content\a-tale-of-3-nightclubs.md
 		docs\content\index.md = docs\content\index.md
-		docs\content\railway.fsx = docs\content\railway.fsx
 		docs\content\pass-warn-fail.fsx = docs\content\pass-warn-fail.fsx
+		docs\content\railway.fsx = docs\content\railway.fsx
 	EndProjectSection
 EndProject
-Project("{f2a71f9b-5d33-465a-a702-920d77279786}") = "Chessie", "src\Chessie\Chessie.fsproj", "{5C095A65-1BF4-4C24-82D2-A07E8C258789}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Chessie", "src\Chessie\Chessie.fsproj", "{5C095A65-1BF4-4C24-82D2-A07E8C258789}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "project", "project", "{BF60BC93-E09B-4E5F-9D85-95A519479D54}"
 	ProjectSection(SolutionItems) = preProject
@@ -37,9 +37,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "project", "project", "{BF60
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{ED8079DD-2B06-4030-9F0F-DC548F98E1C4}"
 EndProject
-Project("{f2a71f9b-5d33-465a-a702-920d77279786}") = "Chessie.Tests", "tests\Chessie.Tests\Chessie.Tests.fsproj", "{5D8D2601-26EF-42C7-9703-8BDDDA015CB8}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Chessie.Tests", "tests\Chessie.Tests\Chessie.Tests.fsproj", "{5D8D2601-26EF-42C7-9703-8BDDDA015CB8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chessie.CSharp.Test", "tests\Chessie.CSharp.Test\Chessie.CSharp.Test.csproj", "{FC460F0A-F3C6-4314-BD2C-9F4218B902BC}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Chessie.VisualBasic.Tests", "tests\Chessie.VisualBasic.Tests\Chessie.VisualBasic.Tests.vbproj", "{3AA8D82D-6F46-42DD-A7DE-7E2F6A633239}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,14 +61,19 @@ Global
 		{FC460F0A-F3C6-4314-BD2C-9F4218B902BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FC460F0A-F3C6-4314-BD2C-9F4218B902BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FC460F0A-F3C6-4314-BD2C-9F4218B902BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3AA8D82D-6F46-42DD-A7DE-7E2F6A633239}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AA8D82D-6F46-42DD-A7DE-7E2F6A633239}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AA8D82D-6F46-42DD-A7DE-7E2F6A633239}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AA8D82D-6F46-42DD-A7DE-7E2F6A633239}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{83F16175-43B1-4C90-A1EE-8E351C33435D} = {A6A6AF7D-D6E3-442D-9B1E-58CC91879BE1}
 		{8E6D5255-776D-4B61-85F9-73C37AA1FB9A} = {A6A6AF7D-D6E3-442D-9B1E-58CC91879BE1}
 		{5D8D2601-26EF-42C7-9703-8BDDDA015CB8} = {ED8079DD-2B06-4030-9F0F-DC548F98E1C4}
 		{FC460F0A-F3C6-4314-BD2C-9F4218B902BC} = {ED8079DD-2B06-4030-9F0F-DC548F98E1C4}
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
+		{3AA8D82D-6F46-42DD-A7DE-7E2F6A633239} = {ED8079DD-2B06-4030-9F0F-DC548F98E1C4}
 	EndGlobalSection
 EndGlobal
