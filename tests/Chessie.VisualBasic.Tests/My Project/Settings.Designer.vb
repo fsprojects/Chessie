@@ -62,8 +62,8 @@ Namespace My
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute()>  _
     Friend Module MySettingsProperty
-
-        <Global.System.ComponentModel.Design.HelpKeywordAttribute("My.Settings")>
+        
+        <Global.System.ComponentModel.Design.HelpKeywordAttribute("My.Settings")>  _
         Friend ReadOnly Property Settings() As Global.Chessie.VisualBasic.Tests.My.MySettings
             Get
                 Return Global.Chessie.VisualBasic.Tests.My.MySettings.Default
