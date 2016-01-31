@@ -1,28 +1,11 @@
-﻿Imports Chessie.ErrorHandling
+﻿#If Not MONO Then
+Imports Chessie.ErrorHandling
 Imports Chessie.ErrorHandling.CSharp
-Imports Chessie.ErrorHandling.CSharp.ResultExtensions
-Imports Microsoft.FSharp.Collections
 Imports NUnit.Framework
 
 Public Class Request
     Public Property Name() As String
-        Get
-            Return m_Name
-        End Get
-        Set
-            m_Name = Value
-        End Set
-    End Property
-    Private m_Name As String
     Public Property EMail() As String
-        Get
-            Return m_EMail
-        End Get
-        Set
-            m_EMail = Value
-        End Set
-    End Property
-    Private m_EMail As String
 End Class
 
 Public Class Validation
@@ -40,111 +23,90 @@ End Class
 
 <TestFixture>
 Public Class TrySpecs
-    Dim exn As Exception = New Exception("Hello World")
     <Test>
     Public Sub TryWillCatch()
-        Dim result As Result(Of String, Exception) = ErrorHandling.Result(Of String, Exception).[Try](AddressOf TryFunction)
+        Dim exn = New Exception("Hello World")
+        Dim result = ErrorHandling.Result(Of String, Exception).[Try](Function()
+                                                                          Throw exn
+                                                                          Return ""
+                                                                      End Function)
         Assert.AreEqual(exn, result.FailedWith().First())
     End Sub
 
-    Private Function TryFunction() As String
-        Throw exn
-    End Function
-
     <Test>
     Public Sub TryWillReturnValue()
-        Dim result As Result(Of String, Exception) = ErrorHandling.Result(Of String, Exception).[Try](AddressOf ReturnHelloWorld)
+        Dim result = ErrorHandling.Result(Of String, Exception).[Try](Function() "hello world")
         Assert.AreEqual("hello world", result.SucceededWith())
     End Sub
-
-    Private Function ReturnHelloWorld() As String
-        Return "hello world"
-    End Function
 End Class
 
 <TestFixture>
 Public Class SimpleValidation
     <Test>
     Public Sub CanCreateSuccess()
-        Dim request As New Request()
-        request.Name = "Steffen"
-        request.EMail = "mail@support.com"
-        Dim result As Result(Of Request, String) = Validation.ValidateInput(request)
+        Dim request = New Request() With {
+            .Name = "Steffen",
+            .EMail = "mail@support.com"
+        }
+        Dim result = Validation.ValidateInput(request)
         Assert.AreEqual(request, result.SucceededWith())
     End Sub
 End Class
 
 <TestFixture>
 Public Class SimplePatternMatching
-    Private request As Request
     <Test>
     Public Sub CanMatchSuccess()
-        request = New Request()
-        request.Name = "Steffen"
-        request.EMail = "mail@support.com"
-        Dim result As Result(Of Request, String) = Validation.ValidateInput(request)
-        result.Match(AddressOf CanMatchSuccessEqualsRequest, AddressOf ThrowWrongMatchCaseFromFailure)
-    End Sub
-
-    Private Sub ThrowWrongMatchCaseFromFailure(obj As FSharpList(Of String))
-        Throw New Exception("wrong match case")
-    End Sub
-    Private Sub ThrowWrongMatchCaseFromSuccess(x As Request, obj As FSharpList(Of String))
-        Throw New Exception("wrong match case")
-    End Sub
-
-    Private Sub CanMatchSuccessEqualsRequest(x As Request, msgs As FSharpList(Of String))
-        Assert.AreEqual(request, x)
+        Dim request = New Request() With {
+            .Name = "Steffen",
+            .EMail = "mail@support.com"
+        }
+        Dim result = Validation.ValidateInput(request)
+        result.Match(Sub(x, msgs) Assert.AreEqual(request, x),
+                     Sub(msgs) Throw New Exception("wrong match case"))
     End Sub
 
     <Test>
     Public Sub CanMatchFailure()
-        request = New Request()
-        request.Name = "Steffen"
-        request.EMail = ""
-        Dim result As Result(Of Request, String) = Validation.ValidateInput(request)
-        result.Match(AddressOf ThrowWrongMatchCaseFromSuccess, AddressOf EmailMustNotBeBlank)
-    End Sub
-
-    Private Sub EmailMustNotBeBlank(msgs As FSharpList(Of String))
-        Assert.AreEqual("Email must not be blank", msgs(0))
+        Dim request = New Request() With {
+            .Name = "Steffen",
+            .EMail = ""
+        }
+        Dim result = Validation.ValidateInput(request)
+        result.Match(Sub(x, msgs) Throw New Exception("wrong match case"),
+                     Sub(msgs) Assert.AreEqual("Email must not be blank", msgs(0)))
     End Sub
 End Class
 
 <TestFixture>
 Public Class SimpleEitherPatternMatching
-    Private request As Request
-
     <Test>
     Public Sub CanMatchSuccess()
-        request = New Request()
-        request.Name = "Steffen"
-        request.EMail = "mail@support.com"
-        Dim result As Object = Validation.ValidateInput(request).Either(AddressOf ReturnRequest, AddressOf ThrowWrongMatchCaseFromFailure)
+        Dim request = New Request() With {
+            .Name = "Steffen",
+            .EMail = "mail@support.com"
+        }
+        Dim result = Validation.ValidateInput(request).Either(Function(x, msgs) x,
+                                                              Function(msgs)
+                                                                  Throw New Exception("wrong match case")
+                                                                  Return request
+                                                              End Function)
         Assert.AreEqual(request, result)
     End Sub
 
-    Private Function ReturnRequest(x As Request, msgs As FSharpList(Of String)) As Request
-        Return x
-    End Function
-
-    Private Function ThrowWrongMatchCaseFromFailure(arg As FSharpList(Of String)) As Object
-        Throw New Exception("wrong match case")
-    End Function
-
-    Private Function ThrowWrongMatchCaseFromSuccess(x As Request, obj As FSharpList(Of String)) As String
-        Throw New Exception("wrong match case")
-    End Function
     <Test>
     Public Sub CanMatchFailure()
-        request = New Request()
-        request.Name = "Steffen"
-        request.EMail = ""
-        Dim result As String = Validation.ValidateInput(request).Either(AddressOf ThrowWrongMatchCaseFromSuccess, AddressOf ReturnFirstMessage)
+        Dim request = New Request() With {
+            .Name = "Steffen",
+            .EMail = ""
+        }
+        Dim result = Validation.ValidateInput(request).Either(Function(x, msgs)
+                                                                  Throw New Exception("wrong match case")
+                                                                  Return ""
+                                                              End Function,
+                                                              Function(msgs) msgs(0))
+
         Assert.AreEqual("Email must not be blank", result)
     End Sub
-
-    Private Function ReturnFirstMessage(msgs As FSharpList(Of String)) As String
-        Return msgs(0)
-    End Function
 End Class
+#End If
