@@ -1,4 +1,4 @@
-#If Not MONO Then
+#If Not __MonoCS__ Then
 Imports Chessie.ErrorHandling
 Imports Chessie.ErrorHandling.CSharp
 Imports Microsoft.FSharp.Core
