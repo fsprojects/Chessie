@@ -1,4 +1,3 @@
-﻿#If Not __MonoCS__ Then
 Imports Chessie.ErrorHandling
 Imports Chessie.ErrorHandling.CSharp
 Imports NUnit.Framework
@@ -109,4 +108,3 @@ Public Class SimpleEitherPatternMatching
         Assert.AreEqual("Email must not be blank", result)
     End Sub
 End Class
-#End If

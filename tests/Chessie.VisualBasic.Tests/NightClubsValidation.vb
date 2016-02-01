@@ -1,4 +1,3 @@
-﻿#If Not __MonoCS__ Then
 Imports Chessie.ErrorHandling
 Imports Chessie.ErrorHandling.CSharp
 Imports NUnit.Framework
@@ -145,4 +144,3 @@ Class Test3
                    Sub(errs) Assert.That(errs, [Is].EquivalentTo({"Too old!", "Smarten up!", "Sober up!"})))
     End Sub
 End Class
-#End If

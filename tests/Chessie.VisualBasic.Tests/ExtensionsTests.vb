@@ -1,4 +1,3 @@
-#If Not __MonoCS__ Then
 Imports Chessie.ErrorHandling
 Imports Chessie.ErrorHandling.CSharp
 Imports Microsoft.FSharp.Core
@@ -92,4 +91,3 @@ Public Class ExtensionsTests
                                                                                                                            Sub(errs) Assert.That(errs, [Is].EquivalentTo({42, 43})))
     End Sub
 End Class
-#End If
