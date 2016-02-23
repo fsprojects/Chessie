@@ -53,6 +53,9 @@ module Trial =
     /// Wraps a message in a Failure
     let inline fail<'TSuccess,'Message> (msg:'Message) : Result<'TSuccess,'Message> = Bad([ msg ])
 
+    /// Executes the given function on a given success or captures the exception in a failure
+    let inline tryCatch f x = Result<_,_>.Try(fun () -> f x)
+
     /// Returns true if the result was not successful.
     let inline failed result = 
         match result with
@@ -90,7 +93,7 @@ module Trial =
 
    /// Flattens a nested result given the Failure types are equal
     let inline flatten (result : Result<Result<_,_>,_>) =
-        result |> bind (fun x -> x)
+        result |> bind id
 
     /// If the result is a Success it executes the given function on the value. 
     /// Otherwise the exisiting failure is propagated.
