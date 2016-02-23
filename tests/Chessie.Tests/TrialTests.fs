@@ -51,3 +51,17 @@ let ``mapFailure if failure should map over empty list of errors`` () =
     Bad []
     |> Trial.mapFailure (fun errs -> errs |> List.map (function "err1" -> 42 | "err2" -> 43 | _ -> 0))
     |> shouldEqual (Bad [])
+
+[<Test>]
+let ``tryCatch if failure should return exception`` () = 
+    let ex = exn "error" 
+    1 
+    |> Trial.tryCatch (fun x -> raise ex) 
+    |> shouldEqual (Bad[ex])
+        
+
+[<Test>]
+let ``tryCatch if success should return list`` () = 
+    1 
+    |> Trial.tryCatch id 
+    |> shouldEqual (Ok(1,[]))
