@@ -5,7 +5,7 @@
 
 # A Tale of 3 Nightclubs
 
-This C# tutorial is based on a [Scalaz tutorial](https://gist.github.com/oxbowlakes/970717) by Chris Marshall and was originally ported to [fsharpx](https://github.com/fsprojects/fsharpx/blob/master/tests/FSharpx.CSharpTests/ValidationExample.cs) by Mauricio Scheffer.
+This F# tutorial is based on a [Scalaz tutorial](https://gist.github.com/oxbowlakes/970717) by Chris Marshall and was originally ported to [fsharpx](https://github.com/fsprojects/fsharpx/blob/master/tests/FSharpx.CSharpTests/ValidationExample.cs) by Mauricio Scheffer.
 
 Additional resources:
 
@@ -104,4 +104,81 @@ ClubbedToDeath.costToEnter { Ruby with Age = 17 }
 (**
 The thing to note here is how the Validations can be composed together in a computation expression.
 The type system is making sure that failures flow through your computation in a safe manner.
+
+## Part Two : Club Tropicana
+
+Part One showed monadic composition, which from the perspective of Validation is *fail-fast*. That is, any failed check short-circuits subsequent checks. This nicely models nightclubs in the real world, as anyone who has dashed home for a pair of smart shoes and returned, only to be told that your tie does not pass muster, will attest.
+
+But what about an ideal nightclub? One that tells you *everything* that is wrong with you.
+
+Applicative functors to the rescue!
+
+Let's compose some validation checks that accumulate failures :
 *)
+
+module ClubTropicana = 
+    open Club
+
+    let costToEnter p =
+        trial {
+            let a = checkAge p
+            let b = checkClothes p
+            let c = checkSobriety p
+
+            let! result::_ =  [a;b;c] |> collect
+            
+            return 
+                match result.Gender with
+                | Female -> 0m
+                | Male -> 7.5m
+        }
+
+(**
+The usage is the same as above except that as a result we will get either a success or a list of accumulated error messages from all the checks. 
+
+Dave tried the second nightclub after a few more drinks in the pub:
+*)
+    
+let daveParalytic = { Person.Gender = Male; Age = 41; Clothes = set ["Tie"; "Shirt"]; Sobriety = Paralytic }
+
+ClubTropicana.costToEnter daveParalytic
+// val it : Result<decimal,string> = Error: Too old!
+// Sober up!
+
+(**
+So, what have we done? Well, with a *tiny change* (and no changes to the individual checks themselves), we have completely changed the behaviour to accumulate all errors, rather than halting at the first sign of trouble. Imagine trying to do this using exceptions, with ten checks.
+
+## Part Three : Gay bar
+
+And for those wondering how to do this with a *very long list* of checks here is a solution:
+*)
+
+module GayBar = 
+    open Club
+
+    let checkGender (p : Person) = 
+        if p.Gender = Male then ok p 
+        else fail "Men Only"
+
+    let costToEnter p =
+        trial {
+            let! result::_ =  
+                [checkGender; checkAge; checkClothes; checkSobriety] 
+                |> List.map(fun f -> f p)
+                |> collect
+            return 
+                match result.Gender with
+                | Female -> 0m
+                | Male -> 7.5m
+        }
+
+(**
+The usage is the same as above:
+*)
+
+let person = { Person.Gender = Male; Age = 59; Clothes = set ["Jeans"]; Sobriety = Paralytic }
+
+GayBar.costToEnter person
+// val it : Result<decimal,string> = Error: Too old!
+// Smarten up!
+// Sober up!
