@@ -1,6 +1,7 @@
 {
     "version": "1.0.0-*",
     "compilationOptions": {
+        "emitEntryPoint": true
     },
 
     "compilerName": "fsc",
@@ -9,12 +10,14 @@
         "TrialTests.fs",
         "BuilderTests.fs",
         "SimpleValidation.fs",
-        "NightClubs.fs"
+        "NightClubs.fs",
+        "Program.fs"
     ],
 
     "dependencies": {
         "Chessie": { "target": "project", "type": "build", "version": "*" },
-        "NUnit": "3.2.0"
+        "NUnit": "3.2.0",
+        "NUnitLite": "3.2.0"
     },
 
     "frameworks": {
