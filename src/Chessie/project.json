@@ -1,5 +1,8 @@
 {
-    "version": "1.0.0-*",
+    "version": "0.4.0",
+    "authors": ["Steffen Forkmann", "Max Malook", "Tomasz Heimowski"],
+    "description": "Railway-oriented programming for .NET",
+    
     "compilationOptions": {
     },
 
