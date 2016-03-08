@@ -15,8 +15,10 @@
 
     "frameworks": {
         "net46": {
-            "NUnit": "3.2.0",
-            "FSharp.Core": "4.0.0.1"
+            "dependencies": {
+                "NUnit": "3.2.0",
+                "FSharp.Core": "4.0.0.1"
+            }
         },
         "dnxcore50": { 
             "dependencies": {
