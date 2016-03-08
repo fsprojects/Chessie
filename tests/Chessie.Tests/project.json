@@ -16,6 +16,7 @@
     "frameworks": {
         "net46": {
             "dependencies": {
+                "Chessie": { "target": "project", "type": "build", "version": "*" },
                 "NUnit": "3.2.0",
                 "FSharp.Core": "4.0.0.1"
             }
