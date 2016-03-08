@@ -23,6 +23,8 @@
         },
         "dnxcore50": { 
             "dependencies": {
+                "Chessie": { "target": "project", "type": "build", "version": "*" },
+                "NUnit": "3.2.0",
                 "Microsoft.FSharp.Core.netcore": "1.0.0-alpha-151221",
                 "NETStandard.Library": "1.0.0-rc2-23811"
             }
