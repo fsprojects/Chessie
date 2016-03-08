@@ -1,9 +1,43 @@
 init:
   - git config --global core.autocrlf input
+
+environment:
+  CLI_VERSION: 1.0.0.001494
+
+install:
+  # Download install script to install .NET cli in .dotnet dir
+  - ps: mkdir -Force ".\scripts\obtain\" | Out-Null
+  - ps: Invoke-WebRequest "https://raw.githubusercontent.com/dotnet/cli/rel/1.0.0/scripts/obtain/install.ps1" -OutFile ".\scripts\obtain\install.ps1"
+  - ps: $env:DOTNET_INSTALL_DIR = "$pwd\.dotnet"
+  - ps: '& .\scripts\obtain\install.ps1 -Channel "beta" -version "$env:CLI_VERSION"'
+  # set DOTNET_HOME env var and add dotnet bin to PATH
+  - ps: $env:DOTNET_HOME = "$env:DOTNET_INSTALL_DIR\cli\bin"
+  - ps: $env:Path = "$env:DOTNET_HOME;$env:Path"
+  - ps: 'echo "Dotnet: $( (gcm dotnet).Path )"'
+
 build_script:
   - cmd: build.cmd
+  # Build .NET Core with .NET CLI
+  - ps: dotnet restore
+  # Build Chessie
+  - ps: cd "$env:APPVEYOR_BUILD_FOLDER\src\Chessie"
+  - ps: dotnet --verbose build
+  # Run tests (Chessie.Tests)
+  - ps: cd "$env:APPVEYOR_BUILD_FOLDER\tests\Chessie.Tests"
+  - ps: dotnet --verbose run --framework net46
+  - ps: dotnet --verbose run --framework dnxcore50
+  # Run tests (Chessie.CSharp.Test) 
+  - ps: cd "$env:APPVEYOR_BUILD_FOLDER\tests\Chessie.CSharp.Test"
+  - ps: dotnet --verbose run --framework net46
+  - ps: dotnet --verbose run --framework dnxcore50
+  # crate package
+  - ps: cd "$env:APPVEYOR_BUILD_FOLDER\src\Chessie"
+  - ps: dotnet pack --configuration Release
+
 test: off
 version: 0.0.1.{build}
 artifacts:
   - path: bin
     name: bin
+  - path: src\Chessie\bin\Release
+    name: netcore
