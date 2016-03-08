@@ -1,0 +1,18 @@
+{
+    "version": "1.0.0-*",
+    "compilationOptions": {
+        "emitEntryPoint": true
+    },
+
+    "dependencies": {
+        "Chessie": { "target": "project", "type": "build", "version": "*" },
+        "NUnit": "3.2.0",
+        "NUnitLite": "3.2.0",
+        "NETStandard.Library": "1.0.0-rc2-23811"
+    },
+
+    "frameworks": {
+        "net46": { },
+        "dnxcore50": { }
+    }
+}
