@@ -6,6 +6,10 @@
 *.user
 *.sln.docstates
 
+# .NET cli
+
+project.lock.json
+
 # Xamarin Studio / monodevelop user-specific
 *.userprefs
 
