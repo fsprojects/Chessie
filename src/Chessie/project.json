@@ -9,6 +9,11 @@
     ],
 
     "frameworks": {
+        "net46": {
+            "dependencies": {
+                "FSharp.Core": "4.0.0.1"
+             }
+        },
         "dnxcore50": { 
             "dependencies": {
                 "Microsoft.FSharp.Core.netcore": "1.0.0-alpha-151221",
