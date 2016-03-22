@@ -19,3 +19,7 @@ summary
     Railway-oriented programming for .NET
 description
     Railway-oriented programming for .NET
+files
+    ../../bin/Chessie.* ==> lib/net40
+    bin/Release/dnxcore50/Chessie.dll ==> lib/dnxcore50
+    
