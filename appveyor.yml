@@ -17,22 +17,6 @@ install:
 
 build_script:
   - cmd: build.cmd
-  # Build .NET Core with .NET CLI
-  - ps: dotnet restore
-  # Build Chessie
-  - ps: cd "$env:APPVEYOR_BUILD_FOLDER\src\Chessie"
-  - ps: dotnet --verbose build
-  # Run tests (Chessie.Tests)
-  - ps: cd "$env:APPVEYOR_BUILD_FOLDER\tests\Chessie.Tests"
-  - ps: dotnet --verbose run --framework net46
-  - ps: dotnet --verbose run --framework dnxcore50
-  # Run tests (Chessie.CSharp.Test) 
-  - ps: cd "$env:APPVEYOR_BUILD_FOLDER\tests\Chessie.CSharp.Test"
-  - ps: dotnet --verbose run --framework net46
-  - ps: dotnet --verbose run --framework dnxcore50
-  # crate package
-  - ps: cd "$env:APPVEYOR_BUILD_FOLDER\src\Chessie"
-  - ps: dotnet pack --configuration Release
 
 test: off
 version: 0.0.1.{build}
