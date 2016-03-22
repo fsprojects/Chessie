@@ -7,7 +7,7 @@ environment:
 install:
   # Download install script to install .NET cli in .dotnet dir
   - ps: mkdir -Force ".\scripts\obtain\" | Out-Null
-  - ps: Invoke-WebRequest "https://raw.githubusercontent.com/dotnet/cli/rel/1.0.0/scripts/obtain/install.ps1" -OutFile ".\scripts\obtain\install.ps1"
+  - ps: Invoke-WebRequest "https://raw.githubusercontent.com/dotnet/cli/834edfbc9ccbe2dbe63b89a8d09c4199d000da38/scripts/obtain/install.ps1" -OutFile ".\scripts\obtain\install.ps1"
   - ps: $env:DOTNET_INSTALL_DIR = "$pwd\.dotnet"
   - ps: '& .\scripts\obtain\install.ps1 -Channel "beta" -version "$env:CLI_VERSION"'
   # set DOTNET_HOME env var and add dotnet bin to PATH
