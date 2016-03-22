@@ -348,6 +348,60 @@ Target "DotnetCliRunTests" (fun _ ->
 
 let isDotnetCLIInstalled = Shell.Exec("dotnet", "--version") = 0
 
+#r @"System.Xml"
+#r @"System.Xml.Linq"
+#r @"System.IO.Compression"
+#r @"System.IO.Compression.FileSystem"
+open System.IO
+open System.IO.Compression
+open System.Xml.Linq
+open System.Xml.XPath
+open System.Linq
+
+let addNetcoreToNupkg nupkgPath =
+
+    use archive = ZipFile.Open(nupkgPath, ZipArchiveMode.Update)
+
+    let entry =
+        archive.Entries
+        |> Seq.find (fun entry -> entry.FullName = "Chessie.nuspec")
+
+    let tempFile = Path.GetTempFileName()
+    File.Delete(tempFile)
+    entry.ExtractToFile(tempFile)
+
+    let allDeps =
+        sprintf """
+        <dependencies xmlns="%s">
+          <group targetFramework=".NETFramework4.0">
+          </group>
+          <group targetFramework="DNXCore5.0">
+            <dependency id="Microsoft.FSharp.Core.netcore" version="[1.0.0-alpha-151221, )" />
+            <dependency id="NETStandard.Library" version="[1.0.0-rc2-23811, )" />
+          </group>
+        </dependencies>
+        """
+
+    let doc = XDocument.Load(tempFile)
+
+    let toDoc = XDocument.Parse(allDeps doc.Root.Name.NamespaceName)
+
+    let deps = doc.XPathSelectElement("/*[name()='package']/*[name()='metadata']/*[name()='dependencies']")
+
+    toDoc.Root.Descendants().First().Add(deps.Descendants())
+
+    deps.ReplaceWith(toDoc.Nodes())
+
+    use writer = new StreamWriter(entry.Open())
+
+    doc.Save(writer, SaveOptions.OmitDuplicateNamespaces)
+
+//WORKAROUND until paket support multiple framework in paket.dependencies
+Target "AddNetcoreToNupkg" (fun _ ->
+    sprintf "temp/Chessie.%s.nupkg" (release.AssemblyVersion)
+    |> addNetcoreToNupkg
+)
+
 // --------------------------------------------------------------------------------------
 // Run all targets by default. Invoke 'build <Target>' to override
 
@@ -370,6 +424,7 @@ Target "All" DoNothing
   =?> ("SourceLink", Pdbstr.tryFind().IsSome )
 #endif
   ==> "NuGet"
+  =?> ("AddNetcoreToNupkg", isDotnetCLIInstalled)
   ==> "BuildPackage"
 
 "CleanDocs"
