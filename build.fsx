@@ -105,6 +105,7 @@ Target "AssemblyInfo" (fun _ ->
 
 Target "Clean" (fun _ ->
     CleanDirs ["bin"; "temp"]
+    !! "**/project.lock.json" |> DeleteFiles
 )
 
 Target "CleanDocs" (fun _ ->
@@ -325,6 +326,28 @@ Target "Release" (fun _ ->
 
 Target "BuildPackage" DoNothing
 
+
+// --------------------------------------------------------------------------------------
+// .NET CLI and .NET Core
+
+let assertExitCodeZero x = if x = 0 then () else failwithf "Command failed with exit code %i" x
+let netcoreArgs = "--framework dnxcore50 --configuration Release"
+
+Target "DotnetCliBuild" (fun _ ->
+    Shell.Exec("dotnet", "restore") |> assertExitCodeZero
+    Shell.Exec("dotnet", sprintf "--verbose build %s" netcoreArgs, "src/Chessie") |> assertExitCodeZero
+)
+
+Target "DotnetCliRunTests" (fun _ ->
+    // Run tests (Chessie.Tests)
+    Shell.Exec("dotnet", sprintf "--verbose run %s" netcoreArgs, "tests/Chessie.Tests") |> assertExitCodeZero
+   
+    // Run tests (Chessie.CSharp.Test) 
+    Shell.Exec("dotnet", sprintf "--verbose run %s" netcoreArgs, "tests/Chessie.CSharp.Test") |> assertExitCodeZero
+)
+
+let isDotnetCLIInstalled = Shell.Exec("dotnet", "--version") = 0
+
 // --------------------------------------------------------------------------------------
 // Run all targets by default. Invoke 'build <Target>' to override
 
@@ -333,7 +356,9 @@ Target "All" DoNothing
 "Clean"
   ==> "AssemblyInfo"
   ==> "Build"
+  =?> ("DotnetCliBuild", isDotnetCLIInstalled)
   ==> "RunTests"
+  =?> ("DotnetCliRunTests", isDotnetCLIInstalled)
   =?> ("GenerateReferenceDocs",isLocalBuild)
   =?> ("GenerateDocs",isLocalBuild)
   ==> "All"
