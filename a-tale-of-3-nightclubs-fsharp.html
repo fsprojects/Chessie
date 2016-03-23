@@ -34,7 +34,7 @@
         <div class="span9" id="main">
           
 <h1><a name="A-Tale-of-3-Nightclubs" class="anchor" href="#A-Tale-of-3-Nightclubs">A Tale of 3 Nightclubs</a></h1>
-<p>This C# tutorial is based on a <a href="https://gist.github.com/oxbowlakes/970717">Scalaz tutorial</a> by Chris Marshall and was originally ported to <a href="https://github.com/fsprojects/fsharpx/blob/master/tests/FSharpx.CSharpTests/ValidationExample.cs">fsharpx</a> by Mauricio Scheffer.</p>
+<p>This F# tutorial is based on a <a href="https://gist.github.com/oxbowlakes/970717">Scalaz tutorial</a> by Chris Marshall and was originally ported to <a href="https://github.com/fsprojects/fsharpx/blob/master/tests/FSharpx.CSharpTests/ValidationExample.cs">fsharpx</a> by Mauricio Scheffer.</p>
 <p>Additional resources:</p>
 <ul>
 <li>
@@ -200,6 +200,123 @@ Railway Oriented Programming by Scott Wlaschin - A functional approach to error 
 </table>
 <p>The thing to note here is how the Validations can be composed together in a computation expression.
 The type system is making sure that failures flow through your computation in a safe manner.</p>
+<h2><a name="Part-Two-Club-Tropicana" class="anchor" href="#Part-Two-Club-Tropicana">Part Two : Club Tropicana</a></h2>
+<p>Part One showed monadic composition, which from the perspective of Validation is <em>fail-fast</em>. That is, any failed check short-circuits subsequent checks. This nicely models nightclubs in the real world, as anyone who has dashed home for a pair of smart shoes and returned, only to be told that your tie does not pass muster, will attest.</p>
+<p>But what about an ideal nightclub? One that tells you <em>everything</em> that is wrong with you.</p>
+<p>Applicative functors to the rescue!</p>
+<p>Let's compose some validation checks that accumulate failures :</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
+<span class="l"> 2: </span>
+<span class="l"> 3: </span>
+<span class="l"> 4: </span>
+<span class="l"> 5: </span>
+<span class="l"> 6: </span>
+<span class="l"> 7: </span>
+<span class="l"> 8: </span>
+<span class="l"> 9: </span>
+<span class="l">10: </span>
+<span class="l">11: </span>
+<span class="l">12: </span>
+<span class="l">13: </span>
+<span class="l">14: </span>
+<span class="l">15: </span>
+<span class="l">16: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">module</span> <span class="t">ClubTropicana</span> <span class="o">=</span> 
+    <span class="k">open</span> <span onmouseout="hideTip(event, 'fs30', 114)" onmouseover="showTip(event, 'fs30', 114)" class="i">Club</span>
+
+    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs41', 115)" onmouseover="showTip(event, 'fs41', 115)" class="f">costToEnter</span> <span onmouseout="hideTip(event, 'fs21', 116)" onmouseover="showTip(event, 'fs21', 116)" class="i">p</span> <span class="o">=</span>
+        <span onmouseout="hideTip(event, 'fs32', 117)" onmouseover="showTip(event, 'fs32', 117)" class="i">trial</span> {
+            <span class="k">let</span> <span onmouseout="hideTip(event, 'fs42', 118)" onmouseover="showTip(event, 'fs42', 118)" class="i">a</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs20', 119)" onmouseover="showTip(event, 'fs20', 119)" class="f">checkAge</span> <span onmouseout="hideTip(event, 'fs21', 120)" onmouseover="showTip(event, 'fs21', 120)" class="i">p</span>
+            <span class="k">let</span> <span onmouseout="hideTip(event, 'fs43', 121)" onmouseover="showTip(event, 'fs43', 121)" class="i">b</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs24', 122)" onmouseover="showTip(event, 'fs24', 122)" class="f">checkClothes</span> <span onmouseout="hideTip(event, 'fs21', 123)" onmouseover="showTip(event, 'fs21', 123)" class="i">p</span>
+            <span class="k">let</span> <span onmouseout="hideTip(event, 'fs44', 124)" onmouseover="showTip(event, 'fs44', 124)" class="i">c</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs28', 125)" onmouseover="showTip(event, 'fs28', 125)" class="f">checkSobriety</span> <span onmouseout="hideTip(event, 'fs21', 126)" onmouseover="showTip(event, 'fs21', 126)" class="i">p</span>
+
+            <span class="k">let!</span> <span onmouseout="hideTip(event, 'fs45', 127)" onmouseover="showTip(event, 'fs45', 127)" class="i">result</span><span class="o">::</span>_ <span class="o">=</span>  [<span onmouseout="hideTip(event, 'fs42', 128)" onmouseover="showTip(event, 'fs42', 128)" class="i">a</span>;<span onmouseout="hideTip(event, 'fs43', 129)" onmouseover="showTip(event, 'fs43', 129)" class="i">b</span>;<span onmouseout="hideTip(event, 'fs44', 130)" onmouseover="showTip(event, 'fs44', 130)" class="i">c</span>] <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs46', 131)" onmouseover="showTip(event, 'fs46', 131)" class="f">collect</span>
+            
+            <span class="k">return</span> 
+                <span class="k">match</span> <span onmouseout="hideTip(event, 'fs45', 132)" onmouseover="showTip(event, 'fs45', 132)" class="i">result</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs25', 133)" onmouseover="showTip(event, 'fs25', 133)" class="i">Gender</span> <span class="k">with</span>
+                | <span onmouseout="hideTip(event, 'fs11', 134)" onmouseover="showTip(event, 'fs11', 134)" class="p">Female</span> <span class="k">-&gt;</span> <span class="n">0m</span>
+                | <span onmouseout="hideTip(event, 'fs10', 135)" onmouseover="showTip(event, 'fs10', 135)" class="p">Male</span> <span class="k">-&gt;</span> <span class="n">7.5m</span>
+        }
+</code></pre></td>
+</tr>
+</table>
+<p>The usage is the same as above except that as a result we will get either a success or a list of accumulated error messages from all the checks.</p>
+<p>Dave tried the second nightclub after a few more drinks in the pub:</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+<span class="l">5: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs47', 136)" onmouseover="showTip(event, 'fs47', 136)" class="i">daveParalytic</span> <span class="o">=</span> { <span onmouseout="hideTip(event, 'fs12', 137)" onmouseover="showTip(event, 'fs12', 137)" class="t">Person</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs9', 138)" onmouseover="showTip(event, 'fs9', 138)" class="i">Gender</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs10', 139)" onmouseover="showTip(event, 'fs10', 139)" class="p">Male</span>; <span class="i">Age</span> <span class="o">=</span> <span class="n">41</span>; <span class="i">Clothes</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs37', 140)" onmouseover="showTip(event, 'fs37', 140)" class="f">set</span> [<span class="s">&quot;Tie&quot;</span>; <span class="s">&quot;Shirt&quot;</span>]; <span onmouseout="hideTip(event, 'fs3', 141)" onmouseover="showTip(event, 'fs3', 141)" class="i">Sobriety</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs7', 142)" onmouseover="showTip(event, 'fs7', 142)" class="p">Paralytic</span> }
+
+<span onmouseout="hideTip(event, 'fs48', 143)" onmouseover="showTip(event, 'fs48', 143)" class="t">ClubTropicana</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs41', 144)" onmouseover="showTip(event, 'fs41', 144)" class="f">costToEnter</span> <span onmouseout="hideTip(event, 'fs47', 145)" onmouseover="showTip(event, 'fs47', 145)" class="i">daveParalytic</span>
+<span class="c">// val it : Result&lt;decimal,string&gt; = Error: Too old!</span>
+<span class="c">// Sober up!</span>
+</code></pre></td>
+</tr>
+</table>
+<p>So, what have we done? Well, with a <em>tiny change</em> (and no changes to the individual checks themselves), we have completely changed the behaviour to accumulate all errors, rather than halting at the first sign of trouble. Imagine trying to do this using exceptions, with ten checks.</p>
+<h2><a name="Part-Three-Gay-bar" class="anchor" href="#Part-Three-Gay-bar">Part Three : Gay bar</a></h2>
+<p>And for those wondering how to do this with a <em>very long list</em> of checks here is a solution:</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
+<span class="l"> 2: </span>
+<span class="l"> 3: </span>
+<span class="l"> 4: </span>
+<span class="l"> 5: </span>
+<span class="l"> 6: </span>
+<span class="l"> 7: </span>
+<span class="l"> 8: </span>
+<span class="l"> 9: </span>
+<span class="l">10: </span>
+<span class="l">11: </span>
+<span class="l">12: </span>
+<span class="l">13: </span>
+<span class="l">14: </span>
+<span class="l">15: </span>
+<span class="l">16: </span>
+<span class="l">17: </span>
+<span class="l">18: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">module</span> <span class="t">GayBar</span> <span class="o">=</span> 
+    <span class="k">open</span> <span onmouseout="hideTip(event, 'fs30', 146)" onmouseover="showTip(event, 'fs30', 146)" class="i">Club</span>
+
+    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs49', 147)" onmouseover="showTip(event, 'fs49', 147)" class="f">checkGender</span> (<span onmouseout="hideTip(event, 'fs21', 148)" onmouseover="showTip(event, 'fs21', 148)" class="i">p</span> <span class="o">:</span> <span onmouseout="hideTip(event, 'fs12', 149)" onmouseover="showTip(event, 'fs12', 149)" class="t">Person</span>) <span class="o">=</span> 
+        <span class="k">if</span> <span onmouseout="hideTip(event, 'fs21', 150)" onmouseover="showTip(event, 'fs21', 150)" class="i">p</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs25', 151)" onmouseover="showTip(event, 'fs25', 151)" class="i">Gender</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs10', 152)" onmouseover="showTip(event, 'fs10', 152)" class="p">Male</span> <span class="k">then</span> <span onmouseout="hideTip(event, 'fs23', 153)" onmouseover="showTip(event, 'fs23', 153)" class="f">ok</span> <span onmouseout="hideTip(event, 'fs21', 154)" onmouseover="showTip(event, 'fs21', 154)" class="i">p</span> 
+        <span class="k">else</span> <span onmouseout="hideTip(event, 'fs22', 155)" onmouseover="showTip(event, 'fs22', 155)" class="f">fail</span> <span class="s">&quot;Men Only&quot;</span>
+
+    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs50', 156)" onmouseover="showTip(event, 'fs50', 156)" class="f">costToEnter</span> <span onmouseout="hideTip(event, 'fs21', 157)" onmouseover="showTip(event, 'fs21', 157)" class="i">p</span> <span class="o">=</span>
+        <span onmouseout="hideTip(event, 'fs32', 158)" onmouseover="showTip(event, 'fs32', 158)" class="i">trial</span> {
+            <span class="k">let!</span> <span onmouseout="hideTip(event, 'fs45', 159)" onmouseover="showTip(event, 'fs45', 159)" class="i">result</span><span class="o">::</span>_ <span class="o">=</span>  
+                [<span onmouseout="hideTip(event, 'fs49', 160)" onmouseover="showTip(event, 'fs49', 160)" class="f">checkGender</span>; <span onmouseout="hideTip(event, 'fs20', 161)" onmouseover="showTip(event, 'fs20', 161)" class="f">checkAge</span>; <span onmouseout="hideTip(event, 'fs24', 162)" onmouseover="showTip(event, 'fs24', 162)" class="f">checkClothes</span>; <span onmouseout="hideTip(event, 'fs28', 163)" onmouseover="showTip(event, 'fs28', 163)" class="f">checkSobriety</span>] 
+                <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs51', 164)" onmouseover="showTip(event, 'fs51', 164)" class="t">List</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs52', 165)" onmouseover="showTip(event, 'fs52', 165)" class="f">map</span>(<span class="k">fun</span> <span onmouseout="hideTip(event, 'fs53', 166)" onmouseover="showTip(event, 'fs53', 166)" class="f">f</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs53', 167)" onmouseover="showTip(event, 'fs53', 167)" class="f">f</span> <span onmouseout="hideTip(event, 'fs21', 168)" onmouseover="showTip(event, 'fs21', 168)" class="i">p</span>)
+                <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs46', 169)" onmouseover="showTip(event, 'fs46', 169)" class="f">collect</span>
+            <span class="k">return</span> 
+                <span class="k">match</span> <span class="i">result</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs9', 170)" onmouseover="showTip(event, 'fs9', 170)" class="i">Gender</span> <span class="k">with</span>
+                | <span onmouseout="hideTip(event, 'fs11', 171)" onmouseover="showTip(event, 'fs11', 171)" class="p">Female</span> <span class="k">-&gt;</span> <span class="n">0m</span>
+                | <span onmouseout="hideTip(event, 'fs10', 172)" onmouseover="showTip(event, 'fs10', 172)" class="p">Male</span> <span class="k">-&gt;</span> <span class="n">7.5m</span>
+        }
+</code></pre></td>
+</tr>
+</table>
+<p>The usage is the same as above:</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+<span class="l">5: </span>
+<span class="l">6: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs54', 173)" onmouseover="showTip(event, 'fs54', 173)" class="i">person</span> <span class="o">=</span> { <span onmouseout="hideTip(event, 'fs12', 174)" onmouseover="showTip(event, 'fs12', 174)" class="t">Person</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs9', 175)" onmouseover="showTip(event, 'fs9', 175)" class="i">Gender</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs10', 176)" onmouseover="showTip(event, 'fs10', 176)" class="p">Male</span>; <span class="i">Age</span> <span class="o">=</span> <span class="n">59</span>; <span class="i">Clothes</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs37', 177)" onmouseover="showTip(event, 'fs37', 177)" class="f">set</span> [<span class="s">&quot;Jeans&quot;</span>]; <span onmouseout="hideTip(event, 'fs3', 178)" onmouseover="showTip(event, 'fs3', 178)" class="i">Sobriety</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs7', 179)" onmouseover="showTip(event, 'fs7', 179)" class="p">Paralytic</span> }
+
+<span onmouseout="hideTip(event, 'fs55', 180)" onmouseover="showTip(event, 'fs55', 180)" class="t">GayBar</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs50', 181)" onmouseover="showTip(event, 'fs50', 181)" class="f">costToEnter</span> <span onmouseout="hideTip(event, 'fs54', 182)" onmouseover="showTip(event, 'fs54', 182)" class="i">person</span>
+<span class="c">// val it : Result&lt;decimal,string&gt; = Error: Too old!</span>
+<span class="c">// Smarten up!</span>
+<span class="c">// Sober up!</span>
+</code></pre></td>
+</tr>
+</table>
 
 <div class="tip" id="fs1">namespace Chessie</div>
 <div class="tip" id="fs2">namespace Chessie.ErrorHandling</div>
@@ -241,6 +358,21 @@ The type system is making sure that failures flow through your computation in a 
 <div class="tip" id="fs38">val Dave : Person<br /><br />Full name: A-tale-of-3-nightclubs-fsharp.Dave</div>
 <div class="tip" id="fs39">val Ruby : Person<br /><br />Full name: A-tale-of-3-nightclubs-fsharp.Ruby</div>
 <div class="tip" id="fs40">module ClubbedToDeath<br /><br />from A-tale-of-3-nightclubs-fsharp</div>
+<div class="tip" id="fs41">val costToEnter : p:Person -&gt; Result&lt;decimal,string&gt;<br /><br />Full name: A-tale-of-3-nightclubs-fsharp.ClubTropicana.costToEnter</div>
+<div class="tip" id="fs42">val a : Result&lt;Person,string&gt;</div>
+<div class="tip" id="fs43">val b : Result&lt;Person,string&gt;</div>
+<div class="tip" id="fs44">val c : Result&lt;Person,string&gt;</div>
+<div class="tip" id="fs45">val result : Person</div>
+<div class="tip" id="fs46">val collect : xs:seq&lt;Result&lt;&#39;a,&#39;b&gt;&gt; -&gt; Result&lt;&#39;a list,&#39;b&gt;<br /><br />Full name: Chessie.ErrorHandling.Trial.collect</div>
+<div class="tip" id="fs47">val daveParalytic : Person<br /><br />Full name: A-tale-of-3-nightclubs-fsharp.daveParalytic</div>
+<div class="tip" id="fs48">module ClubTropicana<br /><br />from A-tale-of-3-nightclubs-fsharp</div>
+<div class="tip" id="fs49">val checkGender : p:Person -&gt; Result&lt;Person,string&gt;<br /><br />Full name: A-tale-of-3-nightclubs-fsharp.GayBar.checkGender</div>
+<div class="tip" id="fs50">val costToEnter : p:Person -&gt; Result&lt;decimal,string&gt;<br /><br />Full name: A-tale-of-3-nightclubs-fsharp.GayBar.costToEnter</div>
+<div class="tip" id="fs51">Multiple items<br />module List<br /><br />from Microsoft.FSharp.Collections<br /><br />--------------------<br />type List&lt;&#39;T&gt; =<br />&#160;&#160;| ( [] )<br />&#160;&#160;| ( :: ) of Head: &#39;T * Tail: &#39;T list<br />&#160;&#160;interface IEnumerable<br />&#160;&#160;interface IEnumerable&lt;&#39;T&gt;<br />&#160;&#160;member GetSlice : startIndex:int option * endIndex:int option -&gt; &#39;T list<br />&#160;&#160;member Head : &#39;T<br />&#160;&#160;member IsEmpty : bool<br />&#160;&#160;member Item : index:int -&gt; &#39;T with get<br />&#160;&#160;member Length : int<br />&#160;&#160;member Tail : &#39;T list<br />&#160;&#160;static member Cons : head:&#39;T * tail:&#39;T list -&gt; &#39;T list<br />&#160;&#160;static member Empty : &#39;T list<br /><br />Full name: Microsoft.FSharp.Collections.List&lt;_&gt;</div>
+<div class="tip" id="fs52">val map : mapping:(&#39;T -&gt; &#39;U) -&gt; list:&#39;T list -&gt; &#39;U list<br /><br />Full name: Microsoft.FSharp.Collections.List.map</div>
+<div class="tip" id="fs53">val f : (Person -&gt; Result&lt;Person,string&gt;)</div>
+<div class="tip" id="fs54">val person : Person<br /><br />Full name: A-tale-of-3-nightclubs-fsharp.person</div>
+<div class="tip" id="fs55">module GayBar<br /><br />from A-tale-of-3-nightclubs-fsharp</div>
 
         </div>
         <div class="span3">
