@@ -1,3 +1,7 @@
+#### 0.5.0 - 23.03.2016
+* Added fsharp friendly version of try called Catch - https://github.com/fsprojects/Chessie/pull/40
+* VB.NET support - https://github.com/fsprojects/Chessie/pull/39
+
 #### 0.4.0 - 17.01.2016
 * New C# helpers - https://github.com/fsprojects/Chessie/pull/34 https://github.com/fsprojects/Chessie/pull/35 https://github.com/fsprojects/Chessie/pull/36
 * Adding small helpers to make tutorial easier - https://github.com/fsprojects/Chessie/pull/23
