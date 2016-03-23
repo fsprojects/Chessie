@@ -56,12 +56,12 @@ let ``mapFailure if failure should map over empty list of errors`` () =
 let ``tryCatch if failure should return exception`` () = 
     let ex = exn "error" 
     1 
-    |> Trial.tryCatch (fun x -> raise ex) 
+    |> Trial.Catch (fun x -> raise ex) 
     |> shouldEqual (Bad[ex])
         
 
 [<Test>]
 let ``tryCatch if success should return list`` () = 
     1 
-    |> Trial.tryCatch id 
+    |> Trial.Catch id 
     |> shouldEqual (Ok(1,[]))

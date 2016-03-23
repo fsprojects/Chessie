@@ -54,7 +54,7 @@ module Trial =
     let inline fail<'TSuccess,'Message> (msg:'Message) : Result<'TSuccess,'Message> = Bad([ msg ])
 
     /// Executes the given function on a given success or captures the exception in a failure
-    let inline tryCatch f x = Result<_,_>.Try(fun () -> f x)
+    let inline Catch f x = Result<_,_>.Try(fun () -> f x)
 
     /// Returns true if the result was not successful.
     let inline failed result = 
