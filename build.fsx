@@ -331,7 +331,7 @@ Target "BuildPackage" DoNothing
 // .NET CLI and .NET Core
 
 let assertExitCodeZero x = if x = 0 then () else failwithf "Command failed with exit code %i" x
-let netcoreFW = "dnxcore50"
+let netcoreFW = "netstandard1.5"
 
 Target "DotnetCliBuild" (fun _ ->
     Shell.Exec("dotnet", "restore") |> assertExitCodeZero

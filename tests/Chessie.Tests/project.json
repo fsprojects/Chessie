@@ -26,11 +26,18 @@
                 "FSharp.Core": "4.0.0.1"
             }
         },
-        "dnxcore50": { 
+        "netstandard1.5": { 
             "dependencies": {
                 "Microsoft.FSharp.Core.netcore": "1.0.0-alpha-151221",
-                "NETStandard.Library": "1.0.0-rc2-23811"
-            }
+                "Microsoft.NETCore.App": {
+                    "type": "platform",
+                    "version": "1.0.0-rc2-23925"
+                }
+            },
+            "imports": [
+                "dnxcore50",
+                "portable-net45+win81"
+            ]
         }
     }
 }

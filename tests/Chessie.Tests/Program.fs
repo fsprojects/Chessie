@@ -8,7 +8,7 @@ type Program = class end
 [<EntryPoint>]
 let main argv = 
 
-#if DNXCORE50
+#if NETSTANDARD1_5
     let run = typeof<Program>.GetTypeInfo().Assembly |> NUnitLite.AutoRun
     run.Execute(argv, (new NUnit.Common.ExtendedTextWrapper(Console.Out)), Console.In)
 #else
