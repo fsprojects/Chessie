@@ -5,6 +5,10 @@
     
     "compilationOptions": {
     },
+    
+    "tools": {
+        "dotnet-mergenupkg": { "target": "package", "version": "0.9.*" }	
+    },
 
     "compilerName": "fsc",
     "compileFiles": [

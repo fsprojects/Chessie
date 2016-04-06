@@ -331,75 +331,31 @@ Target "BuildPackage" DoNothing
 // .NET CLI and .NET Core
 
 let assertExitCodeZero x = if x = 0 then () else failwithf "Command failed with exit code %i" x
-let netcoreArgs = "--framework dnxcore50 --configuration Release"
+let netcoreFW = "dnxcore50"
 
 Target "DotnetCliBuild" (fun _ ->
     Shell.Exec("dotnet", "restore") |> assertExitCodeZero
-    Shell.Exec("dotnet", sprintf "--verbose build %s" netcoreArgs, "src/Chessie") |> assertExitCodeZero
+    Shell.Exec("dotnet", sprintf "--verbose build --framework %s --configuration Release" netcoreFW, "src/Chessie") |> assertExitCodeZero
 )
 
 Target "DotnetCliRunTests" (fun _ ->
     // Run tests (Chessie.Tests)
-    Shell.Exec("dotnet", sprintf "--verbose run %s" netcoreArgs, "tests/Chessie.Tests") |> assertExitCodeZero
-   
+    Shell.Exec("dotnet", sprintf "--verbose run --framework %s --configuration Release" netcoreFW, "tests/Chessie.Tests") |> assertExitCodeZero
+
     // Run tests (Chessie.CSharp.Test) 
-    Shell.Exec("dotnet", sprintf "--verbose run %s" netcoreArgs, "tests/Chessie.CSharp.Test") |> assertExitCodeZero
+    Shell.Exec("dotnet", sprintf "--verbose run --framework %s --configuration Release" netcoreFW, "tests/Chessie.CSharp.Test") |> assertExitCodeZero
 )
 
 let isDotnetCLIInstalled = Shell.Exec("dotnet", "--version") = 0
 
-#r @"System.Xml"
-#r @"System.Xml.Linq"
-#r @"System.IO.Compression"
-#r @"System.IO.Compression.FileSystem"
-open System.IO
-open System.IO.Compression
-open System.Xml.Linq
-open System.Xml.XPath
-open System.Linq
-
-let addNetcoreToNupkg nupkgPath =
-
-    use archive = ZipFile.Open(nupkgPath, ZipArchiveMode.Update)
-
-    let entry =
-        archive.Entries
-        |> Seq.find (fun entry -> entry.FullName = "Chessie.nuspec")
-
-    let tempFile = Path.GetTempFileName()
-    File.Delete(tempFile)
-    entry.ExtractToFile(tempFile)
-
-    let allDeps =
-        sprintf """
-        <dependencies xmlns="%s">
-          <group targetFramework=".NETFramework4.0">
-          </group>
-          <group targetFramework="DNXCore5.0">
-            <dependency id="Microsoft.FSharp.Core.netcore" version="[1.0.0-alpha-151221, )" />
-            <dependency id="NETStandard.Library" version="[1.0.0-rc2-23811, )" />
-          </group>
-        </dependencies>
-        """
-
-    let doc = XDocument.Load(tempFile)
-
-    let toDoc = XDocument.Parse(allDeps doc.Root.Name.NamespaceName)
-
-    let deps = doc.XPathSelectElement("/*[name()='package']/*[name()='metadata']/*[name()='dependencies']")
-
-    toDoc.Root.Descendants().First().Add(deps.Descendants())
-
-    deps.ReplaceWith(toDoc.Nodes())
-
-    use writer = new StreamWriter(entry.Open())
-
-    doc.Save(writer, SaveOptions.OmitDuplicateNamespaces)
-
-//WORKAROUND until paket support multiple framework in paket.dependencies
 Target "AddNetcoreToNupkg" (fun _ ->
-    sprintf "temp/Chessie.%s.nupkg" (release.AssemblyVersion)
-    |> addNetcoreToNupkg
+    let nupkg = sprintf "../../temp/Chessie.%s.nupkg" (release.AssemblyVersion)
+
+    Shell.Exec("dotnet", "--verbose pack --configuration Release", "src/Chessie") |> assertExitCodeZero
+
+    let netcoreNupkg = sprintf "bin/Release/Chessie.%s.nupkg" (release.AssemblyVersion)
+
+    Shell.Exec("dotnet", sprintf """mergenupkg --source "%s" --other "%s" --framework "%s" """ nupkg netcoreNupkg netcoreFW, "src/Chessie/") |> assertExitCodeZero
 )
 
 // --------------------------------------------------------------------------------------
