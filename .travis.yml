@@ -21,19 +21,22 @@ os:
   - osx
 
 env:
-  - CLI_VERSION="1.0.0.001494"
+  - CLI_VERSION="1.0.0-beta-002071"
 
 before_install:
-  # Download script to install .NET CLI
-  - curl -L --create-dirs https://raw.githubusercontent.com/dotnet/cli/834edfbc9ccbe2dbe63b89a8d09c4199d000da38/scripts/obtain/install.sh -o ./scripts/obtain/install.sh
+  # Download script to install dotnet cli
+  - curl -L --create-dirs https://raw.githubusercontent.com/dotnet/cli/rel/1.0.0/scripts/obtain/install.sh -o ./scripts/obtain/install.sh
   - find ./scripts -name "*.sh" -exec chmod +x {} \;
+  - export DOTNET_INSTALL_DIR="$PWD/.dotnetcli"
   # use bash to workaround bug https://github.com/dotnet/cli/issues/1725
-  - sudo bash ./scripts/obtain/install.sh --channel "beta" --version "$CLI_VERSION"
-  - which dotnet
-  # Workaround fsc doesnt work
-  - if test "$TRAVIS_OS_NAME" == "osx"; then sudo curl -L -s https://github.com/enricosada/fsharp-dotnet-cli-samples/raw/master/workarounds/1/osx.10.10-x64.zip | tar xvf - -C /usr/local/share/dotnet/cli/bin/ ; fi
+  - sudo bash ./scripts/obtain/install.sh --channel "preview" --version "$CLI_VERSION" --install-dir "$DOTNET_INSTALL_DIR" --no-path
+  # add dotnet to PATH
+  - export PATH="$DOTNET_INSTALL_DIR:$PATH"
   # Workaround "Too many open files"
   - ulimit -n 1024
+  # show dotnet info
+  - which dotnet
+  - dotnet --info
 
 script: 
   - ./build.sh All
