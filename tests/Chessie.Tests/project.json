@@ -1,0 +1,43 @@
+{
+    "version": "1.0.0-*",
+    "compilationOptions": {
+        "emitEntryPoint": true
+    },
+
+    "compilerName": "fsc",
+    "compileFiles": [
+        "../../paket-files/test/forki/FsUnit/FsUnit.fs",
+        "TrialTests.fs",
+        "BuilderTests.fs",
+        "SimpleValidation.fs",
+        "NightClubs.fs",
+        "Program.fs"
+    ],
+
+    "dependencies": {
+        "Chessie": { "target": "project", "type": "build", "version": "*" },
+        "NUnit": "3.2.0",
+        "NUnitLite": "3.2.0"
+    },
+
+    "frameworks": {
+        "net46": {
+            "dependencies": {
+                "FSharp.Core": "4.0.0.1"
+            }
+        },
+        "netstandard1.5": { 
+            "dependencies": {
+                "Microsoft.FSharp.Core.netcore": "1.0.0-alpha-151221",
+                "Microsoft.NETCore.App": {
+                    "type": "platform",
+                    "version": "1.0.0-rc2-23925"
+                }
+            },
+            "imports": [
+                "dnxcore50",
+                "portable-net45+win81"
+            ]
+        }
+    }
+}

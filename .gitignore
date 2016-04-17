@@ -6,6 +6,10 @@
 *.user
 *.sln.docstates
 
+# .NET cli
+
+project.lock.json
+
 # Xamarin Studio / monodevelop user-specific
 *.userprefs
 
@@ -172,6 +176,7 @@ temp/
 
 # Test results produced by build
 TestResults.xml
+TestResult.xml
 
 # Nuget outputs
 nuget/*.nupkg

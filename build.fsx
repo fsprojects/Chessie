@@ -106,6 +106,7 @@ Target "AssemblyInfo" (fun _ ->
 
 Target "Clean" (fun _ ->
     CleanDirs ["bin"; "temp"]
+    !! "**/project.lock.json" |> DeleteFiles
 )
 
 Target "CleanDocs" (fun _ ->
@@ -326,6 +327,38 @@ Target "Release" (fun _ ->
 
 Target "BuildPackage" DoNothing
 
+
+// --------------------------------------------------------------------------------------
+// .NET CLI and .NET Core
+
+let assertExitCodeZero x = if x = 0 then () else failwithf "Command failed with exit code %i" x
+let netcoreFW = "netstandard1.5"
+
+Target "DotnetCliBuild" (fun _ ->
+    Shell.Exec("dotnet", "restore") |> assertExitCodeZero
+    Shell.Exec("dotnet", sprintf "--verbose build --framework %s --configuration Release" netcoreFW, "src/Chessie") |> assertExitCodeZero
+)
+
+Target "DotnetCliRunTests" (fun _ ->
+    // Run tests (Chessie.Tests)
+    Shell.Exec("dotnet", sprintf "--verbose run --framework %s --configuration Release" netcoreFW, "tests/Chessie.Tests") |> assertExitCodeZero
+
+    // Run tests (Chessie.CSharp.Test) 
+    Shell.Exec("dotnet", sprintf "--verbose run --framework %s --configuration Release" netcoreFW, "tests/Chessie.CSharp.Test") |> assertExitCodeZero
+)
+
+let isDotnetCLIInstalled = Shell.Exec("dotnet", "--version") = 0
+
+Target "AddNetcoreToNupkg" (fun _ ->
+    let nupkg = sprintf "../../temp/Chessie.%s.nupkg" (release.AssemblyVersion)
+
+    Shell.Exec("dotnet", "--verbose pack --configuration Release", "src/Chessie") |> assertExitCodeZero
+
+    let netcoreNupkg = sprintf "bin/Release/Chessie.%s.nupkg" (release.AssemblyVersion)
+
+    Shell.Exec("dotnet", sprintf """mergenupkg --source "%s" --other "%s" --framework "%s" """ nupkg netcoreNupkg netcoreFW, "src/Chessie/") |> assertExitCodeZero
+)
+
 // --------------------------------------------------------------------------------------
 // Run all targets by default. Invoke 'build <Target>' to override
 
@@ -334,7 +367,9 @@ Target "All" DoNothing
 "Clean"
   ==> "AssemblyInfo"
   ==> "Build"
+  =?> ("DotnetCliBuild", isDotnetCLIInstalled)
   ==> "RunTests"
+  =?> ("DotnetCliRunTests", isDotnetCLIInstalled)
   =?> ("GenerateReferenceDocs",isLocalBuild)
   =?> ("GenerateDocs",isLocalBuild)
   ==> "All"
@@ -346,6 +381,7 @@ Target "All" DoNothing
   =?> ("SourceLink", Pdbstr.tryFind().IsSome )
 #endif
   ==> "NuGet"
+  =?> ("AddNetcoreToNupkg", isDotnetCLIInstalled)
   ==> "BuildPackage"
 
 "CleanDocs"

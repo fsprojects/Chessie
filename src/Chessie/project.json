@@ -1,0 +1,35 @@
+{
+    "version": "0.4.0",
+    "authors": ["Steffen Forkmann", "Max Malook", "Tomasz Heimowski"],
+    "description": "Railway-oriented programming for .NET",
+    
+    "compilationOptions": {
+    },
+    
+    "tools": {
+        "dotnet-mergenupkg": { "target": "package", "version": "0.9.*" }	
+    },
+
+    "compilerName": "fsc",
+    "compileFiles": [
+        "ErrorHandling.fs"
+    ],
+
+    "frameworks": {
+        "net46": {
+            "dependencies": {
+                "FSharp.Core": "4.0.0.1"
+             }
+        },
+        "netstandard1.5": { 
+            "dependencies": {
+                "Microsoft.FSharp.Core.netcore": "1.0.0-alpha-151221",
+                "NETStandard.Library": "1.0.0-rc2-23811"
+            },
+            "imports": [
+                "dnxcore50",
+                "portable-net45+win81"
+            ]
+        }
+    }
+}
