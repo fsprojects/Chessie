@@ -100,6 +100,9 @@ module Trial =
     /// This is the infix operator version of ErrorHandling.bind
     let inline (>>=) result f = bind f result
 
+    /// Infix operator of Kleisli composition of functions f and g.
+    let inline (>=>) f g = f >> (bind g)
+
     /// If the wrapped function is a success and the given result is a success the function is applied on the value. 
     /// Otherwise the exisiting error messages are propagated.
     let inline apply wrappedFunction result = 
