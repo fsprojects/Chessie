@@ -351,8 +351,8 @@ let isDotnetSDKInstalled = try Shell.Exec("dotnet", "--version") = 0 with _ -> f
 Target "Nuget.AddNetCore" (fun _ ->
     Shell.Exec("dotnet", "--verbose pack --configuration Release", "src/Chessie") |> assertExitCodeZero
 
-    let nupkg = sprintf "../../bin/Chessie.%s.nupkg" (release.AssemblyVersion)
-    let netcoreNupkg = sprintf "bin/Release/Chessie.%s.nupkg" (release.AssemblyVersion)
+    let nupkg = sprintf "../../bin/Chessie.%s.nupkg" (release.NugetVersion)
+    let netcoreNupkg = sprintf "bin/Release/Chessie.%s.nupkg" (release.NugetVersion)
 
     Shell.Exec("dotnet", sprintf """mergenupkg --source "%s" --other "%s" --framework netstandard1.6 """ nupkg netcoreNupkg, "src/Chessie/") |> assertExitCodeZero
 )
