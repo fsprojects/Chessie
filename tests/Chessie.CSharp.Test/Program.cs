@@ -7,9 +7,8 @@ namespace Chessie.CSharp.TestRunner
     {
         public static int Main(string[] argv)
         {
-#if NETSTANDARD1_5
-            var run = new NUnitLite.AutoRun(typeof(Program).GetTypeInfo().Assembly);
-            return run.Execute(argv, (new NUnit.Common.ExtendedTextWrapper(Console.Out)), Console.In);
+#if NETCOREAPP1_0
+            return 0;
 #else
             var run = new NUnitLite.AutoRun();
             return run.Execute(argv);
