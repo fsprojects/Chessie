@@ -1,36 +1,38 @@
 {
-    "version": "0.5.0",
-    "buildOptions": {
-        "debugType": "portable",
-        "compilerName": "fsc",
-        "define": [
-        ],
-        "xmlDoc": true,
-        "compile": {
-            "includeFiles": [
-                "ErrorHandling.fs"
-            ]
-        }
-    },
-    "dependencies": {
-        "NETStandard.Library": "1.6.0",
-        "FSharp.Core": "4.0.1.7-alpha"
-    },
-    "frameworks": {
-        "netstandard1.6": {
-            "buildOptions": {
-                "define": [
-                    "NETSTANDARD1_5",
-                    "CORE_CLR"
-                ]
-            }
-        }
-    },
-    "tools": {
-        "dotnet-compile-fsc": {
-            "version": "1.0.0-preview2-*",
-            "imports": "dnxcore50"
-        },
-        "dotnet-mergenupkg": { "target": "package", "version": "1.0.*" }	
+  "version": "0.6.0",
+  "buildOptions": {
+    "debugType": "portable",
+    "compilerName": "fsc",
+    "define": [],
+    "xmlDoc": true,
+    "compile": {
+      "includeFiles": [
+        "ErrorHandling.fs"
+      ]
     }
+  },
+  "dependencies": {
+    "NETStandard.Library": "1.6.0",
+    "FSharp.Core": "4.0.1.7-alpha"
+  },
+  "frameworks": {
+    "netstandard1.6": {
+      "buildOptions": {
+        "define": [
+          "NETSTANDARD1_5",
+          "CORE_CLR"
+        ]
+      }
+    }
+  },
+  "tools": {
+    "dotnet-compile-fsc": {
+      "version": "1.0.0-preview2-*",
+      "imports": "dnxcore50"
+    },
+    "dotnet-mergenupkg": {
+      "target": "package",
+      "version": "1.0.*"
+    }
+  }
 }
