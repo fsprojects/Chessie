@@ -339,10 +339,7 @@ Target "Build.NetCore" (fun _ ->
 )
 
 Target "RunTests.NetCore" (fun _ ->
-    // Run tests (Chessie.Tests)
     Shell.Exec("dotnet", "test --configuration Release", "tests/Chessie.Tests") |> assertExitCodeZero
-
-    // Run tests (Chessie.CSharp.Test)
     Shell.Exec("dotnet", "test --configuration Release", "tests/Chessie.CSharp.Test") |> assertExitCodeZero
 )
 
