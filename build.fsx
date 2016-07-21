@@ -234,7 +234,7 @@ Target "GenerateHelpDebug" (fun _ ->
     generateHelp' true true
 )
 
-Target "KeepRunning" (fun _ ->    
+Target "KeepRunning" (fun _ ->
     use watcher = new FileSystemWatcher(DirectoryInfo("docs/content").FullName,"*.*")
     watcher.EnableRaisingEvents <- true
     watcher.Changed.Add(fun e -> generateHelp false)
@@ -334,18 +334,23 @@ Target "BuildPackage" DoNothing
 let assertExitCodeZero x = if x = 0 then () else failwithf "Command failed with exit code %i" x
 
 Target "Build.NetCore" (fun _ ->
-    Shell.Exec("dotnet", "restore") |> assertExitCodeZero
-    Shell.Exec("dotnet", "--verbose pack --configuration Release", "src/Chessie") |> assertExitCodeZero
+    DotNet.Restore id
+
+    !! "src/**/project.json"
+    |> DotNet.Build id
 )
 
 Target "RunTests.NetCore" (fun _ ->
-    Shell.Exec("dotnet", "test --configuration Release", "tests/Chessie.Tests") |> assertExitCodeZero
-    Shell.Exec("dotnet", "test --configuration Release", "tests/Chessie.CSharp.Test") |> assertExitCodeZero
+    !! "tests/**/project.json"
+    |> DotNet.Test id
 )
 
-let isDotnetSDKInstalled = try Shell.Exec("dotnet", "--version") = 0 with _ -> false
+let isDotnetSDKInstalled = DotNet.isInstalled()
 
 Target "Nuget.AddNetCore" (fun _ ->
+    !! "src/**/project.json"
+    |> DotNet.Pack id
+
     let nupkg = sprintf "../../temp/Chessie.%s.nupkg" (release.NugetVersion)
     let netcoreNupkg = sprintf "bin/Release/Chessie.%s.nupkg" (release.NugetVersion)
 
