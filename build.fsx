@@ -349,8 +349,6 @@ Target "RunTests.NetCore" (fun _ ->
 let isDotnetSDKInstalled = try Shell.Exec("dotnet", "--version") = 0 with _ -> false
 
 Target "Nuget.AddNetCore" (fun _ ->
-    Shell.Exec("dotnet", "--verbose pack --configuration Release", "src/Chessie") |> assertExitCodeZero
-
     let nupkg = sprintf "../../temp/Chessie.%s.nupkg" (release.NugetVersion)
     let netcoreNupkg = sprintf "bin/Release/Chessie.%s.nupkg" (release.NugetVersion)
 
