@@ -5,7 +5,7 @@ NUGET
 GROUP Build
 NUGET
   remote: https://www.nuget.org/api/v2
-    FAKE (4.34)
+    FAKE (4.34.2)
     FSharp.Compiler.Service (2.0.0.6)
     FSharp.Formatting (2.14.4)
       FSharp.Compiler.Service (2.0.0.6)
@@ -23,7 +23,7 @@ NUGET
     SourceLink.Fake (1.1)
 GITHUB
   remote: fsharp/FAKE
-    modules/Octokit/Octokit.fsx (f4024fd5b790485828c1cfc002190716eee97597)
+    modules/Octokit/Octokit.fsx (e83eb21f41e71ed7e0cd28e0205a931037266677)
       Octokit (>= 0.20)
 GROUP Test
 NUGET

@@ -3,6 +3,7 @@
 // --------------------------------------------------------------------------------------
 
 #r @"packages/build/FAKE/tools/FakeLib.dll"
+#r @"packages/build/FAKE/tools/Newtonsoft.Json.dll"
 
 open Fake
 open Fake.Git
@@ -333,6 +334,11 @@ Target "BuildPackage" DoNothing
 
 let assertExitCodeZero x = if x = 0 then () else failwithf "Command failed with exit code %i" x
 
+Target "SetVersionInProjectJSON" (fun _ ->
+    !! "./**/project.json"
+    |> Seq.iter (DotNet.SetVersionInProjectJson release.NugetVersion)
+)
+
 Target "Build.NetCore" (fun _ ->
     DotNet.Restore id
 
@@ -364,6 +370,7 @@ Target "All" DoNothing
 
 "Clean"
   ==> "AssemblyInfo"
+  ==> "SetVersionInProjectJSON"
   ==> "Build"
   =?> ("Build.NetCore", isDotnetSDKInstalled)
   ==> "RunTests"
