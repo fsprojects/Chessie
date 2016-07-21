@@ -131,9 +131,9 @@ Railway Oriented Programming by Scott Wlaschin - A functional approach to error 
 {
     <span class="k">public</span> <span class="k">static</span> Result&lt;Person, <span class="k">string</span>&gt; CheckAge(Person p)
     {
-        <span class="k">if</span> (p.Age <span class="o">&lt;</span> 18)
+        <span class="k">if</span> (p.Age <span class="o">&lt;</span> <span class="n">18</span>)
             <span class="k">return</span> Result&lt;Person, <span class="k">string</span>&gt;.FailWith(<span class="s">"Too young!"</span>);
-        <span class="k">if</span> (p.Age <span class="o">&gt;</span> 40)
+        <span class="k">if</span> (p.Age <span class="o">&gt;</span> <span class="n">40</span>)
             <span class="k">return</span> Result&lt;Person, <span class="k">string</span>&gt;.FailWith(<span class="s">"Too old!"</span>);
         <span class="k">return</span> Result&lt;Person, <span class="k">string</span>&gt;.Succeed(p);
     }
@@ -175,7 +175,7 @@ Railway Oriented Programming by Scott Wlaschin - A functional approach to error 
         <span class="k">return</span> <span class="k">from</span> a <span class="k">in</span> Club.CheckAge(p)
                <span class="k">from</span> b <span class="k">in</span> Club.CheckClothes(a)
                <span class="k">from</span> c <span class="k">in</span> Club.CheckSobriety(b)
-               <span class="k">select</span> c.Gender <span class="o">=</span><span class="o">=</span> Gender.Female <span class="o">?</span> 0m <span class="o">:</span> 5m;
+               <span class="k">select</span> c.Gender <span class="o">=</span><span class="o">=</span> Gender.Female <span class="o">?</span> <span class="n">0</span>m <span class="o">:</span> <span class="n">5</span>m;
     }
 }
 </code></pre></td></tr></table>
@@ -186,10 +186,10 @@ Railway Oriented Programming by Scott Wlaschin - A functional approach to error 
 <span class="l">4: </span>
 <span class="l">5: </span>
 </pre></td>
-<td class="snippet"><pre class="fssnip highlighted"><code lang="csharp"><span class="k">var</span> Dave <span class="o">=</span> <span class="k">new</span> Person(Gender.Male, 41, <span class="k">new</span> List&lt;<span class="k">string</span>&gt; { <span class="s">"Tie"</span>, <span class="s">"Jeans"</span> }, Sobriety.Sober);
+<td class="snippet"><pre class="fssnip highlighted"><code lang="csharp"><span class="k">var</span> Dave <span class="o">=</span> <span class="k">new</span> Person(Gender.Male, <span class="n">41</span>, <span class="k">new</span> List&lt;<span class="k">string</span>&gt; { <span class="s">"Tie"</span>, <span class="s">"Jeans"</span> }, Sobriety.Sober);
 <span class="k">var</span> costDave <span class="o">=</span> ClubbedToDeath.CostToEnter(Dave); <span class="c">// Error "Too old!"</span>
 
-<span class="k">var</span> Ken <span class="o">=</span> <span class="k">new</span> Person(Gender.Male, 28, <span class="k">new</span> List&lt;<span class="k">string</span>&gt; { <span class="s">"Tie"</span>, <span class="s">"Shirt"</span> }, Sobriety.Tipsy);
+<span class="k">var</span> Ken <span class="o">=</span> <span class="k">new</span> Person(Gender.Male, <span class="n">28</span>, <span class="k">new</span> List&lt;<span class="k">string</span>&gt; { <span class="s">"Tie"</span>, <span class="s">"Shirt"</span> }, Sobriety.Tipsy);
 <span class="k">var</span> costKen <span class="o">=</span> ClubbedToDeath.CostToEnter(Ken);  <span class="c">// Success 5</span>
 </code></pre></td></tr></table>
 <p>We can even use pattern matching on the result:</p>
@@ -203,7 +203,7 @@ Railway Oriented Programming by Scott Wlaschin - A functional approach to error 
 <span class="l">8: </span>
 <span class="l">9: </span>
 </pre></td>
-<td class="snippet"><pre class="fssnip highlighted"><code lang="csharp"><span class="k">var</span> Ruby <span class="o">=</span> <span class="k">new</span> Person(Gender.Female, 25, <span class="k">new</span> List&lt;<span class="k">string</span>&gt; { <span class="s">"High heels"</span> }, Sobriety.Tipsy);
+<td class="snippet"><pre class="fssnip highlighted"><code lang="csharp"><span class="k">var</span> Ruby <span class="o">=</span> <span class="k">new</span> Person(Gender.Female, <span class="n">25</span>, <span class="k">new</span> List&lt;<span class="k">string</span>&gt; { <span class="s">"High heels"</span> }, Sobriety.Tipsy);
 <span class="k">var</span> costRuby <span class="o">=</span> ClubbedToDeath.CostToEnter(Ruby);
 costRuby.Match(
     (x, msgs) <span class="o">=</span><span class="o">&gt;</span> {
@@ -236,9 +236,9 @@ The type system is making sure that failures flow through your computation in a 
     <span class="k">public</span> <span class="k">static</span> Result&lt;<span class="k">decimal</span>, <span class="k">string</span>&gt; CostToEnter(Person p)
     {
         <span class="k">return</span> <span class="k">from</span> c <span class="k">in</span> Club.CheckAge(p)
-               <span class="k">join</span> x <span class="k">in</span> Club.CheckClothes(p) <span class="k">on</span> 1 <span class="k">equals</span> 1
-               <span class="k">join</span> y <span class="k">in</span> Club.CheckSobriety(p) <span class="k">on</span> 1 <span class="k">equals</span> 1
-               <span class="k">select</span> c.Gender <span class="o">=</span><span class="o">=</span> Gender.Female <span class="o">?</span> 0m <span class="o">:</span> 7.5m;
+               <span class="k">join</span> x <span class="k">in</span> Club.CheckClothes(p) <span class="k">on</span> <span class="n">1</span> <span class="k">equals</span> <span class="n">1</span>
+               <span class="k">join</span> y <span class="k">in</span> Club.CheckSobriety(p) <span class="k">on</span> <span class="n">1</span> <span class="k">equals</span> <span class="n">1</span>
+               <span class="k">select</span> c.Gender <span class="o">=</span><span class="o">=</span> Gender.Female <span class="o">?</span> <span class="n">0</span>m <span class="o">:</span> <span class="n">7.5</span>m;
     }
 }
 </code></pre></td></tr></table>
@@ -257,7 +257,7 @@ The type system is making sure that failures flow through your computation in a 
 <span class="l">11: </span>
 </pre></td>
 <td class="snippet"><pre class="fssnip highlighted"><code lang="csharp"><span class="k">var</span> daveParalytic <span class="o">=</span> <span class="k">new</span> Person(
-    age: 41,
+    age: <span class="n">41</span>,
     clothes: <span class="k">new</span> List&lt;<span class="k">string</span>&gt; { <span class="s">"Tie"</span>, <span class="s">"Shirt"</span> },
     gender: Gender.Male,
     sobriety: Sobriety.Paralytic);
@@ -314,7 +314,7 @@ costDaveParalytic.Match(
         <span class="k">return</span> <span class="k">new</span> List&lt;Func&lt;Person, Result&lt;Person, <span class="k">string</span>&gt;<span class="o">&gt;</span><span class="o">&gt;</span> { CheckGender, Club.CheckAge, Club.CheckClothes, Club.CheckSobriety }
             .Select(check <span class="o">=</span><span class="o">&gt;</span> check(p))
             .Collect()
-            .Select(x <span class="o">=</span><span class="o">&gt;</span> x[0].Age <span class="o">+</span> 1.5m);
+            .Select(x <span class="o">=</span><span class="o">&gt;</span> x[<span class="n">0</span>].Age <span class="o">+</span> <span class="n">1.5</span>m);
     }
 }
 </code></pre></td></tr></table>
@@ -331,7 +331,7 @@ costDaveParalytic.Match(
 </pre></td>
 <td class="snippet"><pre class="fssnip highlighted"><code lang="csharp"><span class="k">var</span> person <span class="o">=</span> <span class="k">new</span> Person(
     gender: Gender.Male,
-    age: 59,
+    age: <span class="n">59</span>,
     clothes: <span class="k">new</span> List&lt;<span class="k">string</span>&gt; { <span class="s">"Jeans"</span> },
     sobriety: Sobriety.Paralytic);
 <span class="k">var</span> cost <span class="o">=</span> GayBar.CostToEnter(person);
