@@ -1,7 +1,7 @@
 #### 0.6.0 - 21.07.2016
 * New version for .NETStandard 1.6 and coreclr
 
-#### 0.5.0 - 23.03.2016
+#### 0.5.1 - 23.03.2016
 * Added fsharp friendly version of try called Catch - https://github.com/fsprojects/Chessie/pull/40
 * VB.NET support - https://github.com/fsprojects/Chessie/pull/39
 
