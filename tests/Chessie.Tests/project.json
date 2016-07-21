@@ -15,7 +15,7 @@
     },
 
     "dependencies": {
-        "Microsoft.FSharp.Core.netcore": "1.0.0-alpha-*",
+        "FSharp.Core": "4.0.1.7-alpha",
         "NUnit": "3.4.1",
         "dotnet-test-nunit": "3.4.0-beta-1",
         "Chessie": { "target": "project" }
