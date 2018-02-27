@@ -285,6 +285,9 @@ module AsyncTrial =
             |> Async.bind (binder >> Async.ofAsyncResult)
             |> AR
         
+        member this.Combine (asyncResult1 : AsyncResult<unit, 'c>, asyncResult2 : AsyncResult<'a, 'c>) =
+            this.Bind (asyncResult1, fun () -> asyncResult2)
+
         member __.TryWith(asyncResult : AsyncResult<'a, 'b>, catchHandler : exn -> AsyncResult<'a, 'b>) : AsyncResult<'a, 'b> = 
             async.TryWith(asyncResult |> Async.ofAsyncResult, (catchHandler >> Async.ofAsyncResult)) |> AR
         member __.TryFinally(asyncResult : AsyncResult<'a, 'b>, compensation : unit -> unit) : AsyncResult<'a, 'b> = 
