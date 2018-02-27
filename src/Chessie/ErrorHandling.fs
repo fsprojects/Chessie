@@ -25,7 +25,7 @@ type Result<'TSuccess, 'TMessage> =
     /// Creates a Success result with the given value and the given message.
     static member Succeed(value:'TSuccess,messages:'TMessage seq) : Result<'TSuccess, 'TMessage> = Result<'TSuccess, 'TMessage>.Ok(value,messages |> Seq.toList)
 
-    /// Executes the given function on a given success or captures the failure
+    /// Executes the given function on a given success or captures the failure.
     static member Try(func: Func<_>) : Result<'TSuccess,exn> =        
         try
             Ok(func.Invoke(),[])
@@ -41,19 +41,19 @@ type Result<'TSuccess, 'TMessage> =
 /// Basic combinators and operators for error handling.
 [<AutoOpen>]
 module Trial =  
-    /// Wraps a value in a Success
+    /// Wraps a value in a Success.
     let inline ok<'TSuccess,'TMessage> (x:'TSuccess) : Result<'TSuccess,'TMessage> = Ok(x, [])
 
-    /// Wraps a value in a Success
+    /// Wraps a value in a Success.
     let inline pass<'TSuccess,'TMessage> (x:'TSuccess) : Result<'TSuccess,'TMessage> = Ok(x, [])
 
-    /// Wraps a value in a Success and adds a message
+    /// Wraps a value in a Success and adds a message.
     let inline warn<'TSuccess,'TMessage> (msg:'TMessage) (x:'TSuccess) : Result<'TSuccess,'TMessage> = Ok(x,[msg])
 
-    /// Wraps a message in a Failure
+    /// Wraps a message in a Failure.
     let inline fail<'TSuccess,'Message> (msg:'Message) : Result<'TSuccess,'Message> = Bad([ msg ])
 
-    /// Executes the given function on a given success or captures the exception in a failure
+    /// Executes the given function on a given success or captures the exception in a failure.
     let inline Catch f x = Result<_,_>.Try(fun () -> f x)
 
     /// Returns true if the result was not successful.
@@ -69,7 +69,7 @@ module Trial =
         | Bad(msgs) -> fFailure (msgs)
 
     /// If the given result is a Success the wrapped value will be returned. 
-    ///Otherwise the function throws an exception with Failure message of the result.
+    /// Otherwise the function throws an exception with Failure message of the result.
     let inline returnOrFail result = 
         let inline raiseExn msgs = 
             msgs
@@ -85,7 +85,7 @@ module Trial =
         either fSuccess fFailure result
 
     /// If the result is a Success it executes the given function on the value.
-    /// Otherwise the exisiting failure is propagated.
+    /// Otherwise the existing failure is propagated.
     let inline bind f result = 
         let inline fSuccess (x, msgs) = f x |> mergeMessages msgs
         let inline fFailure (msgs) = Bad msgs
@@ -96,12 +96,12 @@ module Trial =
         result |> bind id
 
     /// If the result is a Success it executes the given function on the value. 
-    /// Otherwise the exisiting failure is propagated.
+    /// Otherwise the existing failure is propagated.
     /// This is the infix operator version of ErrorHandling.bind
     let inline (>>=) result f = bind f result
 
     /// If the wrapped function is a success and the given result is a success the function is applied on the value. 
-    /// Otherwise the exisiting error messages are propagated.
+    /// Otherwise the existing error messages are propagated.
     let inline apply wrappedFunction result = 
         match wrappedFunction, result with
         | Ok(f, msgs1), Ok(x, msgs2) -> Ok(f x, msgs1 @ msgs2)
@@ -110,7 +110,7 @@ module Trial =
         | Bad errs1, Bad errs2 -> Bad(errs1 @ errs2)
 
     /// If the wrapped function is a success and the given result is a success the function is applied on the value. 
-    /// Otherwise the exisiting error messages are propagated.
+    /// Otherwise the existing error messages are propagated.
     /// This is the infix operator version of ErrorHandling.apply
     let inline (<*>) wrappedFunction result = apply wrappedFunction result
 
@@ -219,7 +219,7 @@ module Trial =
     /// Wraps computations in an error handling computation expression.
     let trial = TrialBuilder()
 
-/// Represents the result of an async computation
+/// Represents the result of an async computation.
 [<NoComparison;NoEquality>]
 type AsyncResult<'a, 'b> = 
     | AR of Async<Result<'a, 'b>>
@@ -230,17 +230,17 @@ module AsyncExtensions =
     /// Useful functions for combining error handling computations with async computations.
     [<RequireQualifiedAccess>]
     module Async = 
-        /// Creates an async computation that return the given value
+        /// Creates an async computation that return the given value.
         let singleton value = value |> async.Return
 
         /// Creates an async computation that runs a computation and
-        /// when it generates a result run a binding function on the said result
+        /// when it generates a result run a binding function on the said result.
         let bind f x = async.Bind(x, f)
 
-        /// Creates an async computation that runs a mapping function on the result of an async computation
+        /// Creates an async computation that runs a mapping function on the result of an async computation.
         let map f x = x |> bind (f >> singleton)
 
-        /// Creates an async computation from an asyncTrial computation
+        /// Creates an async computation from an asyncTrial computation.
         let ofAsyncResult (AR x) = x
 
 /// Basic support for async error handling computation
@@ -341,14 +341,14 @@ type ResultExtensions () =
         | Result.Bad(msgs:'TMessage list) -> Bad msgs
 
     /// If the result is a Success it executes the given Func on the value.
-    /// Otherwise the exisiting failure is propagated.
+    /// Otherwise the existing failure is propagated.
     [<Extension>]
     static member inline SelectMany (this:Result<'TSuccess, 'TMessage>, func: Func<_,_>) =
         bind func.Invoke this
 
     /// If the result is a Success it executes the given Func on the value.
     /// If the result of the Func is a Success it maps it using the given Func.
-    /// Otherwise the exisiting failure is propagated.
+    /// Otherwise the existing failure is propagated.
     [<Extension>]
     static member inline SelectMany (this:Result<'TSuccess, 'TMessage>, func: Func<_,_>, mapper: Func<_,_,_>) =
         bind (fun s -> s |> func.Invoke |> lift (fun v -> mapper.Invoke(s,v))) this
@@ -373,7 +373,7 @@ type ResultExtensions () =
 
     /// Joins two results. 
     /// If both are a success the resultSelector Func is applied to the values and the existing success messages are propagated.
-    /// Otherwise the exisiting error messages are propagated.
+    /// Otherwise the existing error messages are propagated.
     [<Extension>]
     static member inline Join (this: Result<'TOuter, 'TMessage>, inner: Result<'TInner, 'TMessage>, _outerKeySelector: Func<'TOuter,'TKey>, _innerKeySelector: Func<'TInner, 'TKey>, resultSelector: Func<'TOuter, 'TInner, 'TResult>) =
         let curry func = fun a b -> func (a, b)
