@@ -150,12 +150,11 @@ module Trial =
     /// Collects a sequence of Results and accumulates their values.
     /// If the sequence contains an error the error will be propagated.
     let inline collect xs = 
-        Seq.fold (fun result next -> 
+        Seq.foldBack (fun next result -> 
             match result, next with
             | Ok(rs, m1), Ok(r, m2) -> Ok(r :: rs, m1 @ m2)
             | Ok(_, m1), Bad(m2) | Bad(m1), Ok(_, m2) -> Bad(m1 @ m2)
-            | Bad(m1), Bad(m2) -> Bad(m1 @ m2)) (ok []) xs
-        |> lift List.rev
+            | Bad(m1), Bad(m2) -> Bad(m1 @ m2)) xs (ok [])
 
     /// Converts an option into a Result.
     let inline failIfNone message result = 
